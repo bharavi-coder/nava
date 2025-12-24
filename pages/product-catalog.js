@@ -1,7 +1,7 @@
 import { NextSeo } from 'next-seo'
 import React, { useState } from 'react'
 import Layout from '../components/Layout'
-import Link from '../components/ActiveLink' 
+// Link intentionally removed: unused import
 import Image from '../components/Image' 
 import SimpleSlider from '../components/SimpleSlider'
  
@@ -32,10 +32,7 @@ const ProductCatalog = () => {
         { id: 9, name: 'Cleaning Supplies', category: 'Candy & Sweets', image: '/supplies.jpg' }
       ]
     
-      const brands = [
-        'Starburst', 'Reeses', 'Fudgies', 'M&Ms', 'Brandt', 'Almond Joy',
-        'Chex Mix', 'Lays', 'Hershey', 'Planters', 'Fritos', 'Cupcakes'
-      ]
+      // removed unused `brands` array (was causing lint no-unused-vars)
 
 
   return (
@@ -156,6 +153,7 @@ const ProductCatalog = () => {
         </div>
       </div>
 
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx>{`
         .breadcrumb_section {
           padding: 20px 0;
@@ -408,6 +406,7 @@ const ProductCatalog = () => {
         }
       `}</style>
 
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx global>{`
         header  {position:relative}
       `}</style>

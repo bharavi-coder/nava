@@ -1,10 +1,7 @@
 import { NextSeo } from 'next-seo'
 import Link from '../components/ActiveLink'
-import clsx from 'clsx'
 import Layout from '../components/Layout'
 import Image from '../components/Image'
-import styles from '../styles/Home.module.scss'
-import SimpleSlider from '../components/SimpleSlider'
  
  
 
@@ -62,59 +59,59 @@ const Home = () => {
                 </div>
                 <div className="col-lg-6 col-sm-12">
                     <div className="formContect">
-                        <div class="formarea">
-                            <form action="http://www.kincgroup.com/Career/sendmail" name="career_form" id="career_form" enctype="multipart/form-data" method="post" accept-charset="utf-8" novalidate="novalidate">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="form-group">
-                                            <label class="lable_text">First Name*</label>
-                                            <input type="text" placeholder="" name="txtfname" maxlength="200" minlength="2" class="form-control required" />
+                        <div className="formarea">
+                            <form action="http://www.kincgroup.com/Career/sendmail" name="career_form" id="career_form" encType="multipart/form-data" method="post" acceptCharset="utf-8" noValidate>
+                                <div className="row">
+                                    <div className="col-lg-6 col-md-6">
+                                        <div className="form-group">
+                                            <label className="lable_text">First Name*</label>
+                                            <input type="text" placeholder="" name="txtfname" maxLength={200} minLength={2} className="form-control required" />
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="form-group">
-                                            <label class="lable_text">Last Name*</label>
-                                            <input type="text" placeholder="" name="txtfname" maxlength="200" minlength="2" class="form-control required" />
+                                    <div className="col-lg-6 col-md-6">
+                                        <div className="form-group">
+                                            <label className="lable_text">Last Name*</label>
+                                            <input type="text" placeholder="" name="txtfname" maxLength={200} minLength={2} className="form-control required" />
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="form-group">
-                                            <label class="lable_text">Email*</label>
-                                            <input type="text" placeholder="" name="txtemail" maxlength="200" minlength="2" class="form-control required email" />
+                                    <div className="col-lg-6 col-md-6">
+                                        <div className="form-group">
+                                            <label className="lable_text">Email*</label>
+                                            <input type="text" placeholder="" name="txtemail" maxLength={200} minLength={2} className="form-control required email" />
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="form-group">
-                                            <label class="lable_text">Primary Number</label>
-                                            <input type="text" placeholder="" name="txtphone" maxlength="10" minlength="10" class="form-control required number" />
+                                    <div className="col-lg-6 col-md-6">
+                                        <div className="form-group">
+                                            <label className="lable_text">Primary Number</label>
+                                            <input type="text" placeholder="" name="txtphone" maxLength={10} minLength={10} className="form-control required number" />
                                         </div>
                                     </div>
-                                    <div class="col-lg-12 col-md-12">
-                                        <div class="form-group">
-                                            <label class="lable_text">Business Name*</label>
-                                            <input type="text" placeholder="" name="txtbusinessname" maxlength="10" minlength="10" class="form-control required" />
+                                    <div className="col-lg-12 col-md-12">
+                                        <div className="form-group">
+                                            <label className="lable_text">Business Name*</label>
+                                            <input type="text" placeholder="" name="txtbusinessname" maxLength={10} minLength={10} className="form-control required" />
                                         </div>
                                     </div>
-                                    <div class="col-lg-12 col-md-12">
-                                        <div class="form-group">
-                                            <label class="lable_text">Business Type*</label>
-                                            <input type="text" placeholder="" name="txtbusinesstype" maxlength="200" minlength="2" class="form-control required" />
+                                    <div className="col-lg-12 col-md-12">
+                                        <div className="form-group">
+                                            <label className="lable_text">Business Type*</label>
+                                            <input type="text" placeholder="" name="txtbusinesstype" maxLength={200} minLength={2} className="form-control required" />
                                         </div>
                                     </div>
-                                    <div class="col-lg-12 col-md-12">
-                                        <div class="form-group">
-                                            <label class="lable_text">Message</label>
-                                            <textarea class="form-control" rows="4" placeholder="" name="txtcomment" maxlength="500"></textarea>
+                                    <div className="col-lg-12 col-md-12">
+                                        <div className="form-group">
+                                            <label className="lable_text">Message</label>
+                                            <textarea className="form-control" rows="4" placeholder="" name="txtcomment" maxLength={500}></textarea>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12 col-md-12">
-                                        <div class="form-group">Required fields are marked as *</div>
+                                    <div className="col-lg-12 col-md-12">
+                                        <div className="form-group">Required fields are marked as *</div>
                                     </div>
-                                    <div class="col-lg-12 col-md-12">
-                                        <div class="btnarea text-right">
+                                    <div className="col-lg-12 col-md-12">
+                                        <div className="btnarea text-right">
                                             <input type="hidden" name="heading_V" value="Contact Details" />
                                             <input type="hidden" name="footer_V" value=" Sutra All Rights Reserved." />
-                                            <button type="submit" class="btn_comman btn_primary1" href="javascript:void(0)">Submit</button>
+                                            <button type="submit" className="btn_comman btn_primary1">Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -126,6 +123,7 @@ const Home = () => {
         </div>
     </div>
 </div>
+{/* eslint-disable-next-line react/no-unknown-property */}
 <style jsx global>{`
     header .headermain .logo .inner_logo {
        display: block!important; 

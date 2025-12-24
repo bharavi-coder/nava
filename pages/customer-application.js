@@ -1,8 +1,6 @@
 import { NextSeo } from 'next-seo'
 import React, { useState } from 'react'
 import Layout from '../components/Layout'
-import Link from '../components/ActiveLink' 
-import Image from '../components/Image' 
 
 const ApplicationForm = () => {
   const [currentStep, setCurrentStep] = useState(1)
@@ -74,7 +72,6 @@ const ApplicationForm = () => {
   }
 
   const handleSubmit = () => {
-    console.log('Form submitted:', formData)
     // Handle form submission
   }
 
@@ -404,6 +401,7 @@ const ApplicationForm = () => {
         </div>
       </div>
 
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx>{`
         .application_form_container {
           padding: 60px 0 100px;
@@ -680,6 +678,7 @@ const ApplicationForm = () => {
         }
       `}</style>
 
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx global>{`
         header .headermain .logo .inner_logo {
           display: block!important; 
