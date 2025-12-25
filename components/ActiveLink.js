@@ -10,15 +10,22 @@ const ActiveLink = ({
 }) => {
   const { asPath } = useRouter()
 
-  // pages/index.tsx or pages/about.tsx will be matched via props.href
-  // pages/[slug].js will be matched via props.as
+  // normalize function: strip query, hash, and trailing slashes
+  const normalize = (p) => {
+    if (!p) return ''
+    // If href is an object (Next Link supports objects), try pathname
+    const str = typeof p === 'string' ? p : (p.pathname || '')
+    return str.split('?')[0].split('#')[0].replace(/\/+$|\/$/g, '') || '/'
+  }
+
+  const current = normalize(asPath)
+  const hrefToCheck = normalize(props.as || props.href)
+  const isActive = current === hrefToCheck
+
   return (
     <Link
       {...props}
-      className={clsx(
-        className,
-        (asPath === props.href || asPath === props.as) && activeClassName
-      )}
+      className={clsx(className, isActive && activeClassName)}
     >
       {children}
     </Link>

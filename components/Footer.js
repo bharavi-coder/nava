@@ -17,10 +17,10 @@ const Footer = () => {
                       <div className="footList">
                           <p className="footHeading">Quick links</p>
                           <ul>
-                              <li><Link href="#">About us</Link></li>
-                              <li><Link href="#">Product Catalog</Link></li>
-                              <li><Link href="#">Customer Application Forms</Link></li>
-                              <li><Link href="#">Contact Us</Link></li>
+                              <li><Link href="/">About us</Link></li>
+                              <li><Link href="/product-catalog">Product Catalog</Link></li>
+                              <li><Link href="/customer-application">Customer Application Forms</Link></li>
+                              <li><Link href="/contact-us">Contact Us</Link></li>
                           </ul>
                       </div>
                   </div>

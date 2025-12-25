@@ -1,6 +1,8 @@
 import { NextSeo } from 'next-seo'
 import React, { useState } from 'react'
 import Layout from '../components/Layout'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const ApplicationForm = () => {
   const [currentStep, setCurrentStep] = useState(1)
@@ -25,11 +27,11 @@ const ApplicationForm = () => {
     locations: '',
     monthlyPurchaseVolume: '',
     preferredOrderingMethod: '',
-    
+
     // Step 2: Tax Details
     ein: '',
     resellCertificate: '',
-    
+
     // Step 3: Additional References
     ref1Title: '',
     ref1FirstName: '',
@@ -53,32 +55,248 @@ const ApplicationForm = () => {
     buyer2Email: '',
     uploadedDocuments: null
   })
+  const [loading, setLoading] = useState(false)
+  const [errors, setErrors] = useState({});
+  const [invalidFields, setInvalidFields] = useState({});
+  const requiredStep1Fields = [
+    'firstName',
+    'lastName',
+    'phone',
+    'email',
+    'legalBusinessName',
+    'businessType',
+    'address',
+    'city',
+    'state',
+    'zip',
+  ];
+  const requiredStep2Fields = ['ein', 'resellCertificate'];
+  const emailFields = [
+    'email',
+    'businessEmail',
+    'ref1Email',
+    'ref2Email',
+    'buyer1Email',
+    'buyer2Email',
+  ];
+
+  const fieldLabels = {
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    phone: 'Phone',
+    email: 'Email',
+    legalBusinessName: 'Legal Business Name',
+    businessType: 'Business Type',
+    address: 'Address',
+    city: 'City',
+    state: 'State',
+    zip: 'ZIP',
+    ein: 'EIN',
+    resellCertificate: 'Resell Certificate',
+  };
+
+
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target
+  //   setFormData(prev => ({ ...prev, [name]: value }))
+  // }
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: '' }));
+    setInvalidFields((prev) => ({ ...prev, [name]: false }));
+  };
 
+  // const handleFileUpload = (e) => {
+  //   setFormData(prev => ({ ...prev, uploadedDocuments: e.target.files }))
+  // }
   const handleFileUpload = (e) => {
-    setFormData(prev => ({ ...prev, uploadedDocuments: e.target.files }))
-  }
+    setFormData(prev => ({
+      ...prev,
+      uploadedDocuments: e.target.files
+    }));
+  };
+
+
+  // const nextStep = () => {
+  //   if (currentStep < 3) setCurrentStep(currentStep + 1)
+  // }
 
   const nextStep = () => {
-    if (currentStep < 3) setCurrentStep(currentStep + 1)
-  }
+    if (currentStep === 1) {
+      if (!validateStep(requiredStep1Fields)) return;
+    }
+
+    if (currentStep === 2) {
+      if (!validateStep(requiredStep2Fields)) return;
+    }
+
+    setCurrentStep((prev) => prev + 1);
+  };
+
 
   const prevStep = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1)
   }
 
-  const handleSubmit = () => {
-    // Handle form submission
+  const validateStep = (fields) => {
+    const newErrors = {};
+    const invalid = {};
+
+    // Required field validation
+    fields.forEach((field) => {
+      if (!formData[field] || !formData[field].toString().trim()) {
+        newErrors[field] = `${fieldLabels[field]} is required`;
+        invalid[field] = true;
+      }
+    });
+
+    // Email format validation (ALL email fields)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    emailFields.forEach((emailField) => {
+      if (formData[emailField]) {
+        if (!emailRegex.test(formData[emailField])) {
+          newErrors[emailField] = 'Please enter a valid email address';
+          invalid[emailField] = true;
+        }
+      }
+    });
+
+    // Phone validation
+    if (fields.includes('phone') && formData.phone) {
+      if (!/^\d{10}$/.test(formData.phone)) {
+        newErrors.phone = 'Phone number must be 10 digits';
+        invalid.phone = true;
+      }
+    }
+
+    setErrors(newErrors);
+    setInvalidFields(invalid);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateEmailsOnSubmit = () => {
+    const newErrors = {};
+    const invalid = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    emailFields.forEach((emailField) => {
+      if (formData[emailField]) {
+        if (!emailRegex.test(formData[emailField])) {
+          newErrors[emailField] = 'Please enter a valid email address';
+          invalid[emailField] = true;
+        }
+      }
+    });
+
+    setErrors((prev) => ({ ...prev, ...newErrors }));
+    setInvalidFields((prev) => ({ ...prev, ...invalid }));
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+
+
+  const handleSubmit = async () => {
+    if (!validateEmailsOnSubmit()) {
+      toast.error('Please fix the highlighted errors');
+      return;
+    }
+    setLoading(true)
+
+    try {
+      const payload = new FormData()
+
+      // 🔹 Basic + Business Info
+      payload.append('title', formData.title)
+      payload.append('firstName', formData.firstName)
+      payload.append('lastName', formData.lastName)
+      payload.append('phone', formData.phone)
+      payload.append('email', formData.email)
+      payload.append('legalBusinessName', formData.legalBusinessName)
+      payload.append('dba', formData.dba)
+      payload.append('businessType', formData.businessType)
+      payload.append('address', formData.address)
+      payload.append('city', formData.city)
+      payload.append('state', formData.state)
+      payload.append('zip', formData.zip)
+      payload.append('businessPhone', formData.businessPhone)
+      payload.append('businessEmail', formData.businessEmail)
+      payload.append('website', formData.website)
+      payload.append('yearsInBusiness', formData.yearsInBusiness)
+      payload.append('locations', formData.locations)
+      payload.append('monthlyPurchaseVolume', formData.monthlyPurchaseVolume)
+      payload.append('preferredOrderingMethod', formData.preferredOrderingMethod)
+
+      // 🔹 Tax Details
+      payload.append('ein', formData.ein)
+      payload.append('resaleCertificate', formData.resellCertificate)
+
+      // 🔹 References
+      payload.append('reference1Title', formData.ref1Title)
+      payload.append('reference1FirstName', formData.ref1FirstName)
+      payload.append('reference1LastName', formData.ref1LastName)
+      payload.append('reference1Phone', formData.ref1Phone)
+      payload.append('reference1Email', formData.ref1Email)
+
+      payload.append('reference2Title', formData.ref2Title)
+      payload.append('reference2FirstName', formData.ref2FirstName)
+      payload.append('reference2LastName', formData.ref2LastName)
+      payload.append('reference2Phone', formData.ref2Phone)
+      payload.append('reference2Email', formData.ref2Email)
+
+      // 🔹 Buyers
+      payload.append('buyer1Title', formData.buyer1Title)
+      payload.append('buyer1FirstName', formData.buyer1FirstName)
+      payload.append('buyer1LastName', formData.buyer1LastName)
+      payload.append('buyer1Phone', formData.buyer1Phone)
+      payload.append('buyer1Email', formData.buyer1Email)
+
+      payload.append('buyer2Title', formData.buyer2Title)
+      payload.append('buyer2FirstName', formData.buyer2FirstName)
+      payload.append('buyer2LastName', formData.buyer2LastName)
+      payload.append('buyer2Phone', formData.buyer2Phone)
+      payload.append('buyer2Email', formData.buyer2Email)
+
+      // 🔹 Documents
+      if (formData.uploadedDocuments) {
+        Array.from(formData.uploadedDocuments).forEach((file) => {
+          payload.append('documents', file)
+        })
+      }
+
+      const response = await fetch('https://nava-api.weblivelink.com/api/application-form', {
+        method: 'POST',
+        body: payload
+      })
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        toast.success(data.message || 'Application submitted successfully')
+
+        // Optional reset
+        setFormData({})
+        setCurrentStep(1)
+      } else {
+        toast.error(data.message || 'Submission failed')
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error('Server error. Please try again later.')
+    } finally {
+      setLoading(false)
+    }
   }
+
 
   return (
     <Layout>
       <NextSeo title="Customer Application Form" />
-      
+
       <div className="application_form_container">
         <div className="container">
           {/* Header */}
@@ -115,39 +333,46 @@ const ApplicationForm = () => {
             {currentStep === 1 && (
               <div className="form_step">
                 <div className="form_section">
-                  <h2>Primary Contact Details</h2>
+                  <h2 className='hd26'>Primary Contact Details</h2>
                   <div className="form_row">
                     <div className="form_field small">
                       <label>Title</label>
-                      <input type="text" name="title" value={formData.title} onChange={handleInputChange} />
+                      <input type="text" name="title" value={formData.title} onChange={handleInputChange} className={`form-control ${invalidFields.firstName ? 'input-error' : ''}`} />
                     </div>
                     <div className="form_field">
-                      <label>First Name</label>
+                      <label>First Name <span className="required">*</span></label>
                       <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} />
+                      {errors.firstName && (
+                        <small className="text-danger">{errors.firstName}</small>
+                      )}
                     </div>
                     <div className="form_field">
-                      <label>Last Name</label>
+                      <label>Last Name <span className="required">*</span></label>
                       <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} />
+                      {errors.lastName && (<small className="text-danger">{errors.lastName}</small>)}
                     </div>
                   </div>
                   <div className="form_row">
                     <div className="form_field">
-                      <label>Phone</label>
+                      <label>Phone <span className="required">*</span></label>
                       <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} />
+                      {errors.phone && (<small className="text-danger">{errors.phone}</small>)}
                     </div>
                     <div className="form_field">
-                      <label>Email</label>
+                      <label>Email <span className="required">*</span></label>
                       <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
+                      {errors.email && (<small className="text-danger">{errors.email}</small>)}
                     </div>
                   </div>
                 </div>
 
                 <div className="form_section">
-                  <h2>Business Information</h2>
+                  <h2 className='hd26'>Business Information</h2>
                   <div className="form_row">
                     <div className="form_field">
-                      <label>Legal Business Name</label>
+                      <label>Legal Business Name <span className="required">*</span></label>
                       <input type="text" name="legalBusinessName" value={formData.legalBusinessName} onChange={handleInputChange} />
+                      {errors.legalBusinessName && (<small className="text-danger">{errors.legalBusinessName}</small>)}
                     </div>
                     <div className="form_field">
                       <label>DBA</label>
@@ -156,29 +381,35 @@ const ApplicationForm = () => {
                   </div>
                   <div className="form_row">
                     <div className="form_field full">
-                      <label>Business Type</label>
+                      <label>Business Type <span className="required">*</span> </label>
                       <input type="text" name="businessType" value={formData.businessType} onChange={handleInputChange} />
+                      {errors.businessType && (<small className="text-danger">{errors.businessType}</small>)}
                     </div>
                   </div>
                   <div className="form_row">
                     <div className="form_field full">
-                      <label>Address</label>
+                      <label>Address <span className="required">*</span></label>
                       <input type="text" name="address" value={formData.address} onChange={handleInputChange} />
+                      {errors.address && (<small className="text-danger">{errors.address}</small>)}
                     </div>
                   </div>
                   <div className="form_row">
                     <div className="form_field">
-                      <label>City</label>
+                      <label>City <span className="required">*</span></label>
                       <input type="text" name="city" value={formData.city} onChange={handleInputChange} />
+                      {errors.city && (<small className="text-danger">{errors.city}</small>)}
                     </div>
                     <div className="form_field">
-                      <label>State</label>
+                      <label>State <span className="required">*</span></label>
                       <input type="text" name="state" value={formData.state} onChange={handleInputChange} />
+                      {errors.state && (<small className="text-danger">{errors.state}</small>)}
                     </div>
                     <div className="form_field">
-                      <label>ZIP</label>
+                      <label>ZIP <span className="required">*</span></label>
                       <input type="text" name="zip" value={formData.zip} onChange={handleInputChange} />
+                      {errors.zip && (<small className="text-danger">{errors.zip}</small>)}
                     </div>
+
                   </div>
                   <div className="form_row">
                     <div className="form_field">
@@ -188,6 +419,9 @@ const ApplicationForm = () => {
                     <div className="form_field">
                       <label>Email</label>
                       <input type="email" name="businessEmail" value={formData.businessEmail} onChange={handleInputChange} />
+                      {errors.businessEmail && (
+                        <small className="text-danger">{errors.businessEmail}</small>
+                      )}
                     </div>
                   </div>
                   <div className="form_row">
@@ -199,7 +433,7 @@ const ApplicationForm = () => {
                 </div>
 
                 <div className="form_section">
-                  <h2>Business Details</h2>
+                  <h2 className='hd26'>Business Details</h2>
                   <div className="form_row">
                     <div className="form_field">
                       <label>Years in Business</label>
@@ -230,17 +464,19 @@ const ApplicationForm = () => {
             {currentStep === 2 && (
               <div className="form_step">
                 <div className="form_section">
-                  <h2>Tax Information</h2>
+                  <h2 className='hd26'>Tax Information</h2>
                   <div className="form_row">
                     <div className="form_field medium">
-                      <label>EIN</label>
+                      <label>EIN <span className="required">*</span></label>
                       <input type="text" name="ein" value={formData.ein} onChange={handleInputChange} />
+                      {errors.ein && (<small className="text-danger">{errors.ein}</small>)}
                     </div>
                   </div>
                   <div className="form_row">
                     <div className="form_field medium">
-                      <label>Resell Certificate</label>
+                      <label>Resell Certificate <span className="required">*</span></label>
                       <input type="text" name="resellCertificate" value={formData.resellCertificate} onChange={handleInputChange} />
+                      {errors.resellCertificate && (<small className="text-danger">{errors.resellCertificate}</small>)}
                     </div>
                   </div>
                 </div>
@@ -251,9 +487,8 @@ const ApplicationForm = () => {
             {currentStep === 3 && (
               <div className="form_step">
                 <div className="form_section">
-                  <h2>Trade References</h2>
-                  
-                  <h3>Reference 1</h3>
+                  <h2 className='hd26'>Trade References</h2>
+                  <h3 className="hd24 brdnone">Reference 1</h3>
                   <div className="form_row">
                     <div className="form_field small">
                       <label>Title</label>
@@ -276,10 +511,13 @@ const ApplicationForm = () => {
                     <div className="form_field">
                       <label>Email</label>
                       <input type="email" name="ref1Email" value={formData.ref1Email} onChange={handleInputChange} />
+                      {errors.ref1Email && (
+                        <small className="text-danger">{errors.ref1Email}</small>
+                      )}
                     </div>
                   </div>
 
-                  <h3>Reference 2</h3>
+                  <h3 className="hd24">Reference 2</h3>
                   <div className="form_row">
                     <div className="form_field small">
                       <label>Title</label>
@@ -302,14 +540,16 @@ const ApplicationForm = () => {
                     <div className="form_field">
                       <label>Email</label>
                       <input type="email" name="ref2Email" value={formData.ref2Email} onChange={handleInputChange} />
+                      {errors.ref2Email && (
+                        <small className="text-danger">{errors.ref2Email}</small>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 <div className="form_section">
-                  <h2>Authorized Buyers</h2>
-                  
-                  <h3>Buyer Details 1</h3>
+                  <h2 className='hd26'>Authorized Buyers</h2>
+                  <h3 className="hd24 brdnone">Buyer Details 1</h3>
                   <div className="form_row">
                     <div className="form_field small">
                       <label>Title</label>
@@ -332,10 +572,13 @@ const ApplicationForm = () => {
                     <div className="form_field">
                       <label>Email</label>
                       <input type="email" name="buyer1Email" value={formData.buyer1Email} onChange={handleInputChange} />
+                      {errors.buyer1Email && (
+                        <small className="text-danger">{errors.buyer1Email}</small>
+                      )}
                     </div>
                   </div>
 
-                  <h3>Buyer Details 2</h3>
+                  <h3 className="hd24">Buyer Details 2</h3>
                   <div className="form_row">
                     <div className="form_field small">
                       <label>Title</label>
@@ -358,6 +601,9 @@ const ApplicationForm = () => {
                     <div className="form_field">
                       <label>Email</label>
                       <input type="email" name="buyer2Email" value={formData.buyer2Email} onChange={handleInputChange} />
+                      {errors.buyer2Email && (
+                        <small className="text-danger">{errors.buyer2Email}</small>
+                      )}
                     </div>
                   </div>
 
@@ -365,7 +611,7 @@ const ApplicationForm = () => {
                     <div className="form_field full">
                       <label>Upload Documents <span className="optional">Optional</span></label>
                       <div className="file_upload">
-                        <input type="file" id="fileUpload" onChange={handleFileUpload} multiple accept=".pdf,.png,.jpg,.jpeg" style={{display: 'none'}} />
+                        <input type="file" id="fileUpload" onChange={handleFileUpload} multiple accept=".pdf,.png,.jpg,.jpeg" style={{ display: 'none' }} />
                         <label htmlFor="fileUpload" className="upload_area">
                           <div className="upload_icon">📄</div>
                           <div className="upload_text">
@@ -375,6 +621,16 @@ const ApplicationForm = () => {
                           </div>
                         </label>
                       </div>
+                      {formData.uploadedDocuments && formData.uploadedDocuments.length > 0 && (
+                        <ul className="uploaded_file_list">
+                          {Array.from(formData.uploadedDocuments).map((file, index) => (
+                            <li key={index}>
+                              {file.name}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
                     </div>
                   </div>
                 </div>
@@ -384,321 +640,38 @@ const ApplicationForm = () => {
             {/* Form Actions */}
             <div className="form_actions">
               {currentStep > 1 && (
-                <button className="btn_secondary" onClick={prevStep}>
+                <button className="btn_comman btn_secondary" onClick={prevStep}>
                   Back
                 </button>
               )}
               {currentStep === 1 && (
-                <button className="btn_secondary" onClick={() => window.history.back()}>
+                <button className="btn_comman btn_secondary" onClick={() => window.history.back()}>
                   Cancel
                 </button>
               )}
-              <button className="btn_primary" onClick={currentStep === 3 ? handleSubmit : nextStep}>
-                {currentStep === 3 ? 'Proceed to review' : 'Save and Continue'}
+              <button className="btn_comman btn_primary2" onClick={currentStep === 3 ? handleSubmit : nextStep} disabled={loading}
+              >{loading ? 'Submitting...' : currentStep === 3 ? 'Proceed to review' : 'Save and Continue'}
               </button>
             </div>
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        theme="colored"
+      />
 
-      {/* eslint-disable-next-line react/no-unknown-property */}
-      <style jsx>{`
-        .application_form_container {
-          padding: 60px 0 100px;
-          background: #f8f9fa;
-        }
-
-        .form_header {
-          text-align: center;
-          margin-bottom: 60px;
-        }
-
-        .form_header h1 {
-          font-size: 36px;
-          font-weight: 600;
-          color: #1a1a1a;
-          margin-bottom: 16px;
-        }
-
-        .form_header p {
-          font-size: 16px;
-          color: #6c757d;
-          max-width: 700px;
-          margin: 0 auto;
-          line-height: 1.6;
-        }
-
-        /* Stepper */
-        .stepper {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 50px;
-          padding: 0 20px;
-        }
-
-        .step {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          position: relative;
-        }
-
-        .step_circle {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          background: #d3d3d3;
-          color: #fff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 18px;
-          font-weight: 600;
-          margin-bottom: 12px;
-          transition: all 0.3s;
-        }
-
-        .step.active .step_circle {
-          background: #b87333;
-          box-shadow: 0 4px 12px rgba(184, 115, 51, 0.3);
-        }
-
-        .step.completed .step_circle {
-          background: #b87333;
-          border: 2px solid #b87333;
-        }
-
-        .step_label {
-          font-size: 14px;
-          color: #6c757d;
-          white-space: nowrap;
-        }
-
-        .step.active .step_label {
-          color: #b87333;
-          font-weight: 600;
-        }
-
-        .step_line {
-          height: 2px;
-          width: 120px;
-          background: #d3d3d3;
-          margin: 0 -10px;
-          margin-bottom: 40px;
-        }
-
-        /* Form Content */
-        .form_content {
-          background: #fff;
-          border-radius: 12px;
-          padding: 50px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-          max-width: 900px;
-          margin: 0 auto;
-        }
-
-        .form_section {
-          margin-bottom: 40px;
-        }
-
-        .form_section h2 {
-          font-size: 20px;
-          font-weight: 600;
-          color: #1a1a1a;
-          margin-bottom: 24px;
-        }
-
-        .form_section h3 {
-          font-size: 16px;
-          font-weight: 600;
-          color: #16697a;
-          margin: 30px 0 20px;
-        }
-
-        .form_row {
-          display: flex;
-          gap: 20px;
-          margin-bottom: 20px;
-        }
-
-        .form_field {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-        }
-
-        .form_field.small {
-          flex: 0 0 120px;
-        }
-
-        .form_field.medium {
-          flex: 0 0 400px;
-        }
-
-        .form_field.full {
-          flex: 1 1 100%;
-        }
-
-        .form_field label {
-          font-size: 14px;
-          color: #6c757d;
-          margin-bottom: 8px;
-          font-weight: 500;
-        }
-
-        .optional {
-          font-weight: 400;
-          font-size: 13px;
-        }
-
-        .form_field input,
-        .form_field select {
-          padding: 12px 16px;
-          border: 1px solid #e0e0e0;
-          border-radius: 4px;
-          font-size: 14px;
-          transition: border-color 0.2s;
-        }
-
-        .form_field input:focus {
-          outline: none;
-          border-color: #16697a;
-        }
-
-        /* File Upload */
-        .file_upload {
-          margin-top: 8px;
-        }
-
-        .upload_area {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 40px 20px;
-          border: 2px dashed #d0d0d0;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.2s;
-          background: #fafafa;
-        }
-
-        .upload_area:hover {
-          border-color: #16697a;
-          background: #f0f8f9;
-        }
-
-        .upload_icon {
-          font-size: 40px;
-          margin-bottom: 12px;
-        }
-
-        .upload_text {
-          text-align: center;
-          font-size: 14px;
-          color: #6c757d;
-          line-height: 1.6;
-        }
-
-        .click_text {
-          color: #b87333;
-          font-weight: 600;
-        }
-
-        .file_types {
-          font-size: 13px;
-        }
-
-        /* Form Actions */
-        .form_actions {
-          display: flex;
-          justify-content: flex-end;
-          gap: 16px;
-          margin-top: 40px;
-          padding-top: 30px;
-          border-top: 1px solid #e0e0e0;
-        }
-
-        .btn_secondary,
-        .btn_primary {
-          padding: 12px 32px;
-          border-radius: 6px;
-          font-size: 15px;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.2s;
-          border: none;
-        }
-
-        .btn_secondary {
-          background: #fff;
-          color: #16697a;
-          border: 1px solid #16697a;
-        }
-
-        .btn_secondary:hover {
-          background: #f0f8f9;
-        }
-
-        .btn_primary {
-          background: #16697a;
-          color: #fff;
-        }
-
-        .btn_primary:hover {
-          background: #135763;
-        }
-
-        @media (max-width: 768px) {
-          .form_content {
-            padding: 30px 20px;
-          }
-
-          .form_row {
-            flex-direction: column;
-          }
-
-          .form_field.small,
-          .form_field.medium {
-            flex: 1 1 100%;
-          }
-
-          .stepper {
-            flex-wrap: wrap;
-          }
-
-          .step_line {
-            width: 60px;
-          }
-
-          .step_label {
-            font-size: 12px;
-          }
-        }
-      `}</style>
-
-      {/* eslint-disable-next-line react/no-unknown-property */}
-      <style jsx global>{`
-        header .headermain .logo .inner_logo {
-          display: block!important; 
-        }
-        header .headermain .logo .home_logo {
-          display: none!important;
-        }
-        header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link {
-          color: #ffffff;
-        }
-        header .headermain nav.navbar .navigation .navbar-nav { 
-          padding-top: 0px!important; 
-          padding-bottom: 0px!important; 
-        }
-        header .headermain nav.navbar .navigation .btn_customer{ 
-          display:none!important; 
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        header{position: relative!important;}
+     `}} />
     </Layout>
   )
 }
 
-export default ApplicationForm
+export default ApplicationForm;
