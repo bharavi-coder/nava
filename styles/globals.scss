@@ -2034,3 +2034,11 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
 .no_results{background: #b6d6f3; padding: 10px 15px; color: #000; border-radius: 8px;
   p{ margin: 0px; color: #0C1E33;}
 }
+
+
+.btn_disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  background: #729A9C; color: #FBFBFB;      
+}

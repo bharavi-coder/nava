@@ -27,20 +27,36 @@ exports.submitApplicationForm = async (req, res) => {
     requireField(formData.zip, "zip", "ZIP");
     requireField(formData.ein, "ein", "EIN");
 
+    // email format validation
     const emailRegex = /^\S+@\S+\.\S+$/;
     if (formData.email && !emailRegex.test(formData.email)) {
       errors.email = "Invalid email format";
     }
 
+    // phone min length validation
     if (formData.phone && formData.phone.length < 10) {
       errors.phone = "Phone must be at least 10 digits";
     }
 
+    // return validation errors
     if (Object.keys(errors).length > 0) {
       return res.status(422).json({
         success: false,
         errors,
       });
+    }
+
+    // ---------------- FILE SIZE VALIDATION ----------------
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+
+    for (const file of documents) {
+      if (file.size > MAX_FILE_SIZE) {
+        return res.status(422).json({
+          success: false,
+          message: "Please add valid file (each attachment must be ≤ 5MB)",
+          file: file.originalname,
+        });
+      }
     }
 
     // ---------------- DATE ----------------
@@ -64,12 +80,9 @@ exports.submitApplicationForm = async (req, res) => {
 <meta charset="UTF-8">
 <title>Application Form Submission</title>
 </head>
-
 <body style="margin:0;padding:0;font-family:Arial;background:#f5f5f5">
-
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:20px;">
 <tr><td align="center">
-
 <table width="700" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #dddddd;">
 
 <tr>
@@ -101,63 +114,6 @@ exports.submitApplicationForm = async (req, res) => {
 <tr><td style="padding:10px 20px;font-weight:bold;">City:</td><td>${formData.city}</td></tr>
 <tr><td style="padding:10px 20px;font-weight:bold;">State:</td><td>${formData.state}</td></tr>
 <tr><td style="padding:10px 20px;font-weight:bold;">ZIP:</td><td>${formData.zip}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Business Phone:</td><td>${formData.businessPhone || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Business Email:</td><td>${formData.businessEmail || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Website:</td><td>${formData.website || "-"}</td></tr>
-
-<!-- Business Details -->
-<tr><td colspan="2" style="background:#666;padding:12px;text-align:center;">
-<h2 style="color:#fff;margin:0;font-size:18px;">Business Details</h2>
-</td></tr>
-
-<tr><td style="padding:10px 20px;font-weight:bold;">Years in Business:</td><td>${formData.yearsInBusiness || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Locations:</td><td>${formData.locations || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Monthly Purchase Volume:</td><td>${formData.monthlyPurchaseVolume || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Preferred Ordering Method:</td><td>${formData.preferredOrderingMethod || "-"}</td></tr>
-
-<!-- Tax -->
-<tr><td colspan="2" style="background:#666;padding:12px;text-align:center;">
-<h2 style="color:#fff;margin:0;font-size:18px;">Tax Information</h2>
-</td></tr>
-
-<tr><td style="padding:10px 20px;font-weight:bold;">EIN:</td><td>${formData.ein}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Resale Certificate:</td><td>${formData.resaleCertificate || "-"}</td></tr>
-
-<!-- Trade Reference 1 -->
-<tr><td colspan="2" style="background:#666;padding:12px;text-align:center;">
-<h2 style="color:#fff;margin:0;font-size:18px;">Trade Reference 1</h2>
-</td></tr>
-
-<tr><td style="padding:10px 20px;font-weight:bold;">Name:</td><td>${formData.reference1FirstName || "-"} ${formData.reference1LastName || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Phone:</td><td>${formData.reference1Phone || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Email:</td><td>${formData.reference1Email || "-"}</td></tr>
-
-<!-- Trade Reference 2 -->
-<tr><td colspan="2" style="background:#666;padding:12px;text-align:center;">
-<h2 style="color:#fff;margin:0;font-size:18px;">Trade Reference 2</h2>
-</td></tr>
-
-<tr><td style="padding:10px 20px;font-weight:bold;">Name:</td><td>${formData.reference2FirstName || "-"} ${formData.reference2LastName || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Phone:</td><td>${formData.reference2Phone || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Email:</td><td>${formData.reference2Email || "-"}</td></tr>
-
-<!-- Buyer 1 -->
-<tr><td colspan="2" style="background:#666;padding:12px;text-align:center;">
-<h2 style="color:#fff;margin:0;font-size:18px;">Buyer 1</h2>
-</td></tr>
-
-<tr><td style="padding:10px 20px;font-weight:bold;">Name:</td><td>${formData.buyer1FirstName || "-"} ${formData.buyer1LastName || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Phone:</td><td>${formData.buyer1Phone || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Email:</td><td>${formData.buyer1Email || "-"}</td></tr>
-
-<!-- Buyer 2 -->
-<tr><td colspan="2" style="background:#666;padding:12px;text-align:center;">
-<h2 style="color:#fff;margin:0;font-size:18px;">Buyer 2</h2>
-</td></tr>
-
-<tr><td style="padding:10px 20px;font-weight:bold;">Name:</td><td>${formData.buyer2FirstName || "-"} ${formData.buyer2LastName || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Phone:</td><td>${formData.buyer2Phone || "-"}</td></tr>
-<tr><td style="padding:10px 20px;font-weight:bold;">Email:</td><td>${formData.buyer2Email || "-"}</td></tr>
 
 <tr>
 <td colspan="2" style="background:#f5f5f5;padding:20px;text-align:center;border-top:1px solid #ddd;">
@@ -171,24 +127,25 @@ Application received on ${date}
 </html>
 `;
 
+    // ---------------- SEND EMAIL ----------------
     await transporter.sendMail({
       from: process.env.MAIL_USERNAME,
       to: "disma.megh@gmail.com",
-      // to: "ajay@meghtechnologies.com",
       replyTo: formData.email,
       subject: "New Application Form Submission",
       html: htmlBody,
       attachments,
     });
 
-    res.json({
+    // ---------------- SUCCESS RESPONSE ----------------
+    return res.json({
       success: true,
       message: "Application form submitted successfully and email sent.",
     });
 
   } catch (error) {
     console.error("Application form error:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Something went wrong while submitting application form.",
     });

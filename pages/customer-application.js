@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router';
 import styles from '../styles/Home.module.scss';
 import PhoneInput from '../components/PhoneInput';
+import { submitApplicationForm } from '../services/applicationForm.services';
 
 const ApplicationForm = () => {
   const router = useRouter();
@@ -99,10 +100,10 @@ const ApplicationForm = () => {
     resellCertificate: 'Resell Certificate',
   };
 
-const withCountryCode = (phone) => {
-  if (!phone) return '';
-  return `01${phone}`; // prepend country code
-};
+  const withCountryCode = (phone) => {
+    if (!phone) return '';
+    return `01${phone}`; // prepend country code
+  };
 
   // const handleInputChange = (e) => {
   //   const { name, value } = e.target
@@ -112,8 +113,12 @@ const withCountryCode = (phone) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: '' }));
-    setInvalidFields((prev) => ({ ...prev, [name]: false }));
+    // Clear errors only for NON-phone fields while typing
+    if (!name.toLowerCase().includes('phone')) {
+      setErrors((prev) => ({ ...prev, [name]: '' }));
+      setInvalidFields((prev) => ({ ...prev, [name]: false }));
+    }
+
   };
 
   // const handleFileUpload = (e) => {
@@ -148,6 +153,7 @@ const withCountryCode = (phone) => {
     if (currentStep > 1) setCurrentStep(currentStep - 1)
   }
 
+
   const validateStep = (fields) => {
     const newErrors = {};
     const invalid = {};
@@ -172,6 +178,15 @@ const withCountryCode = (phone) => {
       }
     });
 
+    // Website validation (optional field)
+    const websiteRegex =
+      /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/i;
+
+    if (formData.website && !websiteRegex.test(formData.website)) {
+      newErrors.website = 'Please enter a valid website URL';
+      invalid.website = true;
+    }
+
     // Phone validation
     if (fields.includes('phone') && formData.phone) {
       if (!/^\d{10}$/.test(formData.phone)) {
@@ -179,6 +194,39 @@ const withCountryCode = (phone) => {
         invalid.phone = true;
       }
     }
+
+    // ZIP / Pincode validation
+    if (fields.includes('zip') && formData.zip) {
+      if (!usZipRegex.test(formData.zip)) {
+        newErrors.zip = 'ZIP code must be 5 digits';
+        invalid.zip = true;
+      }
+    }
+
+    // EIN validation
+    if (fields.includes('ein') && formData.ein) {
+      if (!einRegex.test(formData.ein)) {
+        newErrors.ein = 'Enter a valid EIN (XX-XXXXXXX)';
+        invalid.ein = true;
+      }
+    }
+
+    // ✅ OPTIONAL phone validation on submit
+    const optionalPhoneFields = [
+      'businessPhone',
+      'ref1Phone',
+      'ref2Phone',
+      'buyer1Phone',
+      'buyer2Phone',
+    ];
+
+    optionalPhoneFields.forEach((field) => {
+      if (formData[field] && !isValidPhone(formData[field])) {
+        newErrors[field] = 'Phone number must be 10 digits';
+        invalid[field] = true;
+      }
+    });
+
 
     setErrors(newErrors);
     setInvalidFields(invalid);
@@ -206,102 +254,208 @@ const withCountryCode = (phone) => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const usZipRegex = /^\d{5}(-\d{4})?$/;
+  const einRegex = /^(?!00)\d{2}-?\d{7}$/;
+  const isValidPhone = (value) => /^\d{10}$/.test(value);
 
+  const validateEmailOnBlur = (fieldName) => {
+    const value = formData[fieldName];
 
-  const handleSubmit = async () => {
-    if (!validateEmailsOnSubmit()) {
-      toast.error('Please fix the highlighted errors');
+    // If empty → clear error (since most emails are optional except main email)
+    if (!value) {
+      setErrors((prev) => ({ ...prev, [fieldName]: '' }));
+      setInvalidFields((prev) => ({ ...prev, [fieldName]: false }));
       return;
     }
-    setLoading(true)
 
-    try {
-      const payload = new FormData()
-
-      // 🔹 Basic + Business Info
-      payload.append('title', formData.title)
-      payload.append('firstName', formData.firstName)
-      payload.append('lastName', formData.lastName)
-      payload.append('phone',  withCountryCode(formData.phone))
-      payload.append('email', formData.email)
-      payload.append('legalBusinessName', formData.legalBusinessName)
-      payload.append('dba', formData.dba)
-      payload.append('businessType', formData.businessType)
-      payload.append('address', formData.address)
-      payload.append('city', formData.city)
-      payload.append('state', formData.state)
-      payload.append('zip', formData.zip)
-      payload.append('businessPhone', withCountryCode(formData.businessPhone))
-      payload.append('businessEmail', formData.businessEmail)
-      payload.append('website', formData.website)
-      payload.append('yearsInBusiness', formData.yearsInBusiness)
-      payload.append('locations', formData.locations)
-      payload.append('monthlyPurchaseVolume', formData.monthlyPurchaseVolume)
-      payload.append('preferredOrderingMethod', formData.preferredOrderingMethod)
-
-      // 🔹 Tax Details
-      payload.append('ein', formData.ein)
-      payload.append('resaleCertificate', formData.resellCertificate)
-
-      // 🔹 References
-      payload.append('reference1Title', formData.ref1Title)
-      payload.append('reference1FirstName', formData.ref1FirstName)
-      payload.append('reference1LastName', formData.ref1LastName)
-      payload.append('reference1Phone', withCountryCode(formData.ref1Phone))
-      payload.append('reference1Email', formData.ref1Email)
-
-      payload.append('reference2Title', formData.ref2Title)
-      payload.append('reference2FirstName', formData.ref2FirstName)
-      payload.append('reference2LastName', formData.ref2LastName)
-      payload.append('reference2Phone', withCountryCode(formData.ref2Phone))
-      payload.append('reference2Email', formData.ref2Email)
-
-      // 🔹 Buyers
-      payload.append('buyer1Title', formData.buyer1Title)
-      payload.append('buyer1FirstName', formData.buyer1FirstName)
-      payload.append('buyer1LastName', formData.buyer1LastName)
-      payload.append('buyer1Phone', withCountryCode(formData.buyer1Phone))
-      payload.append('buyer1Email', formData.buyer1Email)
-
-      payload.append('buyer2Title', formData.buyer2Title)
-      payload.append('buyer2FirstName', formData.buyer2FirstName)
-      payload.append('buyer2LastName', formData.buyer2LastName)
-      payload.append('buyer2Phone', withCountryCode(formData.buyer2Phone))
-      payload.append('buyer2Email', formData.buyer2Email)
-
-      // 🔹 Documents
-      if (formData.uploadedDocuments) {
-        Array.from(formData.uploadedDocuments).forEach((file) => {
-          payload.append('documents', file)
-        })
-      }
-
-      const response = await fetch('https://nava-api.weblivelink.com/api/application-form', {
-        method: 'POST',
-        body: payload
-      })
-
-      const data = await response.json()
-
-      if (response.ok && data.success) {
-        // toast.success(data.message || 'Application submitted successfully')
-        setTimeout(() => {
-          router.push('/thank-you');
-        }, 1500);
-        // Optional reset
-        setFormData({})
-        setCurrentStep(1)
-      } else {
-        toast.error(data.message || 'Submission failed')
-      }
-    } catch (error) {
-      console.error(error)
-      toast.error('Server error. Please try again later.')
-    } finally {
-      setLoading(false)
+    if (!emailRegex.test(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        [fieldName]: 'Please enter a valid email address',
+      }));
+      setInvalidFields((prev) => ({
+        ...prev,
+        [fieldName]: true,
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, [fieldName]: '' }));
+      setInvalidFields((prev) => ({ ...prev, [fieldName]: false }));
     }
+  };
+
+  const validateZipOnBlur = () => {
+    if (!formData.zip) return;
+
+    if (!/^\d{5}$/.test(formData.zip)) {
+      setErrors((prev) => ({ ...prev, zip: 'ZIP code must be 5 digits' }));
+      setInvalidFields((prev) => ({ ...prev, zip: true }));
+    } else {
+      setErrors((prev) => ({ ...prev, zip: '' }));
+      setInvalidFields((prev) => ({ ...prev, zip: false }));
+    }
+  };
+
+
+  const validatePhoneOnBlur = (fieldName, isRequired = false) => {
+    const value = formData[fieldName];
+
+    // Required field
+    if (isRequired && !value) {
+      setErrors((prev) => ({
+        ...prev,
+        [fieldName]: 'Phone number is required',
+      }));
+      setInvalidFields((prev) => ({
+        ...prev,
+        [fieldName]: true,
+      }));
+      return;
+    }
+
+    // Optional field — empty is allowed
+    if (!value) {
+      setErrors((prev) => ({ ...prev, [fieldName]: '' }));
+      setInvalidFields((prev) => ({ ...prev, [fieldName]: false }));
+      return;
+    }
+
+    // Partial / invalid number
+    if (!/^\d{10}$/.test(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        [fieldName]: 'Phone number must be 10 digits',
+      }));
+      setInvalidFields((prev) => ({
+        ...prev,
+        [fieldName]: true,
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, [fieldName]: '' }));
+      setInvalidFields((prev) => ({ ...prev, [fieldName]: false }));
+    }
+  };
+
+  const validateEinOnBlur = () => {
+    const value = formData.ein;
+
+    if (!value) return;
+
+    if (!/^(?!00)\d{2}-?\d{7}$/.test(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        ein: 'Enter a valid EIN (XX-XXXXXXX)',
+      }));
+      setInvalidFields((prev) => ({ ...prev, ein: true }));
+    } else {
+      setErrors((prev) => ({ ...prev, ein: '' }));
+      setInvalidFields((prev) => ({ ...prev, ein: false }));
+    }
+  };
+
+  const normalizeEin = (ein) => ein.replace(/\D/g, '');
+
+const handleSubmit = async () => {
+  if (!validateEmailsOnSubmit()) {
+    toast.error('Please fix the highlighted errors');
+    return;
   }
 
+  setLoading(true);
+
+  try {
+    const payload = new FormData();
+
+    // 🔹 Basic + Business Info
+    payload.append('title', formData.title);
+    payload.append('firstName', formData.firstName);
+    payload.append('lastName', formData.lastName);
+    payload.append('phone', withCountryCode(formData.phone));
+    payload.append('email', formData.email);
+    payload.append('legalBusinessName', formData.legalBusinessName);
+    payload.append('dba', formData.dba);
+    payload.append('businessType', formData.businessType);
+    payload.append('address', formData.address);
+    payload.append('city', formData.city);
+    payload.append('state', formData.state);
+    payload.append('zip', formData.zip);
+    payload.append('businessPhone', withCountryCode(formData.businessPhone));
+    payload.append('businessEmail', formData.businessEmail);
+    payload.append('website', normalizeWebsite(formData.website));
+    payload.append('yearsInBusiness', formData.yearsInBusiness);
+    payload.append('locations', formData.locations);
+    payload.append('monthlyPurchaseVolume', formData.monthlyPurchaseVolume);
+    payload.append('preferredOrderingMethod', formData.preferredOrderingMethod);
+
+    // 🔹 Tax
+    payload.append('ein', normalizeEin(formData.ein));
+    payload.append('resaleCertificate', formData.resellCertificate);
+
+    // 🔹 References
+    payload.append('reference1Title', formData.ref1Title);
+    payload.append('reference1FirstName', formData.ref1FirstName);
+    payload.append('reference1LastName', formData.ref1LastName);
+    payload.append('reference1Phone', withCountryCode(formData.ref1Phone));
+    payload.append('reference1Email', formData.ref1Email);
+
+    payload.append('reference2Title', formData.ref2Title);
+    payload.append('reference2FirstName', formData.ref2FirstName);
+    payload.append('reference2LastName', formData.ref2LastName);
+    payload.append('reference2Phone', withCountryCode(formData.ref2Phone));
+    payload.append('reference2Email', formData.ref2Email);
+
+    // 🔹 Buyers
+    payload.append('buyer1Title', formData.buyer1Title);
+    payload.append('buyer1FirstName', formData.buyer1FirstName);
+    payload.append('buyer1LastName', formData.buyer1LastName);
+    payload.append('buyer1Phone', withCountryCode(formData.buyer1Phone));
+    payload.append('buyer1Email', formData.buyer1Email);
+
+    payload.append('buyer2Title', formData.buyer2Title);
+    payload.append('buyer2FirstName', formData.buyer2FirstName);
+    payload.append('buyer2LastName', formData.buyer2LastName);
+    payload.append('buyer2Phone', withCountryCode(formData.buyer2Phone));
+    payload.append('buyer2Email', formData.buyer2Email);
+
+    // 🔹 Documents
+    if (formData.uploadedDocuments) {
+      Array.from(formData.uploadedDocuments).forEach((file) => {
+        payload.append('documents', file);
+      });
+    }
+
+    // ✅ API CALL THROUGH SERVICE
+    const data = await submitApplicationForm(payload);
+
+    if (data?.success) {
+      setTimeout(() => router.push('/thank-you'), 1500);
+      setFormData({});
+      setCurrentStep(1);
+    } else {
+      toast.error(data?.message || 'Submission failed');
+    }
+  } catch (error) {
+    toast.error(error.message || 'Server error. Please try again later.');
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+  const normalizeWebsite = (url) => {
+    if (!url) return '';
+    if (!/^https?:\/\//i.test(url)) {
+      return `https://${url}`;
+    }
+    return url;
+  };
+
+    const isAnyFieldFilled = () => {
+        return Object.values(formData).some(
+            (value) => value && value.toString().trim() !== ''
+        );
+    };
 
   return (
     <Layout>
@@ -390,9 +544,10 @@ const withCountryCode = (phone) => {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
+                        onBlur={() => validatePhoneOnBlur('phone', true)}
                         error={errors.phone}
+                        invalid={invalidFields.phone}
                       />
-                      {errors.phone && (<small className="text-danger">{errors.phone}</small>)}
                     </div>
                     <div className="form_field">
                       <label>Email <span className="required">*</span></label>
@@ -401,6 +556,7 @@ const withCountryCode = (phone) => {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
+                        onBlur={() => validateEmailOnBlur('email')}
                         className={`form-control ${invalidFields.email ? styles.inputError : ''}`}
                       />
 
@@ -484,8 +640,10 @@ const withCountryCode = (phone) => {
                         name="zip"
                         value={formData.zip}
                         onChange={handleInputChange}
+                        onBlur={validateZipOnBlur}
                         className={`form-control ${invalidFields.zip ? styles.inputError : ''}`}
                       />
+
 
                       {errors.zip && (<small className="text-danger">{errors.zip}</small>)}
                     </div>
@@ -499,13 +657,16 @@ const withCountryCode = (phone) => {
                         name="businessPhone"
                         value={formData.businessPhone}
                         onChange={handleInputChange}
+                        onBlur={() => validatePhoneOnBlur('businessPhone')}
                         error={errors.businessPhone}
+                        invalid={invalidFields.businessPhone}
                       />
 
                     </div>
                     <div className="form_field">
                       <label>Email</label>
-                      <input type="email" name="businessEmail" value={formData.businessEmail} onChange={handleInputChange} />
+                      <input type="email" name="businessEmail" value={formData.businessEmail} onChange={handleInputChange}
+                        onBlur={() => validateEmailOnBlur('businessEmail')} className={`form-control ${invalidFields.businessEmail ? styles.inputError : ''}`} />
                       {errors.businessEmail && (
                         <small className="text-danger">{errors.businessEmail}</small>
                       )}
@@ -514,7 +675,17 @@ const withCountryCode = (phone) => {
                   <div className="form_row">
                     <div className="form_field full">
                       <label>Website</label>
-                      <input type="url" name="website" value={formData.website} onChange={handleInputChange} />
+                      <input
+                        type="url"
+                        name="website"
+                        value={formData.website}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.website ? styles.inputError : ''}`}
+                        placeholder="https://example.com"
+                      />
+                      {errors.website && (
+                        <small className="text-danger">{errors.website}</small>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -560,8 +731,11 @@ const withCountryCode = (phone) => {
                         name="ein"
                         value={formData.ein}
                         onChange={handleInputChange}
+                        onBlur={validateEinOnBlur}
                         className={`form-control ${invalidFields.ein ? styles.inputError : ''}`}
+                        placeholder="12-3456789"
                       />
+
 
                       {errors.ein && (<small className="text-danger">{errors.ein}</small>)}
                     </div>
@@ -576,7 +750,6 @@ const withCountryCode = (phone) => {
                         onChange={handleInputChange}
                         className={`form-control ${invalidFields.resellCertificate ? styles.inputError : ''}`}
                       />
-
                       {errors.resellCertificate && (<small className="text-danger">{errors.resellCertificate}</small>)}
                     </div>
                   </div>
@@ -612,13 +785,16 @@ const withCountryCode = (phone) => {
                         name="ref1Phone"
                         value={formData.ref1Phone}
                         onChange={handleInputChange}
+                        onBlur={() => validatePhoneOnBlur('ref1Phone')}
                         error={errors.ref1Phone}
+                        invalid={invalidFields.ref1Phone}
                       />
 
                     </div>
                     <div className="form_field">
                       <label>Email</label>
-                      <input type="email" name="ref1Email" value={formData.ref1Email} onChange={handleInputChange} />
+                      <input type="email" name="ref1Email" value={formData.ref1Email} onChange={handleInputChange}
+                        onBlur={() => validateEmailOnBlur('ref1Email')} className={`form-control ${invalidFields.ref1Email ? styles.inputError : ''}`} />
                       {errors.ref1Email && (
                         <small className="text-danger">{errors.ref1Email}</small>
                       )}
@@ -648,13 +824,16 @@ const withCountryCode = (phone) => {
                         name="ref2Phone"
                         value={formData.ref2Phone}
                         onChange={handleInputChange}
+                        onBlur={() => validatePhoneOnBlur('ref2Phone')}
                         error={errors.ref2Phone}
+                        invalid={invalidFields.ref2Phone}
                       />
 
                     </div>
                     <div className="form_field">
                       <label>Email</label>
-                      <input type="email" name="ref2Email" value={formData.ref2Email} onChange={handleInputChange} />
+                      <input type="email" name="ref2Email" value={formData.ref2Email} onChange={handleInputChange}
+                        onBlur={() => validateEmailOnBlur('ref2Email')} className={`form-control ${invalidFields.ref2Email ? styles.inputError : ''}`} />
                       {errors.ref2Email && (
                         <small className="text-danger">{errors.ref2Email}</small>
                       )}
@@ -687,13 +866,16 @@ const withCountryCode = (phone) => {
                         name="buyer1Phone"
                         value={formData.buyer1Phone}
                         onChange={handleInputChange}
+                        onBlur={() => validatePhoneOnBlur('buyer1Phone')}
                         error={errors.buyer1Phone}
+                        invalid={invalidFields.buyer1Phone}
                       />
 
                     </div>
                     <div className="form_field">
                       <label>Email</label>
-                      <input type="email" name="buyer1Email" value={formData.buyer1Email} onChange={handleInputChange} />
+                      <input type="email" name="buyer1Email" value={formData.buyer1Email} onChange={handleInputChange}
+                        onBlur={() => validateEmailOnBlur('buyer1Email')} className={`form-control ${invalidFields.buyer1Email ? styles.inputError : ''}`} />
                       {errors.buyer1Email && (
                         <small className="text-danger">{errors.buyer1Email}</small>
                       )}
@@ -723,13 +905,16 @@ const withCountryCode = (phone) => {
                         name="buyer2Phone"
                         value={formData.buyer2Phone}
                         onChange={handleInputChange}
+                        onBlur={() => validatePhoneOnBlur('buyer2Phone')}
                         error={errors.buyer2Phone}
+                        invalid={invalidFields.buyer2Phone}
                       />
 
                     </div>
                     <div className="form_field">
                       <label>Email</label>
-                      <input type="email" name="buyer2Email" value={formData.buyer2Email} onChange={handleInputChange} />
+                      <input type="email" name="buyer2Email" value={formData.buyer2Email} onChange={handleInputChange}
+                        onBlur={() => validateEmailOnBlur('buyer2Email')} className={`form-control ${invalidFields.buyer2Email ? styles.inputError : ''}`} />
                       {errors.buyer2Email && (
                         <small className="text-danger">{errors.buyer2Email}</small>
                       )}
@@ -778,7 +963,9 @@ const withCountryCode = (phone) => {
                   Cancel
                 </button>
               )}
-              <button className="btn_comman btn_primary2" onClick={currentStep === 3 ? handleSubmit : nextStep} disabled={loading}
+              <button    className={`btn_comman btn_primary2 ${
+    loading || !isAnyFieldFilled() ? 'btn_disabled' : ''
+  }`} onClick={currentStep === 3 ? handleSubmit : nextStep} disabled={loading}
               >{loading ? 'Submitting...' : currentStep === 3 ? 'Proceed to review' : 'Save and Continue'}
               </button>
             </div>

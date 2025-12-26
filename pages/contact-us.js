@@ -6,10 +6,10 @@ import Image from '../components/Image'
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { submitSupplyChainForm } from '../services/api';
 
 import styles from '../styles/Home.module.scss';
 import InputMask from 'react-input-mask';
+import { submitSupplyChainForm } from '../services/supplyChainService';
 
 
 
@@ -335,7 +335,10 @@ const Home = () => {
                                                     <div className="btnarea text-right">
                                                         <input type="hidden" name="heading_V" value="Contact Details" />
                                                         <input type="hidden" name="footer_V" value=" Sutra All Rights Reserved." />
-                                                        <button type="submit" className="btn_comman btn_primary1" href="javascript:void(0)" disabled={loading || !isAnyFieldFilled()}
+                                                        <button type="submit" href="javascript:void(0)"
+                                                            className={`btn_comman btn_primary2 ${loading || !isAnyFieldFilled() ? 'btn_disabled' : ''
+                                                                }`}
+                                                            disabled={loading || !isAnyFieldFilled()}
                                                         >{loading ? 'Submitting...' : 'Submit'}</button>
                                                     </div>
                                                 </div>

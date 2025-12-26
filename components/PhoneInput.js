@@ -5,7 +5,9 @@ const PhoneInput = ({
   name,
   value,
   onChange,
+  onBlur,
   error,
+  invalid,
   placeholder = '+01 (xxx) - xxxx - xxx',
 }) => {
   return (
@@ -13,6 +15,7 @@ const PhoneInput = ({
       <InputMask
         mask="+01 (999) - 9999 - 999"
         value={value}
+        onBlur={onBlur}  
         onChange={(e) => {
           const digitsOnly = e.target.value.replace(/\D/g, '').slice(-10);
 
@@ -28,7 +31,7 @@ const PhoneInput = ({
           <input
             {...inputProps}
             type="tel"
-            className={`form-control ${error ? styles.inputError : ''}`}
+            className={`form-control ${invalid ? styles.inputError : ''}`}
             placeholder={placeholder}
           />
         )}

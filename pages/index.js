@@ -139,6 +139,11 @@ const Home = () => {
     }
   };
 
+    const isAnyFieldFilled = () => {
+        return Object.values(formData).some(
+            (value) => value && value.toString().trim() !== ''
+        );
+    };
 
 
   const categories = [
@@ -821,10 +826,6 @@ const Home = () => {
                                 />
                               )}
                             </InputMask>
-
-
-
-
                             {errors.phone && (
                               <small className="text-danger">{errors.phone}</small>
                             )}
@@ -872,7 +873,8 @@ const Home = () => {
                         </div>
                         <div className="col-lg-12 col-md-12">
                           <div className="btnarea text-right">
-                            <button type="submit" className="btn_comman btn_primary1" disabled={loading}>{loading ? 'Submitting...' : 'Submit'}</button>
+                            <button type="submit" className={`btn_comman btn_primary2 ${loading || !isAnyFieldFilled() ? 'btn_disabled' : ''}`}
+                            disabled={loading}>{loading ? 'Submitting...' : 'Submit'}</button>
                           </div>
                         </div>
                       </div>
