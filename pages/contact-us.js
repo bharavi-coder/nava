@@ -132,20 +132,7 @@ const Home = () => {
         );
     };
 
-    const formatPhone = (value) => {
-        const digits = value.replace(/\D/g, '').slice(0, 10);
-        const parts = digits.match(/^(\d{0,3})(\d{0,4})(\d{0,3})$/);
 
-        if (!parts) return value;
-
-        let formatted = '+01 ';
-        if (parts[1]) formatted += `(${parts[1]}`;
-        if (parts[1]?.length === 3) formatted += ') ';
-        if (parts[2]) formatted += `- ${parts[2]}`;
-        if (parts[3]) formatted += ` - ${parts[3]}`;
-
-        return formatted;
-    };
 
 
 
