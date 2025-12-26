@@ -15,7 +15,9 @@ const Thankyou = () => {
           {/* Header */}
           <div className="form_header p_fnt26">
             <div className="icon_tankyou"><Image src="/icon_thank_you.png" width={114} height={108} alt="" /></div>
-            <h1>Thank you for your application! <br/>Your application number is #12345</h1>
+            <h1>Thank you for your application! 
+              {/* <br/>Your application number is #12345 */}
+              </h1>
             <p>Your application has been submitted.  <br/>A member of our team will get in touch with you shortly.</p>
           </div>
         </div>

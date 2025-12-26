@@ -1,5 +1,6 @@
 import Link from './ActiveLink'
 
+
 const Header = () => {
 return (
 <header>
@@ -23,7 +24,7 @@ return (
                     <ul className="navbar-nav me-auto">
                         {[
                         // Next.js client-side navigation between pages (no full reload)
-                        { label: 'About Us',        href: '/' },
+                        { label: 'About Us',        href: '/#about' },
                         { label: 'Product Catalog', href: '/product-catalog/' }, // TODO: create this page or adjust route
                         { label: 'Contact Us',      href: '/contact-us' },
                         ].map(({ href, label }, i) => (

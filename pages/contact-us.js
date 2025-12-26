@@ -8,6 +8,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { submitSupplyChainForm } from '../services/api';
 
+import styles from '../styles/Home.module.scss';
+import InputMask from 'react-input-mask';
 
 
 
@@ -18,12 +20,12 @@ const Home = () => {
         lastName: '',
         email: '',
         phone: '',
+        phoneFull: '',
         businessName: '',
         businessType: '',
         message: '',
     });
 
-    const [, setInvalidFields] = useState({});
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
 
@@ -54,13 +56,13 @@ const Home = () => {
             newErrors.email = 'Enter a valid email address';
         }
 
-        if (!formData.phone.trim()) {
-            invalid.phone = true;
+        if (!formData.phone) {
             newErrors.phone = 'Phone number is required';
         } else if (!/^\d{10}$/.test(formData.phone)) {
-            invalid.phone = true;
             newErrors.phone = 'Phone number must be 10 digits';
         }
+
+
 
         if (!formData.businessName.trim()) {
             invalid.businessName = true;
@@ -72,7 +74,7 @@ const Home = () => {
             newErrors.businessType = 'Business type is required';
         }
 
-        setInvalidFields(invalid);
+
         setErrors(newErrors);
 
         return Object.keys(invalid).length === 0;
@@ -82,8 +84,6 @@ const Home = () => {
         const { name, value } = e.target;
 
         setFormData((prev) => ({ ...prev, [name]: value }));
-
-        setInvalidFields((prev) => ({ ...prev, [name]: false }));
         setErrors((prev) => ({ ...prev, [name]: '' }));
     };
 
@@ -107,13 +107,14 @@ const Home = () => {
                     lastName: '',
                     email: '',
                     phone: '',
+                    phoneFull: '',
                     businessName: '',
                     businessType: '',
                     message: '',
                 });
 
                 setErrors({});
-                setInvalidFields({});
+
             } else {
                 toast.error(response.message || 'Something went wrong');
             }
@@ -130,6 +131,22 @@ const Home = () => {
             (value) => value && value.toString().trim() !== ''
         );
     };
+
+    const formatPhone = (value) => {
+        const digits = value.replace(/\D/g, '').slice(0, 10);
+        const parts = digits.match(/^(\d{0,3})(\d{0,4})(\d{0,3})$/);
+
+        if (!parts) return value;
+
+        let formatted = '+01 ';
+        if (parts[1]) formatted += `(${parts[1]}`;
+        if (parts[1]?.length === 3) formatted += ') ';
+        if (parts[2]) formatted += `- ${parts[2]}`;
+        if (parts[3]) formatted += ` - ${parts[3]}`;
+
+        return formatted;
+    };
+
 
 
     return (
@@ -150,7 +167,7 @@ const Home = () => {
                         <div className="bannerDesc">
                             <p className="title">Get in Touch</p>
                             <span>We invite you to reach out and connect with us. Whether you have inquiries, need assistance, or want to explore partnership opportunities.</span>
-                            <div className='btn_customer'><Link href=''>Customer Application Form</Link></div>
+                            <div className='btn_customer'><Link href='/customer-application/'>Customer Application Form</Link></div>
                         </div>
                     </div>
                 </div>
@@ -195,8 +212,9 @@ const Home = () => {
                                                             name="firstName"
                                                             value={formData.firstName}
                                                             onChange={handleChange}
-                                                            className={"form-control"}
+                                                            className={`form-control ${errors.firstName ? styles.inputError : ''}`}
                                                         />
+
                                                         {errors.firstName && <small className="text-danger">{errors.firstName}</small>}
 
                                                     </div>
@@ -210,8 +228,9 @@ const Home = () => {
                                                             name="lastName"
                                                             value={formData.lastName}
                                                             onChange={handleChange}
-                                                            className="form-control"
+                                                            className={`form-control ${errors.lastName ? styles.inputError : ''}`}
                                                         />
+
                                                         {errors.lastName && <small className="text-danger">{errors.lastName}</small>}
 
                                                     </div>
@@ -224,22 +243,57 @@ const Home = () => {
                                                             name="email"
                                                             value={formData.email}
                                                             onChange={handleChange}
-                                                            className="form-control"
+                                                            className={`form-control ${errors.email ? styles.inputError : ''}`}
                                                         />
+
                                                         {errors.email && <small className="text-danger">{errors.email}</small>}
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-6 col-md-6">
                                                     <div className="form-group">
                                                         <label className="lable_text">Primary Number<span className="required">*</span></label>
-                                                        <input
+                                                        {/* <input
                                                             type="text"
                                                             name="phone"
                                                             maxLength="10"
                                                             value={formData.phone}
                                                             onChange={handleChange}
-                                                            className="form-control"
-                                                        />
+                                                            className={`form-control ${errors.phone ? styles.inputError : ''}`}
+                                                        /> */}
+
+                                                        <InputMask
+                                                            mask="+01 (999) - 9999 - 999"
+                                                            value={formData.phoneFull}
+                                                            onChange={(e) => {
+                                                                const digitsOnly = e.target.value.replace(/\D/g, '');
+
+                                                                // full number including country code (01xxxxxxxxxx)
+                                                                const fullNumber = digitsOnly;
+                                                                // const fullNumber = `+${digitsOnly}`;
+
+                                                                // last 10 digits only (validation)
+                                                                const last10 = digitsOnly.slice(-10);
+
+                                                                setFormData((prev) => ({
+                                                                    ...prev,
+                                                                    phone: last10,         // used ONLY for validation
+                                                                    phoneFull: fullNumber // sent to API
+                                                                }));
+
+                                                                setErrors((prev) => ({ ...prev, phone: '' }));
+                                                            }}
+                                                        >
+                                                            {(inputProps) => (
+                                                                <input
+                                                                    {...inputProps}
+                                                                    type="text"
+                                                                    className={`form-control ${errors.phone ? styles.inputError : ''}`}
+                                                                    placeholder="+01 (xxx) - xxxx - xxx"
+                                                                />
+                                                            )}
+                                                        </InputMask>
+
+
                                                         {errors.phone && <small className="text-danger">{errors.phone}</small>}
 
                                                     </div>
@@ -252,8 +306,9 @@ const Home = () => {
                                                             name="businessName"
                                                             value={formData.businessName}
                                                             onChange={handleChange}
-                                                            className="form-control"
+                                                            className={`form-control ${errors.businessName ? styles.inputError : ''}`}
                                                         />
+
                                                         {errors.businessName && <small className="text-danger">{errors.businessName}</small>}
 
                                                     </div>
@@ -266,8 +321,9 @@ const Home = () => {
                                                             name="businessType"
                                                             value={formData.businessType}
                                                             onChange={handleChange}
-                                                            className="form-control"
+                                                            className={`form-control ${errors.businessType ? styles.inputError : ''}`}
                                                         />
+
                                                         {errors.businessType && <small className="text-danger">{errors.businessType}</small>}
 
                                                     </div>
@@ -326,16 +382,15 @@ const Home = () => {
       header .headermain .logo .home_logo {
         display: none !important;
       }
-      header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link {
-        color: #ffffff;
-      }
-      header .headermain nav.navbar .navigation .navbar-nav {
-        padding-top: 0px !important;
-        padding-bottom: 0px !important;
-      }
+        @media (min-width: 992px){
+            header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link {color: #ffffff;}
+            header .headermain nav.navbar .navigation .navbar-nav { padding-top: 0px !important; padding-bottom: 0px !important;}
+        }
+      
+      
       header .headermain nav.navbar .navigation .btn_customer {
         display: none !important;
-      }
+      }        
     `,
                 }}
             />

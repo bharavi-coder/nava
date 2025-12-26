@@ -3,8 +3,12 @@ import React, { useState } from 'react'
 import Layout from '../components/Layout'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useRouter } from 'next/router';
+import styles from '../styles/Home.module.scss';
+import PhoneInput from '../components/PhoneInput';
 
 const ApplicationForm = () => {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState({
     // Step 1: Basic Information
@@ -95,6 +99,10 @@ const ApplicationForm = () => {
     resellCertificate: 'Resell Certificate',
   };
 
+const withCountryCode = (phone) => {
+  if (!phone) return '';
+  return `01${phone}`; // prepend country code
+};
 
   // const handleInputChange = (e) => {
   //   const { name, value } = e.target
@@ -214,7 +222,7 @@ const ApplicationForm = () => {
       payload.append('title', formData.title)
       payload.append('firstName', formData.firstName)
       payload.append('lastName', formData.lastName)
-      payload.append('phone', formData.phone)
+      payload.append('phone',  withCountryCode(formData.phone))
       payload.append('email', formData.email)
       payload.append('legalBusinessName', formData.legalBusinessName)
       payload.append('dba', formData.dba)
@@ -223,7 +231,7 @@ const ApplicationForm = () => {
       payload.append('city', formData.city)
       payload.append('state', formData.state)
       payload.append('zip', formData.zip)
-      payload.append('businessPhone', formData.businessPhone)
+      payload.append('businessPhone', withCountryCode(formData.businessPhone))
       payload.append('businessEmail', formData.businessEmail)
       payload.append('website', formData.website)
       payload.append('yearsInBusiness', formData.yearsInBusiness)
@@ -239,26 +247,26 @@ const ApplicationForm = () => {
       payload.append('reference1Title', formData.ref1Title)
       payload.append('reference1FirstName', formData.ref1FirstName)
       payload.append('reference1LastName', formData.ref1LastName)
-      payload.append('reference1Phone', formData.ref1Phone)
+      payload.append('reference1Phone', withCountryCode(formData.ref1Phone))
       payload.append('reference1Email', formData.ref1Email)
 
       payload.append('reference2Title', formData.ref2Title)
       payload.append('reference2FirstName', formData.ref2FirstName)
       payload.append('reference2LastName', formData.ref2LastName)
-      payload.append('reference2Phone', formData.ref2Phone)
+      payload.append('reference2Phone', withCountryCode(formData.ref2Phone))
       payload.append('reference2Email', formData.ref2Email)
 
       // 🔹 Buyers
       payload.append('buyer1Title', formData.buyer1Title)
       payload.append('buyer1FirstName', formData.buyer1FirstName)
       payload.append('buyer1LastName', formData.buyer1LastName)
-      payload.append('buyer1Phone', formData.buyer1Phone)
+      payload.append('buyer1Phone', withCountryCode(formData.buyer1Phone))
       payload.append('buyer1Email', formData.buyer1Email)
 
       payload.append('buyer2Title', formData.buyer2Title)
       payload.append('buyer2FirstName', formData.buyer2FirstName)
       payload.append('buyer2LastName', formData.buyer2LastName)
-      payload.append('buyer2Phone', formData.buyer2Phone)
+      payload.append('buyer2Phone', withCountryCode(formData.buyer2Phone))
       payload.append('buyer2Email', formData.buyer2Email)
 
       // 🔹 Documents
@@ -276,8 +284,10 @@ const ApplicationForm = () => {
       const data = await response.json()
 
       if (response.ok && data.success) {
-        toast.success(data.message || 'Application submitted successfully')
-
+        // toast.success(data.message || 'Application submitted successfully')
+        setTimeout(() => {
+          router.push('/thank-you');
+        }, 1500);
         // Optional reset
         setFormData({})
         setCurrentStep(1)
@@ -341,26 +351,59 @@ const ApplicationForm = () => {
                     </div>
                     <div className="form_field">
                       <label>First Name <span className="required">*</span></label>
-                      <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} />
+                      <input
+                        type="text"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.firstName ? styles.inputError : ''}`}
+                      />
+
                       {errors.firstName && (
                         <small className="text-danger">{errors.firstName}</small>
                       )}
                     </div>
                     <div className="form_field">
                       <label>Last Name <span className="required">*</span></label>
-                      <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} />
+                      <input
+                        type="text"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.lastName ? styles.inputError : ''}`}
+                      />
+
                       {errors.lastName && (<small className="text-danger">{errors.lastName}</small>)}
                     </div>
                   </div>
                   <div className="form_row">
                     <div className="form_field">
                       <label>Phone <span className="required">*</span></label>
-                      <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} />
+                      {/* <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.phone ? styles.inputError : ''}`}
+                      /> */}
+                      <PhoneInput
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        error={errors.phone}
+                      />
                       {errors.phone && (<small className="text-danger">{errors.phone}</small>)}
                     </div>
                     <div className="form_field">
                       <label>Email <span className="required">*</span></label>
-                      <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.email ? styles.inputError : ''}`}
+                      />
+
                       {errors.email && (<small className="text-danger">{errors.email}</small>)}
                     </div>
                   </div>
@@ -371,7 +414,14 @@ const ApplicationForm = () => {
                   <div className="form_row">
                     <div className="form_field">
                       <label>Legal Business Name <span className="required">*</span></label>
-                      <input type="text" name="legalBusinessName" value={formData.legalBusinessName} onChange={handleInputChange} />
+                      <input
+                        type="text"
+                        name="legalBusinessName"
+                        value={formData.legalBusinessName}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.legalBusinessName ? styles.inputError : ''}`}
+                      />
+
                       {errors.legalBusinessName && (<small className="text-danger">{errors.legalBusinessName}</small>)}
                     </div>
                     <div className="form_field">
@@ -382,31 +432,61 @@ const ApplicationForm = () => {
                   <div className="form_row">
                     <div className="form_field full">
                       <label>Business Type <span className="required">*</span> </label>
-                      <input type="text" name="businessType" value={formData.businessType} onChange={handleInputChange} />
+                      <input
+                        type="text"
+                        name="businessType"
+                        value={formData.businessType}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.businessType ? styles.inputError : ''}`}
+                      />
+
                       {errors.businessType && (<small className="text-danger">{errors.businessType}</small>)}
                     </div>
                   </div>
                   <div className="form_row">
                     <div className="form_field full">
                       <label>Address <span className="required">*</span></label>
-                      <input type="text" name="address" value={formData.address} onChange={handleInputChange} />
+                      <input type="text" name="address" value={formData.address} onChange={handleInputChange}
+                        className={`form-control ${invalidFields.address ? styles.inputError : ''}`} />
                       {errors.address && (<small className="text-danger">{errors.address}</small>)}
                     </div>
                   </div>
                   <div className="form_row">
                     <div className="form_field">
                       <label>City <span className="required">*</span></label>
-                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} />
+                      <input
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.city ? styles.inputError : ''}`}
+                      />
+
                       {errors.city && (<small className="text-danger">{errors.city}</small>)}
+
                     </div>
                     <div className="form_field">
                       <label>State <span className="required">*</span></label>
-                      <input type="text" name="state" value={formData.state} onChange={handleInputChange} />
+                      <input
+                        type="text"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.state ? styles.inputError : ''}`}
+                      />
+
                       {errors.state && (<small className="text-danger">{errors.state}</small>)}
                     </div>
                     <div className="form_field">
                       <label>ZIP <span className="required">*</span></label>
-                      <input type="text" name="zip" value={formData.zip} onChange={handleInputChange} />
+                      <input
+                        type="text"
+                        name="zip"
+                        value={formData.zip}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.zip ? styles.inputError : ''}`}
+                      />
+
                       {errors.zip && (<small className="text-danger">{errors.zip}</small>)}
                     </div>
 
@@ -414,7 +494,14 @@ const ApplicationForm = () => {
                   <div className="form_row">
                     <div className="form_field">
                       <label>Phone</label>
-                      <input type="tel" name="businessPhone" value={formData.businessPhone} onChange={handleInputChange} />
+                      {/* <input type="tel" name="businessPhone" value={formData.businessPhone} onChange={handleInputChange} /> */}
+                      <PhoneInput
+                        name="businessPhone"
+                        value={formData.businessPhone}
+                        onChange={handleInputChange}
+                        error={errors.businessPhone}
+                      />
+
                     </div>
                     <div className="form_field">
                       <label>Email</label>
@@ -468,14 +555,28 @@ const ApplicationForm = () => {
                   <div className="form_row">
                     <div className="form_field medium">
                       <label>EIN <span className="required">*</span></label>
-                      <input type="text" name="ein" value={formData.ein} onChange={handleInputChange} />
+                      <input
+                        type="text"
+                        name="ein"
+                        value={formData.ein}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.ein ? styles.inputError : ''}`}
+                      />
+
                       {errors.ein && (<small className="text-danger">{errors.ein}</small>)}
                     </div>
                   </div>
                   <div className="form_row">
                     <div className="form_field medium">
                       <label>Resell Certificate <span className="required">*</span></label>
-                      <input type="text" name="resellCertificate" value={formData.resellCertificate} onChange={handleInputChange} />
+                      <input
+                        type="text"
+                        name="resellCertificate"
+                        value={formData.resellCertificate}
+                        onChange={handleInputChange}
+                        className={`form-control ${invalidFields.resellCertificate ? styles.inputError : ''}`}
+                      />
+
                       {errors.resellCertificate && (<small className="text-danger">{errors.resellCertificate}</small>)}
                     </div>
                   </div>
@@ -506,7 +607,14 @@ const ApplicationForm = () => {
                   <div className="form_row">
                     <div className="form_field">
                       <label>Phone</label>
-                      <input type="tel" name="ref1Phone" value={formData.ref1Phone} onChange={handleInputChange} />
+                      {/* <input type="tel" name="ref1Phone" value={formData.ref1Phone} onChange={handleInputChange} /> */}
+                      <PhoneInput
+                        name="ref1Phone"
+                        value={formData.ref1Phone}
+                        onChange={handleInputChange}
+                        error={errors.ref1Phone}
+                      />
+
                     </div>
                     <div className="form_field">
                       <label>Email</label>
@@ -535,7 +643,14 @@ const ApplicationForm = () => {
                   <div className="form_row">
                     <div className="form_field">
                       <label>Phone</label>
-                      <input type="tel" name="ref2Phone" value={formData.ref2Phone} onChange={handleInputChange} />
+                      {/* <input type="tel" name="ref2Phone" value={formData.ref2Phone} onChange={handleInputChange} /> */}
+                      <PhoneInput
+                        name="ref2Phone"
+                        value={formData.ref2Phone}
+                        onChange={handleInputChange}
+                        error={errors.ref2Phone}
+                      />
+
                     </div>
                     <div className="form_field">
                       <label>Email</label>
@@ -567,7 +682,14 @@ const ApplicationForm = () => {
                   <div className="form_row">
                     <div className="form_field">
                       <label>Phone</label>
-                      <input type="tel" name="buyer1Phone" value={formData.buyer1Phone} onChange={handleInputChange} />
+                      {/* <input type="tel" name="buyer1Phone" value={formData.buyer1Phone} onChange={handleInputChange} /> */}
+                      <PhoneInput
+                        name="buyer1Phone"
+                        value={formData.buyer1Phone}
+                        onChange={handleInputChange}
+                        error={errors.buyer1Phone}
+                      />
+
                     </div>
                     <div className="form_field">
                       <label>Email</label>
@@ -596,7 +718,14 @@ const ApplicationForm = () => {
                   <div className="form_row">
                     <div className="form_field">
                       <label>Phone</label>
-                      <input type="tel" name="buyer2Phone" value={formData.buyer2Phone} onChange={handleInputChange} />
+                      {/* <input type="tel" name="buyer2Phone" value={formData.buyer2Phone} onChange={handleInputChange} /> */}
+                      <PhoneInput
+                        name="buyer2Phone"
+                        value={formData.buyer2Phone}
+                        onChange={handleInputChange}
+                        error={errors.buyer2Phone}
+                      />
+
                     </div>
                     <div className="form_field">
                       <label>Email</label>
@@ -669,6 +798,7 @@ const ApplicationForm = () => {
       <style dangerouslySetInnerHTML={{
         __html: `
         header{position: relative!important;}
+        header .headermain nav.navbar .navigation .btn_customer{display:none;}
      `}} />
     </Layout>
   )

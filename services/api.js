@@ -70,7 +70,7 @@ export const submitSupplyChainForm = async (formData) => {
     firstName: formData.firstName,
     lastName: formData.lastName,
     email: formData.email,
-    primaryNumber: formData.phone,
+    primaryNumber: formData.phoneFull,
     businessName: formData.businessName,
     businessType: formData.businessType,
     message: formData.message,

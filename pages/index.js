@@ -8,8 +8,7 @@ import SimpleSlider from '../components/SimpleSlider'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { submitSupplyChainForm } from "../services/api";
-
-
+import InputMask from 'react-input-mask';
 
 const Home = () => {
 
@@ -17,7 +16,8 @@ const Home = () => {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
+    phone: '',// last 10 digits (validation)
+    phoneFull: '',  // full 12 digits (+91xxxxxxxxxx)
     businessName: '',
     businessType: '',
     message: '',
@@ -52,11 +52,17 @@ const Home = () => {
       newErrors.email = 'Enter a valid email address';
     }
 
-    if (!formData.phone.trim()) {
-      invalid.phone = true;
+    // if (!formData.phone.trim()) {
+    //   invalid.phone = true;
+    //   newErrors.phone = 'Phone number is required';
+    // } else if (!/^\d{10}$/.test(formData.phone)) {
+    //   invalid.phone = true;
+    //   newErrors.phone = 'Phone number must be 10 digits';
+    // }
+
+    if (!formData.phone) {
       newErrors.phone = 'Phone number is required';
     } else if (!/^\d{10}$/.test(formData.phone)) {
-      invalid.phone = true;
       newErrors.phone = 'Phone number must be 10 digits';
     }
 
@@ -95,42 +101,43 @@ const Home = () => {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!validateForm()) return;
+    if (!validateForm()) return;
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    const response = await submitSupplyChainForm(formData);
+    try {
+      const response = await submitSupplyChainForm(formData);
 
-    if (response?.success) {
-      toast.success(response.message || "Form submitted successfully");
+      if (response?.success) {
+        toast.success(response.message || "Form submitted successfully");
 
-      // Reset form
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        businessName: "",
-        businessType: "",
-        message: "",
-      });
+        // Reset form
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          phoneFull: "",
+          businessName: "",
+          businessType: "",
+          message: "",
+        });
 
-      setErrors({});
-      setInvalidFields({});
-    } else {
-      toast.error(response?.message || "Something went wrong");
+        setErrors({});
+        setInvalidFields({});
+      } else {
+        toast.error(response?.message || "Something went wrong");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Server error. Please try again later.");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error(error);
-    toast.error(error.message || "Server error. Please try again later.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
 
@@ -511,15 +518,16 @@ const handleSubmit = async (e) => {
                   willChange: 'transform'
                 }}
               >
-                <SimpleSlider items={[{ 
-                  src: '/gas_stations.jpg', width: 501, height: 326, alt: 'Gas Stations', caption: 'Gas Stations', href: '/courses' }, 
-                  { src: '/convenience_stores.jpg', width: 501, height: 326, alt: 'Convenience Stores', caption: 'Convenience Stores', href: '/courses' }, 
-                  { src: '/liquor_stores.jpg', width: 501, height: 326, alt: 'Liquor Stores', caption: 'Liquor Stores', href: '/courses' }, 
-                  { src: '/retail_shops.jpg', width: 501, height: 326, alt: 'Retail Shops', caption: 'Retail Shops', href: '/courses' },
-                  { src: '/grocery_markets.jpg', width: 501, height: 326, alt: 'Grocery Markets', caption: 'Grocery Markets', href: '/courses' },
-                  { src: '/small_businesses.jpg', width: 501, height: 326, alt: 'Small Businesses', caption: 'Small Businesses', href: '/courses' },
-                  { src: '/retail_shops.jpg', width: 501, height: 326, alt: 'Independent Retailers', caption: 'Independent Retailers', href: '/courses' },
-                  ]} />
+                <SimpleSlider items={[{
+                  src: '/gas_stations.jpg', width: 501, height: 326, alt: 'Gas Stations', caption: 'Gas Stations', href: '/courses'
+                },
+                { src: '/convenience_stores.jpg', width: 501, height: 326, alt: 'Convenience Stores', caption: 'Convenience Stores', href: '/courses' },
+                { src: '/liquor_stores.jpg', width: 501, height: 326, alt: 'Liquor Stores', caption: 'Liquor Stores', href: '/courses' },
+                { src: '/retail_shops.jpg', width: 501, height: 326, alt: 'Retail Shops', caption: 'Retail Shops', href: '/courses' },
+                { src: '/grocery_markets.jpg', width: 501, height: 326, alt: 'Grocery Markets', caption: 'Grocery Markets', href: '/courses' },
+                { src: '/small_businesses.jpg', width: 501, height: 326, alt: 'Small Businesses', caption: 'Small Businesses', href: '/courses' },
+                { src: '/retail_shops.jpg', width: 501, height: 326, alt: 'Independent Retailers', caption: 'Independent Retailers', href: '/courses' },
+                ]} />
               </div></div>
           </div>
         </div>
@@ -773,14 +781,50 @@ const handleSubmit = async (e) => {
                           <div className="form-group">
                             <label className="lable_text">Primary Number<span className="required">*</span></label>
                             {/* <input type="text" placeholder="" name="txtphone" maxLength="10" minLength="10" className="form-control required number" /> */}
-                            <input
+                            {/* <input
                               type="text"
                               name="phone"
                               value={formData.phone}
                               onChange={handleChange}
                               maxLength="10"
                               className={`form-control ${invalidFields.phone ? styles.inputError : ''}`}
-                            />
+                            /> */}
+
+                            <InputMask
+                              mask="+01 (999) - 9999 - 999"
+                              value={formData.phoneFull}
+                              onChange={(e) => {
+                                const digitsOnly = e.target.value.replace(/\D/g, '');
+
+                                // Full number including country code (01xxxxxxxxxx)
+                                const fullNumber = digitsOnly;
+
+                                // Last 10 digits only
+                                const last10 = digitsOnly.slice(-10);
+
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  phone: last10,         // for validation
+                                  phoneFull: fullNumber // for API
+                                }));
+
+                                setErrors((prev) => ({ ...prev, phone: '' }));
+                                setInvalidFields((prev) => ({ ...prev, phone: false }));
+                              }}
+                            >
+                              {(inputProps) => (
+                                <input
+                                  {...inputProps}
+                                  type="text"
+                                  className={`form-control ${invalidFields.phone ? styles.inputError : ''}`}
+                                  placeholder="+01 (xxx) - xxxx - xxx"
+                                />
+                              )}
+                            </InputMask>
+
+
+
+
                             {errors.phone && (
                               <small className="text-danger">{errors.phone}</small>
                             )}
