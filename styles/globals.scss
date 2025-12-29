@@ -1555,8 +1555,8 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       .slick-prev{right:70px;}
       @include phone{
         .slick-next,.slick-prev{bottom: -60px;}
-        .slick-prev{ left: 43%;}
-        .slick-next{left: inherit; right: 43%;}
+        .slick-prev{ left: 42%;}
+        .slick-next{left: inherit; right: 42%;}
       }
       @include phone-xs{
       .slick-prev{ left: 41%;}
@@ -1638,7 +1638,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     align-items: center;
     justify-content: center;
     img{
-      max-width:100%; width:auto; height: auto;}     
+      max-width:100%; width:auto; height: auto;} 
   }
   .product_info {
     padding: 16px;
@@ -1665,9 +1665,12 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       }
     }
     @include tab1024{
-      .product_image{
+      .product_image{height: auto;
         img{object-fit: cover; width: 100%;}
       }
+    }
+    @include phone{
+      .product_image{height: auto;}
     }
     @include phone-xs{
       .product_image{height: auto;

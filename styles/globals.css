@@ -2926,11 +2926,11 @@ header .headermain nav.navbar .navigation .btn_customer {
     bottom: -60px;
   }
   .hero_carousel.comman_slider .slick-prev {
-    left: 43%;
+    left: 42%;
   }
   .hero_carousel.comman_slider .slick-next {
     left: inherit;
-    right: 43%;
+    right: 42%;
   }
 }
 @media (max-width: 575px) {
@@ -3108,10 +3108,18 @@ header .headermain nav.navbar .navigation .btn_customer {
   }
 }
 @media (max-width: 1024px) {
+  .product_card .product_image {
+    height: auto;
+  }
   .product_card .product_image img {
     -o-object-fit: cover;
        object-fit: cover;
     width: 100%;
+  }
+}
+@media (max-width: 767px) {
+  .product_card .product_image {
+    height: auto;
   }
 }
 @media (max-width: 575px) {
