@@ -460,7 +460,11 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
         @include tab{ font-size: 26px;}
         @include phone480{ font-size: 24px; margin-bottom: 12px;}
       }
-  .hd28{font-size: 28px; line-height: 1; font-weight: 500; margin-bottom: 15px; color: #0C1E33;}
+  .hd28{font-size: 28px; line-height: 1; font-weight: 500; margin-bottom: 15px; color: #0C1E33;
+      @include desktop{ font-size: 26px;}
+      @include tab{ font-size: 24px;}
+      @include phone480{ font-size: 22px;}
+  }
   .hd26{
     font-size: 26px; line-height: 1; color: #14565B; font-weight: 600; margin-bottom: 18px;
     &.colorwite{color: #ffffff;}
@@ -492,15 +496,15 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     } 
     @include phone-xs{
       .slick-prev{ left: 41%;}
-      .slick-next{left: inherit; right: 41%;}
+      .slick-next{right: 41%;}
     } 
     @include phone480{
       .slick-prev{ left: 38%;}
-      .slick-next{left: inherit; right: 38%;}
+      .slick-next{right: 38%;}
     }
     @include phone330{
       .slick-prev{ left: 36%;}
-      .slick-next{left: inherit; right: 36%;}
+      .slick-next{ right: 36%;}
     } 
   }
 }
@@ -1448,6 +1452,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
   .breadcrumb_text {
     color: #0C1E33;
     font-size: 24px;
+    @include desktop{font-size: 22px;}
   }
 .breadcrumb_text{
   a{color: #0C1E33;
@@ -1461,12 +1466,14 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
  
   .catalog_container {
     padding: 40px 0 80px;
+    .catalog_layout {
+      display: flex; flex-direction: row; gap: 30px;   
+    }
+    @include tab{
+      .catalog_layout{flex-wrap: wrap;}
+    }
   }
-  .catalog_layout {
-    display: flex; flex-direction: row; gap: 30px;
-    flex-wrap: wrap;
-    
-  }
+  
 
   /* Sidebar Styles */
   .catalog_sidebar {
@@ -1509,23 +1516,27 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     list-style: none;
     padding: 0;
     margin: 0;
-  }
-  .category_list li {
-    display: flex;
-    justify-content: space-between;
-    font-size: 24px;
-     color: #6C6C6C;
-    padding: 18px 15px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.2s;
-    margin-bottom: 2px;
-    &:hover,&.active{background: rgba(#0C1E33, 0.33);}
-    &.active{
-      color: #0C1E33;
-      font-weight: 500;
+    li {
+      display: flex;
+      justify-content: space-between;
+      font-size: 24px;
+      color: #6C6C6C;
+      padding: 18px 15px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+      margin-bottom: 2px;
+      &:hover,&.active{background: rgba(#0C1E33, 0.33);}
+      &.active{
+        color: #0C1E33;
+        font-weight: 500;
+      }
+    }
+    @include desktop{
+      li{font-size: 20px; padding: 14px 15px;}
     }
   }
+ 
 
 
   /* Main Content Styles */
@@ -1542,7 +1553,27 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       .slick-next,.slick-prev{width: 37px; height: 37px; background-color: #C6C8C9; background-size: 19px; left: auto;}
       .slick-next{right:15px;}
       .slick-prev{right:70px;}
+      @include phone{
+        .slick-next,.slick-prev{bottom: -60px;}
+        .slick-prev{ left: 43%;}
+        .slick-next{left: inherit; right: 43%;}
+      }
+      @include phone-xs{
+      .slick-prev{ left: 41%;}
+      .slick-next{right: 41%;}
+      } 
+      @include phone480{
+        .slick-prev{ left: 38%;}
+        .slick-next{right: 38%;}
+      }
+      @include phone330{
+        .slick-prev{ left: 36%;}
+        .slick-next{ right: 36%;}
+      } 
     }
+    @include phone{
+      margin-bottom: 70px;
+    }      
   }
   .carousel_nav {
     position: absolute;
@@ -1580,6 +1611,11 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       display: flex; flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap;
       .results_count{margin-bottom: 20px;}
     }
+    @include phone480{
+      .products_header{ padding-bottom: 10px;
+        .hd28{margin-bottom: 10px;}
+      }
+    }
   }
   .products_grid {
     display: grid;
@@ -1602,7 +1638,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     align-items: center;
     justify-content: center;
     img{
-      max-width:100%; width:auto;}
+      max-width:100%; width:auto; height: auto;}     
   }
   .product_info {
     padding: 16px;
@@ -1623,6 +1659,16 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
         transform: translateY(-4px);
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       }
+    @include desktop{
+      .product_image{
+        img{height: auto;}
+      }
+    }
+    @include tab1024{
+      .product_image{
+        img{object-fit: cover; width: 100%;}
+      }
+    }
     @include phone-xs{
       .product_image{height: auto;
         img{width: 100%; min-height: 280px; object-fit: cover;}

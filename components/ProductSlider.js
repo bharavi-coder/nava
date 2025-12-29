@@ -143,8 +143,13 @@ const ProductSlider = ({ items = [] }) => {
         :global(.product-slider-container .slick-dots li.slick-active button:before) {
           color: white;
           opacity: 1;
+        } 
+        @media (max-width: 1024px) {
+        .image-wrapper {
+          height: 260px;
         }
-
+          .product-slider-container{margin-bottom:0px;}
+      }       
         @media (max-width: 768px) {
           .image-wrapper {
             height: 250px;
