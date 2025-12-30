@@ -549,8 +549,8 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-  -webkit-animation: marquee 26s linear infinite;
-          animation: marquee 26s linear infinite;
+  -webkit-animation: marquee 30s linear infinite;
+          animation: marquee 30s linear infinite;
 }
 .marquee__track img {
   -ms-flex-negative: 0;

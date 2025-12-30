@@ -446,6 +446,8 @@ const Home = () => {
   <div className="marquee__track">
     <Image src="/marquee_img.png" width={1440} height={72} alt="" />
     <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+    <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+    <Image src="/marquee_img.png" width={1440} height={72} alt="" />
   </div>
 </div>
       <div className="aboutSection sectionpadding bg_blue" id="about" ref={mainSectionRef}>
