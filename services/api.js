@@ -1,5 +1,6 @@
 ﻿// API Base Configuration - Uses environment variable from .env files
-const API_BASE_URL = "https://nava-api.weblivelink.com/api";
+//const API_BASE_URL = "https://nava-api.weblivelink.com/api";
+const API_BASE_URL = "https://api.navadistributor.com/api";
 
 const API_TIMEOUT = parseInt(process.env.NEXT_PUBLIC_API_TIMEOUT || "30000", 10);
 

@@ -112,6 +112,8 @@ const ApplicationForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    // eslint-disable-next-line no-console
+    console.log('handleInputChange', name, value);
     setFormData((prev) => ({ ...prev, [name]: value }));
     // Clear errors only for NON-phone fields while typing
     if (!name.toLowerCase().includes('phone')) {
@@ -435,6 +437,8 @@ const handleSubmit = async () => {
       toast.error(data?.message || 'Submission failed');
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
     toast.error(error.message || 'Server error. Please try again later.');
   } finally {
     setLoading(false);

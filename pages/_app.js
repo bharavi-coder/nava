@@ -9,7 +9,6 @@ import '../styles/globals.scss'
 // Slick carousel styles (requires installing `react-slick` and `slick-carousel`)
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-
 const App = ({ Component, pageProps }) => {
   const router = useRouter()
 
@@ -38,6 +37,12 @@ const App = ({ Component, pageProps }) => {
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet"
+        />
       </Head>
       <DefaultSeo {...SEO} />
       <Component {...pageProps} />

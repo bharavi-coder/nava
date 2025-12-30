@@ -216,6 +216,10 @@ header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link:hover,
 header .headermain nav.navbar .navigation .btn_customer {
   margin-left: 40px;
 }
+header .headermain nav.navbar .navigation .btn_customer a:hover {
+  background: #0E464A;
+  color: #ffffff;
+}
 @media (max-width: 1366px) {
   header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link {
     padding: 0px;
@@ -344,11 +348,13 @@ header .headermain nav.navbar .navigation .btn_customer {
   margin: 0px;
 }
 .homebanner .bannerImage img {
+  margin-top: -170px;
   width: 100%;
   height: auto;
 }
 @media (max-width: 1199px) {
   .homebanner .bannerImage img {
+    margin-top: 0px;
     height: 100%;
   }
 }
@@ -450,14 +456,14 @@ header .headermain nav.navbar .navigation .btn_customer {
     max-width: 680px;
   }
   .homebanner .bannerText .bannerDesc span {
-    max-width: 590px;
+    max-width: 502px;
     font-size: 24px;
     line-height: 36px;
   }
 }
 @media (max-width: 1199px) {
   .homebanner .bannerText .bannerDesc {
-    max-width: 570px;
+    max-width: 502px;
   }
   .homebanner .bannerText .bannerDesc span {
     font-size: 22px;
@@ -467,7 +473,7 @@ header .headermain nav.navbar .navigation .btn_customer {
 }
 @media (max-width: 991px) {
   .homebanner .bannerText .bannerDesc {
-    max-width: 570px;
+    max-width: 502px;
   }
   .homebanner .bannerText .bannerDesc span {
     font-size: 22px;
@@ -531,43 +537,50 @@ header .headermain nav.navbar .navigation .btn_customer {
 }
 
 .marquee {
+  width: 100%;
   overflow: hidden;
-  white-space: nowrap;
+  background: transparent;
 }
-.marquee img {
-  -webkit-animation: scroll 30s linear infinite;
-          animation: scroll 30s linear infinite;
-  -webkit-filter: grayscale(100%);
-          filter: grayscale(100%);
+
+.marquee__track {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  -webkit-animation: marquee 26s linear infinite;
+          animation: marquee 26s linear infinite;
 }
-.marquee:hover img {
+.marquee__track img {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+
+.marquee:hover .marquee__track {
   -webkit-animation-play-state: paused;
           animation-play-state: paused;
 }
-.marquee:hover img:hover {
-  -webkit-filter: none;
-          filter: none;
-}
 
-@-webkit-keyframes scroll {
+@-webkit-keyframes marquee {
   0% {
-    -webkit-transform: translateX(100%);
-            transform: translateX(100%);
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
   }
   100% {
-    -webkit-transform: translateX(-100%);
-            transform: translateX(-100%);
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
   }
 }
 
-@keyframes scroll {
+@keyframes marquee {
   0% {
-    -webkit-transform: translateX(100%);
-            transform: translateX(100%);
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
   }
   100% {
-    -webkit-transform: translateX(-100%);
-            transform: translateX(-100%);
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
   }
 }
 .btn_get_touch {
@@ -606,7 +619,7 @@ header .headermain nav.navbar .navigation .btn_customer {
   font-weight: 400;
 }
 .btn_get_touch:hover {
-  background: #0C1E33;
+  background: #B56B45;
   color: #fff;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
@@ -1751,7 +1764,7 @@ header .headermain nav.navbar .navigation .btn_customer {
   color: #fff;
 }
 .hm_contact-section .address ul.contactDetail li a:hover {
-  color: #B56B45;
+  color: #B56B45 !important;
 }
 .hm_contact-section .address ul.contactDetail li:last-child {
   margin-bottom: 0px !important;

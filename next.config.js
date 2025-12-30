@@ -12,7 +12,7 @@
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
-  output: "standalone",       // must be "standalone" for dynamic site
+  output: "export",       // must be "standalone" for dynamic site
   images: { unoptimized: true },
   assetPrefix: "/",           
 };

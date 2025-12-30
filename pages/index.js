@@ -4,10 +4,10 @@ import Link from '../components/ActiveLink'
 import Layout from '../components/Layout'
 import Image from '../components/Image'
 import styles from '../styles/Home.module.scss'
-import SimpleSlider from '../components/SimpleSlider'
+import SimpleSlider from '../components/SimpleSlider' 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { submitSupplyChainForm } from "../services/api";
+import { submitSupplyChainForm } from '../services/supplyChainService';
 import InputMask from 'react-input-mask';
 
 const Home = () => {
@@ -439,9 +439,15 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="scroll_img marquee">
+     {/*<div className="scroll_img marquee">
         <Image src="/marquee_img.png" width={1440} height={72} alt="" />
-      </div>
+      </div>*/}
+      <div className="marquee">
+  <div className="marquee__track">
+    <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+    <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+  </div>
+</div>
       <div className="aboutSection sectionpadding bg_blue" id="about" ref={mainSectionRef}>
         <div className="container">
           <div className="about-grid">
