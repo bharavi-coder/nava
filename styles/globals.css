@@ -740,7 +740,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   font-size: 26px;
   font-weight: 400;
   letter-spacing: 1px;
-  text-transform: uppercase;
+  text-transform: capitalize;
   display: block;
   padding-bottom: 11px;
 }

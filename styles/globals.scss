@@ -473,7 +473,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       }       
     }
   .hd2{font-size: 36px; margin: 0px 0 26px 0px; color: #0C1E33;
-    span{color: #c97b3a; font-size: 26px; font-weight: 400; letter-spacing: 1px; text-transform: uppercase; display: block; padding-bottom: 11px;}
+    span{color: #c97b3a; font-size: 26px; font-weight: 400; letter-spacing: 1px; text-transform:capitalize; display: block; padding-bottom: 11px;}
     @include tab {font-size: 30px; line-height: 1;
       span{font-size: 22px;}
     }
