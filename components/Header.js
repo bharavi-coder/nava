@@ -8,8 +8,8 @@ return (
       <div className="headermain">
         <div className="logo">
           <Link href="/">
-            <span className="home_logo"><img src="/nava.png" alt="nava" /></span>
-            <span className="inner_logo"><img src="/nava_withe.png" alt="nava" /></span>
+            <span className="home_logo"><img src="/nava.svg" alt="nava" /></span>
+            <span className="inner_logo"><img src="/nava_withe.svg" alt="nava" /></span>
           </Link>
         </div>
         <nav className="navbar navbar-expand-lg">

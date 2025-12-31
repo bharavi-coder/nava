@@ -742,6 +742,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   letter-spacing: 1px;
   text-transform: uppercase;
   display: block;
+  padding-bottom: 11px;
 }
 @media (max-width: 991px) {
   .maincontent .hd2 {

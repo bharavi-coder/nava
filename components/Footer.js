@@ -9,7 +9,7 @@ const Footer = () => {
           <div className="container">
               <div className="row">
                   <div className="col-xl-5 col-lg-4 col-md-12 col-sm-12">
-                    <div className='footerlogo'><Image src="/nava_withe.png" width={189} height={43} alt="nana" />
+                    <div className='footerlogo'><Link href="/"><Image src="/nava_withe.svg" width={189} height={43} alt="nana" /></Link>
                     <p>Your trusted partner in wholesale distribution.</p></div>
                     
                   </div>
