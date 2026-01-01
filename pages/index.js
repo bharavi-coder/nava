@@ -385,8 +385,8 @@ const Home = () => {
     {
       id: 2,
       icon: '/icon_schedule.svg',
-      width: 38,
-      height: 38,
+      width: 44,
+      height: 44,
       title: 'On Schedule Fulfillment ',
       text: 'Consistent, predictable deliveries tailored to the needs of your business.'
     },
@@ -401,8 +401,8 @@ const Home = () => {
     {
       id: 4,
       icon: '/icon_dedicate.svg',
-      width: 38,
-      height: 38,
+      width: 48,
+      height: 48,
       title: 'Dedicated Client Care ',
       text: 'A knowledgeable, responsive support team committed to your success.'
     },
@@ -576,7 +576,7 @@ const Home = () => {
               {/* Vision Statement - Always Visible */}
               <div className="info-box">
                 <div className="info-icon">
-                  <img src="/icon_vision.png" width={41} height={41} alt="" />
+                  <img src="/icon_vision.svg" width={41} height={41} alt="" />
                 </div>
                 <div className="info-content">
                   <h3 className='hd34 colorwite'>Vision Statement</h3>
@@ -596,7 +596,7 @@ const Home = () => {
                 }}
               >
                 <div className="info-icon">
-                  <img src="/icon_mission.png" width={39} height={48} alt="" />
+                  <img src="/icon_mission.svg" width={39} height={48} alt="" />
                 </div>
                 <div className="info-content">
                   <h3 className='hd34 colorwite'>Mission Statement</h3>

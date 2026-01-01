@@ -261,7 +261,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
         .navbar-collapse{position: fixed; z-index: 9; top: 0px; right: -100%; background: #ffffff; width: 100%; height: 100vh; @include transition(0.5s); display: block;
           &.show{right: 0px; @include transition(0.5s);}
           .navbar-toggler{z-index: 2; margin: 10px 15px; background: none; width: 26px; height: 26px; padding: 0px;
-              .navbar-toggler-icon{color: #fff; background-image: url(../public/close.png); opacity: 0.85;background-size: 26px;
+              .navbar-toggler-icon{color: #fff; background-image: url(../public/close.svg); opacity: 0.85;background-size: 26px;
                 &:hover{opacity: 1;}
               }
             }
@@ -297,10 +297,10 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
           object-position: bottom right;
         }
         @include phone{
-              min-height: 600px; object-fit: cover;
+              min-height: 810px; object-fit: cover;
         }
         @include phone400{
-            min-height: 500px;
+            min-height: 630px;
           }
         }       
     }
@@ -334,6 +334,11 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
                 font-family: 'Satoshi Regular'; font-weight: 400;font-size: 26px;line-height: 38px;color: #14565B;display: block; max-width: 600px;
             } 
         }
+        @include mindesktop1680{
+            .bannerDesc {
+              span{max-width: 590px;}
+            }
+        }
         @include desktop{
             .bannerDesc {max-width: 680px;
               span{max-width: 502px; font-size: 24px; line-height: 36px;}
@@ -359,7 +364,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
         }
         @include phone380{
              .bannerDesc {
-              span{font-size: 20px; line-height: 1; margin-bottom: 24px;}
+              span{font-size: 20px; line-height: 1.2; margin-bottom: 24px;}
              }
         }
     }
@@ -377,10 +382,18 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       }
     }
     @include desktop{
+      .bannerImage{
+        img{min-height: 680px;}
+      }
       .bannerText{
         .bannerDesc {
               span{max-width: 651px;}
             }
+      }
+    }
+    @include tab1024{
+      .bannerImage{
+        img{min-height: 1px;}
       }
     }
   }
@@ -518,8 +531,8 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       &:hover{background-color: #14565B;}
       &::before{content: ''; display: none;}
     }
-    .slick-prev{ background-image: url(../public/arrow_prev.png); background-position: center center; background-repeat: no-repeat; background-size: 31px;  left: 30px;}
-    .slick-next{ background-image: url(../public/arrow_next.png); background-position: center center; background-repeat: no-repeat; background-size: 31px; right: auto; left: 100px;}
+    .slick-prev{ background-image: url(../public/arrow_prev.svg); background-position: center center; background-repeat: no-repeat; background-size: 31px;  left: 30px;}
+    .slick-next{ background-image: url(../public/arrow_next.svg); background-position: center center; background-repeat: no-repeat; background-size: 31px; right: auto; left: 100px;}
     @include desktop{
       .slick-prev,.slick-next{ width:48px; height: 48px; background-size: 24px auto;}    
     } 
@@ -797,11 +810,11 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     img {
       max-width: 40px;
     }
-    span{ background-image: url(../public/icon_innovation.png); background-repeat: no-repeat; background-position: center center;  display: block; width: 100%; height: 100%;
-      &.icon_inno{background-image: url(../public/icon_innovation.png);}
-      &.icon_integrity{background-image: url(../public/icon_integrity.png);}
-      &.icon_reliability{background-image: url(../public/icon_reliability.png);}
-      &.icon_growth{background-image: url(../public/icon_growth.png);}
+    span{ background-image: url(../public/icon_innovation.svg); background-repeat: no-repeat; background-position: center center;  display: block; width: 100%; height: 100%;
+      &.icon_inno{background-image: url(../public/icon_innovation.svg);}
+      &.icon_integrity{background-image: url(../public/icon_integrity.svg);}
+      &.icon_reliability{background-image: url(../public/icon_reliability.svg);}
+      &.icon_growth{background-image: url(../public/icon_growth.svg);}
     }
   } 
   p { font-size: 22px; color: #6C6C6C; padding-bottom: 0px; margin-bottom: 0px;}
@@ -811,11 +824,11 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
     p, .hd26{color: #fff;}
     .icon-box{background: rgba(#ffffff, 0.33);
-      span{ background-image: url(../public/icon_innovation_hover.png);
-      &.icon_inno{background-image: url(../public/icon_innovation_hover.png);}
-      &.icon_integrity{background-image: url(../public/icon_integrity_hover.png);}
-      &.icon_reliability{background-image: url(../public/icon_reliability_hover.png);}
-      &.icon_growth{background-image: url(../public/icon_growth_hover.png);}
+      span{ background-image: url(../public/icon_innovation_hover.svg);
+      &.icon_inno{background-image: url(../public/icon_innovation_hover.svg);}
+      &.icon_integrity{background-image: url(../public/icon_integrity_hover.svg);}
+      &.icon_reliability{background-image: url(../public/icon_reliability_hover.svg);}
+      &.icon_growth{background-image: url(../public/icon_growth_hover.svg);}
     }
     }
   }
@@ -985,9 +998,9 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
           line-height: 30px;
           border-radius: 0;
           &::before{display: none;}
-          &.fa-map-marker{background: url(../public/icon_map.png) no-repeat left top;}
-          &.fa-phone{background: url(../public/icon_phone.png) no-repeat left top;}
-          &.fa-envelope{background: url(../public/icon_mail.png) no-repeat left center;}
+          &.fa-map-marker{background: url(../public/icon_map.svg) no-repeat left top; background-size: 22px 26px;}
+          &.fa-phone{background: url(../public/icon_phone.svg) no-repeat left top; background-size: 29px 29px;}
+          &.fa-envelope{background: url(../public/icon_mail.svg) no-repeat left center; background-size: 27px 22px;}
         }
       }
     }
@@ -1003,9 +1016,9 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       ul.contactDetail{
         li{ padding-left: 50px;
             i {width: 35px; height: 36px;
-            &.fa-map-marker{background: url(../public/icon_map1.png) no-repeat left top;}
-            &.fa-phone{background: url(../public/icon_phone1.png) no-repeat left top;}
-            &.fa-envelope{background: url(../public/icon_mail1.png) no-repeat left center;}
+            &.fa-map-marker{background: url(../public/icon_map1.svg) no-repeat left top; background-size: 22px 26px;}
+            &.fa-phone{background: url(../public/icon_phone1.svg) no-repeat left top; background-size: 29px 29px;}
+            &.fa-envelope{background: url(../public/icon_mail1.svg) no-repeat left center; background-size: 27px 22px;}
           }
           a{color: #0C1E33;
             &:hover{color: #14565B;}
@@ -1077,7 +1090,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
 		.select2-choice{height:60px; line-height: 60px; border: #B9DAE7 solid 0px!important; padding: 0px 15px; border-radius: 10px; background:#F4F3F3; padding-right: 41px!important;		
             .select2-chosen{margin-right: 20px; color: #333;}
             .select2-arrow{ right: 10px; top: 1px; width: 30px;
-                b{ background-image: url(../public/select_arrow.png); background-size: 19px;}
+                b{ background-image: url(../public/select_arrow.svg); background-size: 19px;}
                 @include tab1024{background-size: 15px;}
             }
             &:hover{ border: #6AA2B8 solid 0px!important;}
@@ -1181,7 +1194,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
         input[readonly] { //background-color: #080A27!important; 
            padding-right:60px; cursor: text !important;}
         i{
-            background: url(../public/upload_icon.png) no-repeat center center; width: 26px; height: 30px; display: block; background-size: contain;
+            background: url(../public/upload_icon.svg) no-repeat center center; width: 26px; height: 30px; display: block; background-size: contain;
             //color: rgba(255, 255255, 0, 0.61);cursor: pointer; font-size: 22px;
         }
         .input-group-btn{position: absolute;right: 15px; z-index: 222; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}
@@ -1238,18 +1251,18 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
                     }
                     input[type=checkbox]{
                         &:not(old){
-                            +span{background: url('http://template.weblivelink.com/uiproject/design_images/checkbox.png') no-repeat 0 0; background-size: 24px;}
+                            +span{background: #ddd; background-size: 24px;}
                         }
                         &:checked{
-                            +span{background-image: url(http://template.weblivelink.com/uiproject/design_images/checkbox_check.png);}
+                            +span{background: #ddd;}
                         }
                     }
                     input[type=radio]{
                         &:not(old){
-                            +span{background: url('http://template.weblivelink.com/uiproject/design_images/radio_button.png') no-repeat 0 0;background-size: 24px; }
+                            +span{background: #ddd;background-size: 24px; }
                         }
                         &:checked{
-                            +span{background-image: url(http://template.weblivelink.com/uiproject/design_images/radio_button_select.png);}
+                            +span{background: #ddd;}
                         }
                     }
                 }
@@ -1295,10 +1308,10 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     }      
 }
   .info2, .success, .warning2, .failure, .validation2{border:1px solid;margin:10px 0px;padding:15px 10px 15px 50px;background-repeat:no-repeat;background-position:10px center; text-align: left;}
-  .info2{color:#00529B;background-color:#BDE5F8;background-image: url(http://template.weblivelink.com/uiproject/design_images/info.png) !important;}
-  .success{color:#4F8A10;background-color:#DFF2BF; background-image: url(http://template.weblivelink.com/uiproject/design_images/success.png) !important;}
-  .warning2{color:#9F6000;background-color:#FEEFB3;  background-image: url(http://template.weblivelink.com/uiproject/design_images/exclamation.png) !important;}
-  .failure{color:#D8000C;background-color:#FFBABA;  background-image: url(http://template.weblivelink.com/uiproject/design_images/error.png) !important;}
+  .info2{color:#00529B;background-color:#BDE5F8;}
+  .success{color:#4F8A10;background-color:#DFF2BF;}
+  .warning2{color:#9F6000;background-color:#FEEFB3;}
+  .failure{color:#D8000C;background-color:#FFBABA;}
 // ===================== footer css Start  ===================== 
 .footer {
   padding: 80px 0px;
@@ -1350,9 +1363,9 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
           line-height: 30px;
           border-radius: 0;
           &::before{display: none;}
-          &.fa-map-marker{background: url(../public/icon_map.png) no-repeat left top;}
-          &.fa-phone{background: url(../public/icon_phone.png) no-repeat left top;}
-          &.fa-envelope{background: url(../public/icon_mail.png) no-repeat left center;}
+          &.fa-map-marker{background: url(../public/icon_map.svg) no-repeat left top; background-size: 22px 26px;}
+          &.fa-phone{background: url(../public/icon_phone.svg) no-repeat left top; background-size: 29px 29px;}
+          &.fa-envelope{background: url(../public/icon_mail.svg) no-repeat left center; background-size: 27px 22px;}
         }
       }
     }
@@ -1507,16 +1520,37 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       .catalog_layout{flex-wrap: wrap;}
     }
   }
-  
+  .bell_section{display: flex; flex-direction: row; justify-content: flex-start; align-items: center; background: rgba(#B56B45, 0.11); border: #B56B45 solid 2px; border-radius: 8px; padding: 18px 20px; margin-bottom: 30px;
+    .icon_box{width: 41px;
+      img{max-width: 100%;}
+    }
+    p{width: calc(100% - 61px); margin: 0px 0px 0px 20px; padding: 0px; font-size: 20px; color: #B56B45; font-family: "Montserrat", sans-serif; font-weight: 500;
+      a{font-weight: 600; color: #B56B45;
+        &:hover{color: #071a2d;}
+      }
+    }
+    @include tab{
+      p{font-size: 17px;}
+    }
+    @include phone{ 
+      p{
+        br{display: none;}
+      }
+    }
+    @include phone480{ align-items: center; flex-direction: column; padding: 18px 5px;
+      p{text-align: center; margin: 10px 0px 0px 0px; width: 100%;}
+    }
+  }
 
   /* Sidebar Styles */
   .catalog_sidebar {
-    background: #fff; display: flex; flex-direction: column; flex:0 0 30%;
+    display: flex; flex-direction: column; flex:0 0 30%;
     max-width:30%;
      @media (max-width: 768px) {
       flex: 0 0 100%;
       max-width: 100%;
     }
+    .box_comman{background: #fff;}
     .box-shado1{
       box-shadow: 0px 4px 12px 0px rgba(#000000, 0.11); border-radius: 8px; padding: 30px 20px;
       margin-bottom: 30px;
@@ -1672,7 +1706,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     align-items: center;
     justify-content: center;
     img{
-      max-width:100%; width:auto; height: auto;} 
+      max-width:100%; width:100%; height: inherit;} 
   }
   .product_info {
     padding: 16px;
@@ -1719,7 +1753,55 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     }
   }
   
-  
+  .brandsBox_section {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px; position: relative; margin-bottom: 15px;
+    .hd28{ margin-bottom: 0px; padding-bottom: 0px;}
+
+    .btn_comingsoon {
+      font-size: 18px;
+      padding: 5px 15px 8px 15px;
+      border-radius: 8px;
+      border: 2px solid #B56B45;
+      color: #B56B45;
+      background: rgba(#B56B45, 0.12)
+    }
+  }
+
+  .list_input {
+    // max-height: 420px;
+    // overflow-y: auto;
+    margin-top: -10px;
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 24px;
+      color: #6C6C6C;
+      padding: 8px 0;
+      cursor: not-allowed; position: relative;
+      &::before{content: ''; position: absolute; left: 0px; top:11px; width: 30px; height: 30px;background: #eeeeee;border: solid #DADADA 2px; border-radius: 4px; z-index: 1;}
+
+      input {
+        width: 28px;
+        height: 28px;  border: solid #DADADA 2px; border-radius: 4px; position: relative; z-index: 2; opacity: 0;
+      }
+      input:disabled{border-color: #DADADA; background: #eeeeee;}
+    }
+  }
+  @include desktop{
+    .list_input{
+      .item{font-size: 20px;
+        &::before,input{width: 26px; height: 26px;}
+      }
+    }
+  }
+}
+
 
   .pagination {
     display: flex;
@@ -1735,6 +1817,16 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       cursor: pointer;
       transition: all 0.2s; color: #212B36;
       font-size: 14px; font-weight: 700;
+      &.next_btn{
+        background-image: url(../public/arrow_next1.svg)!important;
+        background-repeat: no-repeat!important;
+        background-position: center!important;
+      }
+      &.prev_btn{
+        background-image: url(../public/arrow_prev1.svg)!important;
+        background-repeat: no-repeat!important;
+        background-position: center!important;
+      }
       &:hover,&.active {
         background: #16697a;
         color: #fff;
