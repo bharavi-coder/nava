@@ -302,9 +302,6 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
         @include phone400{
             min-height: 660px;
           }
-        @media (max-width: 396px){
-          min-height: 800px;
-          }
         }       
     }
   .bannerText {
@@ -655,7 +652,9 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
      
 
      @media screen and (min-width:993px){
-      position: relative;overflow: hidden; height:100vh;
+      position: relative;
+      // overflow: hidden; 
+      height:100vh;
      }
 
     .info-card {
@@ -664,20 +663,16 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       padding: 30px;
       border-radius: 12px; margin-bottom:30px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
-      min-height: 301px;
+      min-height:260px;
       transition: opacity 0.6s ease, transform 0.6s ease;
       height: auto;
       //height:40vh;
 
       .cardtitlebox{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+        display:flex; flex-direction:row; align-items:center;
       }
-
-      
       .icon-circle {
-        width: 71px; margin-right: 20px;
+        width: 71px; margin-right:20px;
         height: 71px;
         background: #cfdedd;
         border-radius: 100%;
@@ -2244,62 +2239,13 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
 }
 
 
-@media (min-width: 1200px) {
-  .Home_cardsSticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    padding-top: 120px;
-  }
-
-  .info-card {
-    position: absolute;
-    opacity: 0;
-    // transform: translateY(100%);
-    // transition: all 0.7s ease-out;
-    // opacity: 0;
-  transform: translateY(60px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .info-card.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.info-card {
+  position: relative; /* default */
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Tablet & Mobile */
-@media (max-width: 1199px) {
-  .Home_cardsSection {
-    height: auto !important;
-  }
-
-  .Home_cardsSticky {
-    position: static;
-    height: auto;
-    padding-top: 0;
-  }
-
-  .Home_cardsWrapper {
-    transform: none !important;
-  }
-
-  .info-card {
-    position: static;
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none;
-  }
-}
-
-
-.fadeLeft {
-  opacity: 0;
-  transform: translateX(-60px);
-  transition: all 0.5s ease-out;
-}
-
-.fadeLeftVisible {
-  opacity: 1;
-  transform: translateX(0);
+.info-card.isSticky {
+  position: sticky;
+  top: 0;
+  z-index: 10; /* make sure it stays above other cards */
 }

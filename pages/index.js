@@ -4,14 +4,14 @@ import Link from '../components/ActiveLink'
 import Layout from '../components/Layout'
 import Image from '../components/Image'
 import styles from '../styles/Home.module.scss'
-import SimpleSlider from '../components/SimpleSlider' 
+import SimpleSlider from '../components/SimpleSlider'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { submitSupplyChainForm } from '../services/supplyChainService';
 import InputMask from 'react-input-mask';
 
 const Home = () => {
-const fadeLeftRefs = useRef([]);
+  const fadeLeftRefs = useRef([]);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -53,22 +53,22 @@ const fadeLeftRefs = useRef([]);
       newErrors.email = 'Enter a valid email address';
     }
 
-  // if (!formData.phone) {
-  //   newErrors.phone = 'Phone number is required';
-  // } else if (!/^\d{10}$/.test(formData.phone)) {
-  //   newErrors.phone = 'Phone number must be 10 digits';
-  // }
+    // if (!formData.phone) {
+    //   newErrors.phone = 'Phone number is required';
+    // } else if (!/^\d{10}$/.test(formData.phone)) {
+    //   newErrors.phone = 'Phone number must be 10 digits';
+    // }
 
-  if (!formData.phone) {
-  invalid.phone = true;
-  newErrors.phone = 'Phone number is required';
-} else if (!/^\d{10}$/.test(formData.phone)) {
-  invalid.phone = true;
-  newErrors.phone = 'Phone number must be 10 digits';
-}
+    if (!formData.phone) {
+      invalid.phone = true;
+      newErrors.phone = 'Phone number is required';
+    } else if (!/^\d{10}$/.test(formData.phone)) {
+      invalid.phone = true;
+      newErrors.phone = 'Phone number must be 10 digits';
+    }
 
 
-    
+
     if (!formData.businessName.trim()) {
       invalid.businessName = true;
       newErrors.businessName = 'Business name is required';
@@ -142,11 +142,11 @@ const fadeLeftRefs = useRef([]);
     }
   };
 
-    const isAnyFieldFilled = () => {
-        return Object.values(formData).some(
-            (value) => value && value.toString().trim() !== ''
-        );
-    };
+  const isAnyFieldFilled = () => {
+    return Object.values(formData).some(
+      (value) => value && value.toString().trim() !== ''
+    );
+  };
 
 
   const categories = [
@@ -173,7 +173,7 @@ const fadeLeftRefs = useRef([]);
       title: 'Convenience Items',
       image: '/convenience_items.jpg',
       direction: 'right'
-    }, 
+    },
     {
       id: 5,
       title: 'Gum & Mint',
@@ -185,58 +185,131 @@ const fadeLeftRefs = useRef([]);
   // const row1 = categories.filter(cat => cat.direction === 'left');
   // const row2 = categories.filter(cat => cat.direction === 'right');
 
+
   const mainSectionRef = useRef(null);
   const cardsWrapperRef = useRef(null);
   const cardsRef = useRef([]);
 
 useEffect(() => {
   const cards = cardsRef.current;
-  const section = mainSectionRef.current;
+  const mainSection = mainSectionRef.current;
 
-  if (!section || cards.length === 0) return;
+  if (!mainSection || cards.length === 0) return;
 
-  const isDesktop = () => window.innerWidth >= 1200;
+  let rafId = null;
+  let ticking = false;
 
-  const handleScroll = () => {
-    if (!isDesktop()) {
-      // Mobile / tablet: show all cards normally
-      cards.forEach(card => card && card.classList.add(styles.visible));
-      setActiveCard(cards.length - 1);
+  const updateCards = () => {
+    const viewportWidth = window.innerWidth;
+
+    // Disable effect on mobile/tablet
+    if (viewportWidth < 993) {
+      cards.forEach((card) => {
+        if (card) {
+          card.classList.add(styles.visible);
+          card.style.transform = "none";
+          card.style.top = "0";
+          card.style.position = "relative";
+        }
+      });
+      ticking = false;
       return;
     }
 
-    const sectionTop = section.getBoundingClientRect().top;
-    const sectionHeight = section.offsetHeight;
-    const viewportHeight = window.innerHeight;
+    const sectionRect = mainSection.getBoundingClientRect();
+    const sectionTop = sectionRect.top;
+    const sectionHeight = sectionRect.height;
+    const windowHeight = window.innerHeight;
 
-    if (sectionTop <= 100 && sectionTop > -sectionHeight + viewportHeight) {
-      const scrolled = Math.abs(sectionTop - 100);
-      const cardScrollHeight = 300;
-      const newActive = Math.min(
-        Math.floor(scrolled / cardScrollHeight),
-        cards.length - 1
-      );
+    // Calculate active card based on scroll position
+    let activeCard = 0;
+    const sectionEndTrigger = -sectionHeight + windowHeight;
+    if (sectionTop <= 50 && sectionTop > sectionEndTrigger) {
+      const scrolled = Math.abs(sectionTop - 50);
+      const cardHeight = 250; // Distance to scroll before next card overlays
+      activeCard = Math.min(Math.floor(scrolled / cardHeight), cards.length - 1);
+    } else if (sectionTop <= sectionEndTrigger) {
+      // Section has scrolled past its end — keep last card overlayed
+      activeCard = cards.length - 1;
+    } else if (sectionTop > 50) {
+      activeCard = 0;
+    }
 
-      if (newActive !== activeCard) {
-        setActiveCard(newActive);
+    const cardSpacing = 280; // Space between cards when not overlaying
+    const overlayOffset = 100; // Offset when cards overlay
 
-        cards.forEach((card, index) => {
-          if (!card) return;
-          if (index <= newActive) {
-            card.classList.add(styles.visible);
-          } else {
-            card.classList.remove(styles.visible);
-          }
-        });
+    // Update each card position
+    cards.forEach((card, index) => {
+      if (!card) return;
+
+      card.classList.add(styles.visible);
+      card.style.position = "absolute";
+      card.style.left = "0";
+      card.style.right = "0";
+      card.style.transition = "all 0.7s ease-out";
+      card.style.zIndex = index + 1;
+
+      let topPosition = 0;
+
+      // Initially, all cards are stacked vertically with full spacing
+      if (activeCard === 0) {
+        topPosition = index * cardSpacing;
       }
+      // As we scroll, cards start to overlay
+      else if (index < activeCard) {
+        // Cards that should be overlaying
+        topPosition = index * overlayOffset;
+      } else if (index === activeCard) {
+        // Current active card moving to overlay position
+        topPosition = index * overlayOffset;
+      } else {
+        // Cards below active card - still in normal position
+        const overlayedCards = activeCard;
+        topPosition = (overlayedCards * overlayOffset) + ((index - overlayedCards) * cardSpacing);
+      }
+
+      card.style.top = `${topPosition}px`;
+      card.style.transform = "translateY(0)";
+      card.style.opacity = "1";
+    });
+    // ensure wrapper is positioned so absolutely positioned cards don't affect layout
+    const cardsWrapper = cardsWrapperRef.current;
+    if (cardsWrapper) {
+      const firstCard = cards[0];
+      if (firstCard) {
+        const cardHeight = firstCard.offsetHeight;
+        const cardGap = 30;
+        // keep wrapper just tall enough for the visible stacked area to avoid huge section height
+        const visible = Math.max(1, Math.min(cards.length, 2));
+        cardsWrapper.style.position = 'relative';
+        cardsWrapper.style.minHeight = `${cardHeight + (visible - 1) * cardGap}px`;
+      }
+    }
+
+    ticking = false;
+  };
+
+  const handleScroll = () => {
+    if (!ticking) {
+      rafId = requestAnimationFrame(updateCards);
+      ticking = true;
     }
   };
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll();
+  // Initial update
+  updateCards();
 
-  return () => window.removeEventListener('scroll', handleScroll);
-}, [activeCard]);
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  window.addEventListener("resize", updateCards, { passive: true });
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+    window.removeEventListener("resize", updateCards);
+    if (rafId) cancelAnimationFrame(rafId);
+  };
+}, []);
+
+
 
 
 
@@ -247,27 +320,27 @@ useEffect(() => {
   useEffect(() => {
     if (!contactRef.current && !footerRef.current) return
 
-     const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add(styles.fadeLeftVisible);
-        } else {
-          // Remove class when element is no longer intersecting to reverse animation
-          entry.target.classList.remove(styles.fadeLeftVisible);
-        }
-      });
-    },
-    {
-      threshold: 0.3
-    }
-  );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(styles.fadeLeftVisible);
+          } else {
+            // Remove class when element is no longer intersecting to reverse animation
+            entry.target.classList.remove(styles.fadeLeftVisible);
+          }
+        });
+      },
+      {
+        threshold: 0.3
+      }
+    );
 
-  fadeLeftRefs.current.forEach(el => {
-    if (el) observer.observe(el);
-  });
+    fadeLeftRefs.current.forEach(el => {
+      if (el) observer.observe(el);
+    });
 
-  return () => observer.disconnect();
+    return () => observer.disconnect();
   }, [])
 
 
@@ -317,11 +390,17 @@ useEffect(() => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, []);
 
+  // const addToRefs = (el, index) => {
+  //   if (el && !cardsRef.current.includes(el)) {
+  //     cardsRef.current[index] = el;
+  //   }
+  // };
+
   const addToRefs = (el, index) => {
-    if (el && !cardsRef.current.includes(el)) {
-      cardsRef.current[index] = el;
-    }
-  };
+  if (el && !cardsRef.current[index]) {
+    cardsRef.current[index] = el;
+  }
+};
 
   const cardsData = [
     {
@@ -389,73 +468,54 @@ useEffect(() => {
           </div>
         </div>
       </div>
-     {/*<div className="scroll_img marquee">
+      {/*<div className="scroll_img marquee">
         <Image src="/marquee_img.png" width={1440} height={72} alt="" />
       </div>*/}
       <div className="marquee">
-  <div className="marquee__track">
-    <Image src="/marquee_img.png" width={1440} height={72} alt="" />
-    <Image src="/marquee_img.png" width={1440} height={72} alt="" />
-    <Image src="/marquee_img.png" width={1440} height={72} alt="" />
-    <Image src="/marquee_img.png" width={1440} height={72} alt="" />
-  </div>
-</div>
-      <div className="aboutSection sectionpadding bg_blue" id="about" ref={mainSectionRef}>
-        <div className="container">
-          <div className="about-grid">
-            <div className="about-content p_fnt26">
-              <h2
-                className={`hd2 ${styles.fadeLeft}`}
-                ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}
-              ><span>About Us</span>What We Do</h2>
-              <p>
-                Nava Distributors is a trusted, family-owned wholesale distributor providing businesses with dependable supply, modern ordering tools, and exceptional service. Our focus is helping retailers stay stocked, competitive, and profitable.
-              </p>
-              <p>
-                For over four years, Nava Wholesale has proudly served the Chicagoland area as a leading wholesale distributor. Our mission is to provide retailers with top-selling products, competitive pricing, and dependable service that keeps them ahead in today’s fast-paced marketplace.
-              </p>
-            </div>
-
-            <div className="about-cards">
-  <div
-    className="Home_cardsSection"
-    ref={mainSectionRef}
-    style={{ height: `${cardsData.length * 100}vh` }}
-  >
-    <div className="Home_cardsSticky">
-      <div className="Home_cardsWrapper" ref={cardsWrapperRef}>
-        {cardsData.map((card, index) => (
-          <div
-            key={card.id}
-            className={`info-card ${index <= activeCard ? styles.visible : ''}`}
-            ref={(el) => addToRefs(el, index)}
-            style={{
-              top: `${index * 90}px`,
-              zIndex: index + 1
-            }}
-          >
-            <div className='cardtitlebox'>
-            <div className="icon-circle">
-              <Image
-                src={card.icon}
-                width={card.width}
-                height={card.height}
-                alt={card.title}
-              />
-            </div>
-            <h4 className="hd24">{card.title}</h4>
-            </div>
-            <p>{card.text}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-</div>
-
-          </div>
+        <div className="marquee__track">
+          <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+          <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+          <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+          <Image src="/marquee_img.png" width={1440} height={72} alt="" />
         </div>
       </div>
+      <div className="aboutSection sectionpadding bg_blue" id="about" ref={mainSectionRef}>
+  <div className="container"> 
+    <div className="about-grid"> 
+      <div className="about-content p_fnt26"> 
+        <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}><span>About Us</span>What We Do</h2> 
+        <p> 
+          Nava Distributors is a trusted, family-owned wholesale distributor providing businesses with dependable supply, modern ordering tools, and exceptional service. Our focus is helping retailers stay stocked, competitive, and profitable. 
+        </p> 
+        <p> 
+          For over four years, Nava Wholesale has proudly served the Chicagoland area as a leading wholesale distributor. Our mission is to provide retailers with top-selling products, competitive pricing, and dependable service that keeps them ahead in today's fast-paced marketplace. 
+        </p> 
+      </div> 
+      <div className="about-cards"> 
+        <div className='Home_cardsWrapper' ref={cardsWrapperRef}> 
+          {cardsData.map((card, index) => (
+            <div 
+              key={card.id} 
+              className="info-card" 
+              ref={(el) => addToRefs(el, index)} 
+              data-index={index}
+            > 
+            <div className="cardtitlebox">
+              <div className="icon-circle"> 
+                <Image src={card.icon} width={card.width} height={card.height} alt={card.title} /> 
+              </div> 
+              <h4 className='hd24'>{card?.title}</h4> 
+              </div>
+              <p> 
+                {card?.text} 
+              </p> 
+            </div>
+          ))} 
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+</div>
       <div className="who_we_are-section sectionpadding">
         <div className="container">
           <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}><span>About Us</span>Who We Serve</h2>
@@ -519,7 +579,7 @@ useEffect(() => {
             </div>
             <div className="col-lg-6 p_fnt26">
               {/* Vision Statement - Always Visible */}
-               <div
+              <div
                 ref={missionRef}
                 className="info-box"
                 style={{
@@ -621,47 +681,47 @@ useEffect(() => {
           </div>
         </div>
       </div>
-    <div className="categories sectionpadding paddtop0">
-  
-  {/* First Row - Left to Right */}
-  <div className="slider-wrapper">
-    <div className="slider-track scroll-left">
-      {[...categories, ...categories].map((category, index) => (
-        <div key={`row1-${index}`} className="category-card">
-          <img
-            src={category.image}
-            alt={category.title}
-            className="category-image"
-          />
-          <div className="category-overlay"></div>
-          <div className="category-content">
-            <h3 className="category-title">{category.title}</h3>
+      <div className="categories sectionpadding paddtop0">
+
+        {/* First Row - Left to Right */}
+        <div className="slider-wrapper">
+          <div className="slider-track scroll-left">
+            {[...categories, ...categories].map((category, index) => (
+              <div key={`row1-${index}`} className="category-card">
+                <img
+                  src={category.image}
+                  alt={category.title}
+                  className="category-image"
+                />
+                <div className="category-overlay"></div>
+                <div className="category-content">
+                  <h3 className="category-title">{category.title}</h3>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      ))}
-    </div>
-  </div>
 
-  {/* Second Row - Right to Left */}
-  <div className="slider-wrapper">
-    <div className="slider-track scroll-right">
-      {[...categories, ...categories].map((category, index) => (
-        <div key={`row2-${index}`} className="category-card">
-          <img
-            src={category.image}
-            alt={category.title}
-            className="category-image"
-          />
-          <div className="category-overlay"></div>
-          <div className="category-content">
-            <h3 className="category-title">{category.title}</h3>
+        {/* Second Row - Right to Left */}
+        <div className="slider-wrapper">
+          <div className="slider-track scroll-right">
+            {[...categories, ...categories].map((category, index) => (
+              <div key={`row2-${index}`} className="category-card">
+                <img
+                  src={category.image}
+                  alt={category.title}
+                  className="category-image"
+                />
+                <div className="category-overlay"></div>
+                <div className="category-content">
+                  <h3 className="category-title">{category.title}</h3>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      ))}
-    </div>
-  </div>
 
-</div>
+      </div>
       <div
         className="hm_contact-section sectionpadding"
         id="contact"
@@ -839,7 +899,7 @@ useEffect(() => {
                         <div className="col-lg-12 col-md-12">
                           <div className="btnarea text-right">
                             <button type="submit" className={`btn_comman btn_primary2 ${loading || !isAnyFieldFilled() ? 'btn_disabled' : ''}`}
-                            disabled={loading}>{loading ? 'Submitting...' : 'Submit'}</button>
+                              disabled={loading}>{loading ? 'Submitting...' : 'Submit'}</button>
                           </div>
                         </div>
                       </div>
