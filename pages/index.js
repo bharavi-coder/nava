@@ -242,7 +242,7 @@ useEffect(() => {
 
   const contactRef = useRef(null)
   const footerRef = useRef(null)
-  const [hideGetTouch, setHideGetTouch] = useState(false)
+  const [hideGetTouch] = useState(false)
 
   useEffect(() => {
     if (!contactRef.current && !footerRef.current) return
