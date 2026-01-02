@@ -440,7 +440,7 @@ useEffect(() => {
       width: 44,
       height: 44,
       title: 'Wide Rage Product Selection',
-      text: 'A constantly evolving catalog featuring today’s highest demand items and trusted brands.'
+      text: 'A constantly evolving catalog featuring today&apos;s highest demand items and trusted brands.'
     }
   ];
 
@@ -487,7 +487,7 @@ useEffect(() => {
           Nava Distributors is a trusted, family-owned wholesale distributor providing businesses with dependable supply, modern ordering tools, and exceptional service. Our focus is helping retailers stay stocked, competitive, and profitable. 
         </p> 
         <p> 
-          For over four years, Nava Wholesale has proudly served the Chicagoland area as a leading wholesale distributor. Our mission is to provide retailers with top-selling products, competitive pricing, and dependable service that keeps them ahead in today's fast-paced marketplace. 
+          For over four years, Nava Wholesale has proudly served the Chicagoland area as a leading wholesale distributor. Our mission is to provide retailers with top-selling products, competitive pricing, and dependable service that keeps them ahead in today&apos;s fast-paced marketplace. 
         </p> 
       </div> 
       <div className="about-cards"> 
