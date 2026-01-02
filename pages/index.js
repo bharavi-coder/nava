@@ -26,7 +26,6 @@ const Home = () => {
   const [errors, setErrors] = useState({});
   const [invalidFields, setInvalidFields] = useState({});
   const [loading, setLoading] = useState(false);
-  const [activeCard, setActiveCard] = useState(0);
 
   const validateEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -571,7 +570,7 @@ useEffect(() => {
           <div className="row align-items-center fnt26">
             <div className="col-lg-6">
               <h2 className={`hd74 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}>
-                {"The Midwest's Trusted"} <br />
+                The Midwest&apos;s Trusted <br />
                 Partner To <br />
                 Empower Local <br />
                 Businesses
