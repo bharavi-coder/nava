@@ -434,6 +434,7 @@ useEffect(() => {
               zIndex: index + 1
             }}
           >
+            <div className='cardtitlebox'>
             <div className="icon-circle">
               <Image
                 src={card.icon}
@@ -443,6 +444,7 @@ useEffect(() => {
               />
             </div>
             <h4 className="hd24">{card.title}</h4>
+            </div>
             <p>{card.text}</p>
           </div>
         ))}

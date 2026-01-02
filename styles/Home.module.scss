@@ -117,3 +117,8 @@
   opacity: 1;
   transform: translateX(0);
 }
+
+/* Optional per-element delay */
+.fadeLeftDelay {
+  transition-delay: 1s;
+}
