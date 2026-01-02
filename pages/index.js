@@ -624,7 +624,7 @@ useEffect(() => {
         <div className="container">
           <div className="maxwidth770 p_fnt26">
             <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}>Core Values</h2>
-            <p>{"We pride ourselves on operational excellence, reliability, and customer-first service. When you choose Nava Wholesale, you gain more than a supplier you gain a strategic partner committed to your store's growth."}</p>
+            <p>We pride ourselves on operational excellence, reliability, and customer-first service. When you choose Nava Wholesale, you gain more than a supplier you gain a strategic partner committed to your store&apos;s growth.</p>
           </div>
           <div className="list_values">
             <div className="row">
