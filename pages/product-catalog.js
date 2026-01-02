@@ -35,71 +35,60 @@ const heroSlider = [
 "src": "/slider_img1.jpg",
 "width": 855,
 "height": 444,
-"alt": "Popcorn",
-"caption": "Popcorn",
-"href": "#"
-},
-{
-"src": "/slider_img2.jpg",
-"width": 855,
-"height": 444,
-"alt": "Chocolate Bars",
-"caption": "Chocolate Bars",
-"href": "#"
-},
-{
-"src": "/slider_img3.jpg",
-"width": 855,
-"height": 444,
-"alt": "Lollipop",
-"caption": "Lollipop",
-"href": "#"
+"alt": "",
+"caption": "",
+"href": ""
 }
 ]
 
 const categories = [
 { "name": "All categories", "count": 33 },
-{ "name": "Beverages", "count": 8 },
-{ "name": "Chips & Snacks", "count": 10 },
-{ "name": "Candy & Sweets", "count": 8 },
-{ "name": "Convenience Items", "count": 4 },
-{ "name": "Gum & Mint", "count": 3 }
+{ "name": "Beverages", "count": 9 },
+{ "name": "Chips & Snacks", "count": 7 },
+{ "name": "Candy & Sweets", "count": 6 },
+{ "name": "Convenience Items", "count": 7 },
+{ "name": "Gum & Mint", "count": 4 }
 ]
 
 const products = [
 { "id": 1, "name": "Popcorn", "category": "Chips & Snacks", "image": "/popcorn.jpg" },
 { "id": 2, "name": "Chocolate Bars", "category": "Candy & Sweets", "image": "/chocolate_bars.jpg" },
 { "id": 3, "name": "Lollipop", "category": "Candy & Sweets", "image": "/lollipop.jpg" },
-{ "id": 4, "name": "Coca Cola", "category": "Beverages", "image": "/comming_soon.jpg" },
-{ "id": 5, "name": "Coffee Drinks", "category": "Beverages", "image": "/comming_soon.jpg" },
+{ "id": 4, "name": "Tea & Iced Teas", "category": "Beverages", "image": "/comming_soon.svg" },
+{ "id": 5, "name": "Coffee Drinks", "category": "Beverages", "image": "/coffee_drinks.jpg" },
 { "id": 6, "name": "Chewing Gum", "category": "Gum & Mint", "image": "/chewing_gum.jpg" },
-{ "id": 7, "name": "OTC Medicines", "category": "Convenience Items", "image": "/comming_soon.jpg" },
+// Convenience Items
+{ "id": 7, "name": "OTC Medicines", "category": "Convenience Items", "image": "/comming_soon.svg" },
 { "id": 8, "name": "Batteries", "category": "Convenience Items", "image": "/batteries.jpg" },
-{ "id": 9, "name": "Cleaning Supplies", "category": "Convenience Items", "image": "/comming_soon.jpg" },
-{ "id": 10, "name": "Doritos", "category": "Chips & Snacks", "image": "/comming_soon.jpg" },
-{ "id": 11, "name": "Lays Classic", "category": "Chips & Snacks", "image": "/comming_soon.jpg" },
-{ "id": 12, "name": "Pringles", "category": "Chips & Snacks", "image": "/comming_soon.jpg" },
-{ "id": 13, "name": "Gummy Bears", "category": "Candy & Sweets", "image": "/comming_soon.jpg" },
-{ "id": 14, "name": "Skittles", "category": "Candy & Sweets", "image": "/comming_soon.jpg" },
-{ "id": 15, "name": "M&Ms", "category": "Candy & Sweets", "image": "/comming_soon.jpg" },
-{ "id": 16, "name": "Pepsi", "category": "Beverages", "image": "/comming_soon.jpg" },
-{ "id": 17, "name": "Sprite", "category": "Beverages", "image": "/comming_soon.jpg" },
-{ "id": 18, "name": "Mountain Dew", "category": "Beverages", "image": "/comming_soon.jpg" },
-{ "id": 19, "name": "Cheetos", "category": "Chips & Snacks", "image": "/comming_soon.jpg" },
-{ "id": 20, "name": "Sun Chips", "category": "Chips & Snacks", "image": "/comming_soon.jpg" },
-{ "id": 21, "name": "Ruffles", "category": "Chips & Snacks", "image": "/comming_soon.jpg" },
-{ "id": 22, "name": "Twix", "category": "Candy & Sweets", "image": "/comming_soon.jpg" },
-{ "id": 23, "name": "Snickers", "category": "Candy & Sweets", "image": "/comming_soon.jpg" },
-{ "id": 24, "name": "Kit Kat", "category": "Candy & Sweets", "image": "/comming_soon.jpg" },
-{ "id": 25, "name": "Red Bull", "category": "Beverages", "image": "/comming_soon.jpg" },
-{ "id": 26, "name": "Monster Energy", "category": "Beverages", "image": "/comming_soon.jpg" },
-{ "id": 27, "name": "Iced Tea", "category": "Beverages", "image": "/comming_soon.jpg" },
-{ "id": 28, "name": "Mint Gum", "category": "Gum & Mint", "image": "/comming_soon.jpg" },
-{ "id": 29, "name": "Spearmint Gum", "category": "Gum & Mint", "image": "/comming_soon.jpg" },
-{ "id": 30, "name": "Hand Sanitizer", "category": "Convenience Items", "image": "/comming_soon.jpg" },
-{ "id": 31, "name": "Tortilla Chips", "category": "Chips & Snacks", "image": "/comming_soon.jpg" },
-{ "id": 32, "name": "Potato Chips", "category": "Chips & Snacks", "image": "/comming_soon.jpg" },
-{ "id": 33, "name": "Pretzels", "category": "Chips & Snacks", "image": "/comming_soon.jpg" }
+{ "id": 9, "name": "Cleaning Supplies", "category": "Convenience Items", "image": "/comming_soon.svg" },
+{ "id": 10, "name": "Toiletries", "category": "Convenience Items", "image": "/comming_soon.svg" },
+{ "id": 11, "name": "Personal Care", "category": "Convenience Items", "image": "/comming_soon.svg" },
+{ "id": 12, "name": "Automotive", "category": "Convenience Items", "image": "/comming_soon.svg" },
+{ "id": 13, "name": "Seasonal Items", "category": "Convenience Items", "image": "/comming_soon.svg" },
+// Gum & Mint
+{ "id": 14, "name": "Bubble Gum", "category": "Gum & Mint", "image": "/bubble_gum.jpg" },
+{ "id": 15, "name": "Mint Tins", "category": "Gum & Mint", "image": "/comming_soon.svg" },
+{ "id": 16, "name": "Breath Mints", "category": "Gum & Mint", "image": "/comming_soon.svg" },
+//Beverages
+{ "id": 17, "name": "Energy Drinks", "category": "Beverages", "image": "/comming_soon.svg" },
+{ "id": 18, "name": "Water", "category": "Beverages", "image": "/comming_soon.svg" },
+{ "id": 19, "name": "Sports Drinks", "category": "Beverages", "image": "/comming_soon.svg" },
+{ "id": 20, "name": "Protein & Nutritional Drinks", "category": "Beverages", "image": "/comming_soon.svg" },
+{ "id": 21, "name": "Soda", "category": "Beverages", "image": "/comming_soon.svg" },
+{ "id": 22, "name": "Enhanced Waters", "category": "Beverages", "image": "/comming_soon.svg" },
+{ "id": 23, "name": "Juice and Fruit Drinks ", "category": "Beverages", "image": "/comming_soon.svg" },
+//Candy & Sweets
+{ "id": 24, "name": "Gummies", "category": "Candy & Sweets", "image": "/popcorn.jpg" },
+{ "id": 25, "name": "Hard Candy", "category": "Candy & Sweets", "image": "/comming_soon.svg" },
+{ "id": 26, "name": "Novelty Candy", "category": "Candy & Sweets", "image": "/comming_soon.svg" },
+{ "id": 27, "name": "Fruity/Chewy/Sours", "category": "Candy & Sweets", "image": "/comming_soon.svg" },
+//Chips & Snacks
+{ "id": 28, "name": "Protein Bars & Fruit Snacks", "category": "Chips & Snacks", "image": "/comming_soon.svg" },
+{ "id": 39, "name": "Pretzels", "category": "Chips & Snacks", "image": "/comming_soon.svg" },
+{ "id": 30, "name": "Nuts & Trail Mix", "category": "Chips & Snacks", "image": "/comming_soon.svg" },
+{ "id": 31, "name": "Snack Cakes", "category": "Chips & Snacks", "image": "/comming_soon.svg" },
+{ "id": 32, "name": "Jerky & Meat Snacks", "category": "Chips & Snacks", "image": "/comming_soon.svg" },
+{ "id": 33, "name": "Healthy Snacks", "category": "Chips & Snacks", "image": "/comming_soon.svg" }
 ]
 
 const filteredProducts = useMemo(() => {

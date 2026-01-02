@@ -104,3 +104,16 @@
   color: #ff3b3b;
   margin-left: 4px;
 }
+
+/* Fade in from left */
+.fadeLeft {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+
+.fadeLeftVisible {
+  opacity: 1;
+  transform: translateX(0);
+}

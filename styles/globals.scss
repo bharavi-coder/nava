@@ -302,6 +302,9 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
         @include phone400{
             min-height: 660px;
           }
+        @media (max-width: 396px){
+          min-height: 800px;
+          }
         }       
     }
   .bannerText {
@@ -1044,7 +1047,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     .formContect{background: rgba(#e4e4e4, 1);}
     .formarea{
         label{color: #0C1E33;}
-        .form-control,.uploadresume input[readonly] { background: #F7F7F7; border: #D1D1D1 solid 1px!important; border-radius: 8px;}
+        .form-control,.uploadresume input[readonly] { background: #F7F7F7; border: #D1D1D1 solid 1px; border-radius: 8px;}
     }
   }
   @include desktop{
@@ -1097,6 +1100,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     /* --------------------- Form bootstrap.min css Strat --------------------- */	
 	.form-group{margin-bottom: 20px;position:relative;
         &:focus{ outline: none!important;}
+        .text-danger{position: absolute; left: 0px; top:100%}
 	}
 	.select2-container {
 		&.select2-container-active{
@@ -1721,7 +1725,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     align-items: center;
     justify-content: center;
     img{
-      max-width:100%; width:100%; height: inherit;} 
+      max-width:100%; width:100%; height: inherit; display: block; object-fit: cover;} 
   }
   .product_info {
     padding: 16px;
@@ -1917,7 +1921,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     }
   }
   //========= form css =================
-  .required { color: #ff3b3b; margin-left: 4px;}
+  .required { color: #ff3b3b!important; margin-left: 4px!important;}
   .application_form_container {
   padding: 60px 0 100px;
   .icon_tankyou{ margin-bottom: 60px;
@@ -2231,4 +2235,62 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
   cursor: not-allowed;
   pointer-events: none;
   background: #729A9C; color: #FBFBFB;      
+}
+
+
+@media (min-width: 1200px) {
+  .Home_cardsSticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding-top: 120px;
+  }
+
+  .info-card {
+    position: absolute;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.7s ease-out;
+  }
+
+  .info-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet & Mobile */
+@media (max-width: 1199px) {
+  .Home_cardsSection {
+    height: auto !important;
+  }
+
+  .Home_cardsSticky {
+    position: static;
+    height: auto;
+    padding-top: 0;
+  }
+
+  .Home_cardsWrapper {
+    transform: none !important;
+  }
+
+  .info-card {
+    position: static;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none;
+  }
+}
+
+
+.fadeLeft {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: all 0.8s ease-out;
+}
+
+.fadeLeftVisible {
+  opacity: 1;
+  transform: translateX(0);
 }

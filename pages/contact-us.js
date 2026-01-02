@@ -172,7 +172,7 @@ const Home = () => {
                                         <ul className="contactDetail">
                                             <li>
                                                 <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                111 S Lombard Rd Ste 2 Addison, IL 60101
+                                           <a href="https://www.google.com/maps/place/111+S+Lombard+Rd+%23+2,+Addison,+IL+60101,+USA/@41.9263186,-88.0248963,567m/data=!3m2!1e3!4b1!4m6!3m5!1s0x880fad68bd400001:0xbdf111d4a11aec78!8m2!3d41.9263146!4d-88.0223214!16s%2Fg%2F11mbn7crsh?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2N0gBUAM%3D" target="_blank" rel="noopener noreferrer">111 S Lombard Rd Ste 2 Addison, IL 60101</a>
                                             </li>
                                             <li>
                                                 <i className="fa fa-phone" aria-hidden="true"></i>

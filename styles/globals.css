@@ -294,7 +294,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   }
   header .headermain nav.navbar .navbar-collapse .navbar-toggler .navbar-toggler-icon {
     color: #fff;
-    background-image: url(../public/close.png);
+    background-image: url(../public/close.svg);
     opacity: 0.85;
     background-size: 26px;
   }
@@ -376,7 +376,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 }
 @media (max-width: 400px) {
   .homebanner .bannerImage img {
-    min-height: 630px;
+    min-height: 660px;
   }
 }
 .homebanner .bannerText {
@@ -545,7 +545,20 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 }
 @media (max-width: 1024px) {
   .homebanner.inner_banner .bannerImage img {
-    min-height: 1px;
+    min-height: 410px;
+  }
+}
+@media (max-width: 767px) {
+  .homebanner.inner_banner .bannerImage img {
+    min-height: 450px;
+  }
+  .homebanner.inner_banner .bannerText .bannerDesc .title {
+    font-size: 38px;
+  }
+}
+@media (max-width: 480px) {
+  .homebanner.inner_banner .bannerText .bannerDesc {
+    margin-top: 80px;
   }
 }
 
@@ -769,7 +782,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 @media (max-width: 767px) {
   .maincontent .hd2 {
     font-size: 30px;
-    line-height: 1;
+    line-height: 1.2;
     margin-bottom: 18px;
   }
   .maincontent .hd2 span {
@@ -1862,7 +1875,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 }
 .hm_contact-section.inner_contact-section .formarea .form-control, .hm_contact-section.inner_contact-section .formarea .uploadresume input[readonly] {
   background: #F7F7F7;
-  border: #D1D1D1 solid 1px !important;
+  border: #D1D1D1 solid 1px;
   border-radius: 8px;
 }
 @media (max-width: 1366px) {
@@ -1930,6 +1943,11 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 .formarea .form-group:focus {
   outline: none !important;
 }
+.formarea .form-group .text-danger {
+  position: absolute;
+  left: 0px;
+  top: 100%;
+}
 .formarea .select2-container.select2-container-active .select2-chosen {
   color: #000;
 }
@@ -1952,7 +1970,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   width: 30px;
 }
 .formarea .select2-container .select2-choice .select2-arrow b {
-  background-image: url(../public/select_arrow.png);
+  background-image: url(../public/select_arrow.svg);
   background-size: 19px;
 }
 @media (max-width: 1024px) {
@@ -2239,7 +2257,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   cursor: text !important;
 }
 .formarea .uploadresume i {
-  background: url(../public/upload_icon.png) no-repeat center center;
+  background: url(../public/upload_icon.svg) no-repeat center center;
   width: 26px;
   height: 30px;
   display: block;
@@ -3185,6 +3203,9 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   max-width: 100%;
   width: 100%;
   height: inherit;
+  display: block;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .product_card .product_info {
   padding: 16px;
@@ -3450,8 +3471,8 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   }
 }
 .required {
-  color: #ff3b3b;
-  margin-left: 4px;
+  color: #ff3b3b !important;
+  margin-left: 4px !important;
 }
 
 .application_form_container {

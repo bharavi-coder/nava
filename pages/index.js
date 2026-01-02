@@ -11,7 +11,7 @@ import { submitSupplyChainForm } from '../services/supplyChainService';
 import InputMask from 'react-input-mask';
 
 const Home = () => {
-
+const fadeLeftRefs = useRef([]);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -26,6 +26,7 @@ const Home = () => {
   const [errors, setErrors] = useState({});
   const [invalidFields, setInvalidFields] = useState({});
   const [loading, setLoading] = useState(false);
+  const [activeCard, setActiveCard] = useState(0);
 
   const validateEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -52,20 +53,22 @@ const Home = () => {
       newErrors.email = 'Enter a valid email address';
     }
 
-    // if (!formData.phone.trim()) {
-    //   invalid.phone = true;
-    //   newErrors.phone = 'Phone number is required';
-    // } else if (!/^\d{10}$/.test(formData.phone)) {
-    //   invalid.phone = true;
-    //   newErrors.phone = 'Phone number must be 10 digits';
-    // }
+  // if (!formData.phone) {
+  //   newErrors.phone = 'Phone number is required';
+  // } else if (!/^\d{10}$/.test(formData.phone)) {
+  //   newErrors.phone = 'Phone number must be 10 digits';
+  // }
 
-    if (!formData.phone) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\d{10}$/.test(formData.phone)) {
-      newErrors.phone = 'Phone number must be 10 digits';
-    }
+  if (!formData.phone) {
+  invalid.phone = true;
+  newErrors.phone = 'Phone number is required';
+} else if (!/^\d{10}$/.test(formData.phone)) {
+  invalid.phone = true;
+  newErrors.phone = 'Phone number must be 10 digits';
+}
 
+
+    
     if (!formData.businessName.trim()) {
       invalid.businessName = true;
       newErrors.businessName = 'Business name is required';
@@ -162,7 +165,7 @@ const Home = () => {
     {
       id: 3,
       title: 'Chips & Snacks',
-      image: '/beverages.jpg',
+      image: '/chips_and_snacks.jpg',
       direction: 'chips_and_snacks'
     },
     {
@@ -170,130 +173,70 @@ const Home = () => {
       title: 'Convenience Items',
       image: '/convenience_items.jpg',
       direction: 'right'
-    },
+    }, 
     {
       id: 5,
-      title: 'Candy & Sweet',
-      image: '/beverages.jpg',
-      direction: 'right'
-    },
-    {
-      id: 6,
       title: 'Gum & Mint',
       image: '/gum_and_mint.jpg',
       direction: 'right'
     }
   ];
 
-  const row1 = categories.filter(cat => cat.direction === 'left');
-  const row2 = categories.filter(cat => cat.direction === 'right');
+  // const row1 = categories.filter(cat => cat.direction === 'left');
+  // const row2 = categories.filter(cat => cat.direction === 'right');
 
   const mainSectionRef = useRef(null);
   const cardsWrapperRef = useRef(null);
   const cardsRef = useRef([]);
 
-  useEffect(() => {
-    const cards = cardsRef.current;
+useEffect(() => {
+  const cards = cardsRef.current;
+  const section = mainSectionRef.current;
 
-    // Show first 2 cards initially
-    if (cards[0]) cards[0].classList.add(styles.visible);
-    if (cards[1]) cards[1].classList.add(styles.visible);
+  if (!section || cards.length === 0) return;
 
-    let rafId = null;
-    let ticking = false;
+  const isDesktop = () => window.innerWidth >= 1200;
 
-    const updateCards = () => {
-      const mainSection = mainSectionRef.current;
-      const cardsWrapper = cardsWrapperRef.current;
+  const handleScroll = () => {
+    if (!isDesktop()) {
+      // Mobile / tablet: show all cards normally
+      cards.forEach(card => card && card.classList.add(styles.visible));
+      setActiveCard(cards.length - 1);
+      return;
+    }
 
-      if (!mainSection || !cardsWrapper) {
-        ticking = false;
-        return;
-      }
+    const sectionTop = section.getBoundingClientRect().top;
+    const sectionHeight = section.offsetHeight;
+    const viewportHeight = window.innerHeight;
 
-      const viewportWidth = window.innerWidth;
+    if (sectionTop <= 100 && sectionTop > -sectionHeight + viewportHeight) {
+      const scrolled = Math.abs(sectionTop - 100);
+      const cardScrollHeight = 300;
+      const newActive = Math.min(
+        Math.floor(scrolled / cardScrollHeight),
+        cards.length - 1
+      );
 
-      // Disable parallax effect on tablets / mobile (only apply on desktop >= 1200px)
-      if (viewportWidth < 993) {
-        // Ensure all cards are visible and reset any transforms
-        cards.forEach((card) => {
-          if (card) {
+      if (newActive !== activeCard) {
+        setActiveCard(newActive);
+
+        cards.forEach((card, index) => {
+          if (!card) return;
+          if (index <= newActive) {
             card.classList.add(styles.visible);
+          } else {
+            card.classList.remove(styles.visible);
           }
         });
-
-        if (cardsWrapper) {
-          cardsWrapper.style.transform = 'translate3d(0, 0, 0)';
-        }
-
-        ticking = false;
-        return;
       }
+    }
+  };
 
-      const sectionRect = mainSection.getBoundingClientRect();
-      const sectionTop = sectionRect.top;
-      const sectionHeight = sectionRect.height;
-      const windowHeight = window.innerHeight;
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
 
-      // Only process when section is in viewport
-      if (sectionTop > windowHeight || sectionRect.bottom < 0) {
-        ticking = false;
-        return;
-      }
-
-      // Calculate scroll progress within the section (0 to 1)
-      // Progress = 0 when section just enters viewport
-      // Progress = 1 when section is about to leave viewport
-      // Multiply by 0.5 to slow down the scroll speed (scroll takes twice as long)
-      const rawProgress = -sectionTop / (sectionHeight - windowHeight);
-      const scrollProgress = Math.max(0, Math.min(1, rawProgress * 2));
-
-      // Calculate how many cards should be visible based on scroll progress
-      const totalCards = cards.length;
-      const visibleCards = Math.floor(scrollProgress * (totalCards - 2)) + 2; // Start with 2 visible
-
-      // Show cards based on scroll progress
-      cards.forEach((card, index) => {
-        if (card && index < visibleCards) {
-          card.classList.add(styles.visible);
-        }
-      });
-
-      // Translate cards wrapper for smooth scroll effect
-      if (cards[0]) {
-        const cardHeight = cards[0].offsetHeight;
-        const cardGap = 30; // Match your CSS gap
-
-        // Calculate total scrollable distance (we need to scroll through all cards except the first 2)
-        const maxTranslate = (totalCards - 2) * (cardHeight + cardGap);
-        const translateY = -scrollProgress * maxTranslate;
-
-        // Use translate3d for better performance
-        cardsWrapper.style.transform = `translate3d(0, ${translateY}px, 0)`;
-      }
-
-      ticking = false;
-    };
-
-    const handleScroll = () => {
-      if (!ticking) {
-        rafId = requestAnimationFrame(updateCards);
-        ticking = true;
-      }
-    };
-
-    // Initial update
-    updateCards();
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-    };
-  }, []);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, [activeCard]);
 
 
 
@@ -304,20 +247,27 @@ const Home = () => {
   useEffect(() => {
     if (!contactRef.current && !footerRef.current) return
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const shouldHide = entries.some(entry => entry.isIntersecting)
-        setHideGetTouch(shouldHide)
-      },
-      {
-        threshold: 0.5 // 50% visibility
-      }
-    )
+     const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add(styles.fadeLeftVisible);
+        } else {
+          // Remove class when element is no longer intersecting to reverse animation
+          entry.target.classList.remove(styles.fadeLeftVisible);
+        }
+      });
+    },
+    {
+      threshold: 0.3
+    }
+  );
 
-    if (contactRef.current) observer.observe(contactRef.current)
-    if (footerRef.current) observer.observe(footerRef.current)
+  fadeLeftRefs.current.forEach(el => {
+    if (el) observer.observe(el);
+  });
 
-    return () => observer.disconnect()
+  return () => observer.disconnect();
   }, [])
 
 
@@ -454,7 +404,10 @@ const Home = () => {
         <div className="container">
           <div className="about-grid">
             <div className="about-content p_fnt26">
-              <h2 className='hd2'><span>About Us</span>What We Do</h2>
+              <h2
+                className={`hd2 ${styles.fadeLeft}`}
+                ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}
+              ><span>About Us</span>What We Do</h2>
               <p>
                 Nava Distributors is a trusted, family-owned wholesale distributor providing businesses with dependable supply, modern ordering tools, and exceptional service. Our focus is helping retailers stay stocked, competitive, and profitable.
               </p>
@@ -464,56 +417,46 @@ const Home = () => {
             </div>
 
             <div className="about-cards">
-              <div className='Home_cardsWrapper' ref={cardsWrapperRef}>
-                {cardsData.map((card, index) => (
-                  <div
-                    key={card.id}
-                    className="info-card"
-                    ref={(el) => addToRefs(el, index)}
-                    data-index={index}
-                  >
-                    <div className="icon-circle">
-                      <Image
-                        src={card.icon}
-                        width={card.width}
-                        height={card.height}
-                        alt={card.title}
-                      />
-                    </div>
-                    <h4 className='hd24'>{card?.title}</h4>
-                    <p>
-                      {card?.text}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              {/* <div className="info-card">
-                        <div className="icon-circle">
-                            <Image src="/icon_smart_ai.svg" width={44} height={44} alt="" />
-                        </div>
-                        <h4 className='hd24'>Smart AI Driven Ordering</h4>
-                        <p>
-                            Our AI-powered platform streamlines ordering by providing real-time stock visibility, simplified purchasing, and a logistics network that ensures accurate, timely deliveries, keeping your operations running smoothly.
-                        </p>
-                    </div>
-
-                    <div className="info-card">
-                        <div className="icon-circle">
-                            <Image src="/icon_wide_rage.svg" width={38} height={38} alt="" />
-                        </div>
-                        <h4 className='hd24'>Wide Rage Product Selection</h4>
-                        <p>
-                            A constantly evolving catalog featuring today’s highest demand items and trusted brands.
-                        </p>
-                    </div> */}
+  <div
+    className="Home_cardsSection"
+    ref={mainSectionRef}
+    style={{ height: `${cardsData.length * 100}vh` }}
+  >
+    <div className="Home_cardsSticky">
+      <div className="Home_cardsWrapper" ref={cardsWrapperRef}>
+        {cardsData.map((card, index) => (
+          <div
+            key={card.id}
+            className={`info-card ${index <= activeCard ? styles.visible : ''}`}
+            ref={(el) => addToRefs(el, index)}
+            style={{
+              top: `${index * 90}px`,
+              zIndex: index + 1
+            }}
+          >
+            <div className="icon-circle">
+              <Image
+                src={card.icon}
+                width={card.width}
+                height={card.height}
+                alt={card.title}
+              />
             </div>
+            <h4 className="hd24">{card.title}</h4>
+            <p>{card.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
 
           </div>
         </div>
       </div>
       <div className="who_we_are-section sectionpadding">
         <div className="container">
-          <h2 className='hd2'><span>About Us</span>Who We Serve</h2>
+          <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}><span>About Us</span>Who We Serve</h2>
           <div className='p_fnt26 maxwidth990'>
             <p>Whether you operate a single storefront or a multi-location business, NAVA provides a dependable partnership built on performance and trust. With NAVA, you gain more than a distributor, you gain a long-term partner.</p>
           </div>
@@ -565,7 +508,7 @@ const Home = () => {
         <div className="container">
           <div className="row align-items-center fnt26">
             <div className="col-lg-6">
-              <h2 className="hd74">
+              <h2 className={`hd74 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}>
                 {"The Midwest's Trusted"} <br />
                 Partner To <br />
                 Empower Local <br />
@@ -574,7 +517,16 @@ const Home = () => {
             </div>
             <div className="col-lg-6 p_fnt26">
               {/* Vision Statement - Always Visible */}
-              <div className="info-box">
+               <div
+                ref={missionRef}
+                className="info-box"
+                style={{
+                  transition: 'all 1s ease-out',
+                  opacity: missionVisible ? 1 : 0.5,
+                  filter: missionVisible ? 'blur(0px)' : 'blur(8px)',
+                  transform: missionVisible ? 'translateY(0)' : 'translateY(50px)' // ← NEW LINE ADDED
+                }}
+              >
                 <div className="info-icon">
                   <img src="/icon_vision.svg" width={41} height={41} alt="" />
                 </div>
@@ -610,7 +562,7 @@ const Home = () => {
       <div className="core_values-section sectionpadding bg_blue">
         <div className="container">
           <div className="maxwidth770 p_fnt26">
-            <h2 className='hd2'>Core Values</h2>
+            <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}>Core Values</h2>
             <p>{"We pride ourselves on operational excellence, reliability, and customer-first service. When you choose Nava Wholesale, you gain more than a supplier you gain a strategic partner committed to your store's growth."}</p>
           </div>
           <div className="list_values">
@@ -659,7 +611,7 @@ const Home = () => {
       <div className="product_categories-section sectionpadding" id="products">
         <div className="container">
           <div className="maxwidth770 p_fnt26">
-            <h2 className='hd2'><span>Our Products</span>Product Categories</h2>
+            <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}><span>Our Products</span>Product Categories</h2>
             <p>Explore our wide selection of high demand products, carefully curated to meet the needs of your business and customers.</p>
             <div>
               <Link className="btn_comman btn_primary2" href="/product-catalog">Explore Products</Link>
@@ -667,45 +619,47 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="categories sectionpadding paddtop0">
-        {/* First Row - Left to Right */}
-        <div className="slider-wrapper">
-          <div className="slider-track scroll-left">
-            {[...row1, ...row1, ...row1, ...row1].map((category, index) => (
-              <div key={`row1-${index}`} className="category-card">
-                <img
-                  src={category.image}
-                  alt={category.title}
-                  className="category-image"
-                />
-                <div className="category-overlay"></div>
-                <div className="category-content">
-                  <h3 className="category-title">{category.title}</h3>
-                </div>
-              </div>
-            ))}
+    <div className="categories sectionpadding paddtop0">
+  
+  {/* First Row - Left to Right */}
+  <div className="slider-wrapper">
+    <div className="slider-track scroll-left">
+      {[...categories, ...categories].map((category, index) => (
+        <div key={`row1-${index}`} className="category-card">
+          <img
+            src={category.image}
+            alt={category.title}
+            className="category-image"
+          />
+          <div className="category-overlay"></div>
+          <div className="category-content">
+            <h3 className="category-title">{category.title}</h3>
           </div>
         </div>
+      ))}
+    </div>
+  </div>
 
-        {/* Second Row - Right to Left */}
-        <div className="slider-wrapper">
-          <div className="slider-track scroll-right">
-            {[...row2, ...row2, ...row2, ...row2].map((category, index) => (
-              <div key={`row2-${index}`} className="category-card">
-                <img
-                  src={category.image}
-                  alt={category.title}
-                  className="category-image"
-                />
-                <div className="category-overlay"></div>
-                <div className="category-content">
-                  <h3 className="category-title">{category.title}</h3>
-                </div>
-              </div>
-            ))}
+  {/* Second Row - Right to Left */}
+  <div className="slider-wrapper">
+    <div className="slider-track scroll-right">
+      {[...categories, ...categories].map((category, index) => (
+        <div key={`row2-${index}`} className="category-card">
+          <img
+            src={category.image}
+            alt={category.title}
+            className="category-image"
+          />
+          <div className="category-overlay"></div>
+          <div className="category-content">
+            <h3 className="category-title">{category.title}</h3>
           </div>
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+
+</div>
       <div
         className="hm_contact-section sectionpadding"
         id="contact"
@@ -716,14 +670,14 @@ const Home = () => {
             <div className="row align-items-center">
               <div className="col-lg-6 col-sm-12">
                 <div className="p_fnt26 maxwidth580">
-                  <h2 className='hd2'><span>Contact Us</span>Ready to upgrade <br />your supply chain?</h2>
+                  <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}><span>Contact Us</span>Ready to upgrade <br />your supply chain?</h2>
                   <p>Have a question or need a quote?<br />
                     Fill out the form and a member of our team will get back to you shortly.</p>
                   <div className="address">
                     <ul className="contactDetail">
                       <li>
                         <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        111 S Lombard Rd Ste 2 Addison, IL 60101
+                        <a href="https://www.google.com/maps/place/111+S+Lombard+Rd+%23+2,+Addison,+IL+60101,+USA/@41.9263186,-88.0248963,567m/data=!3m2!1e3!4b1!4m6!3m5!1s0x880fad68bd400001:0xbdf111d4a11aec78!8m2!3d41.9263146!4d-88.0223214!16s%2Fg%2F11mbn7crsh?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2N0gBUAM%3D" target="_blank" rel="noopener noreferrer">111 S Lombard Rd Ste 2 Addison, IL 60101</a>
                       </li>
                       <li>
                         <i className="fa fa-phone" aria-hidden="true"></i>
@@ -829,7 +783,8 @@ const Home = () => {
                                 <input
                                   {...inputProps}
                                   type="text"
-                                  className={`form-control ${invalidFields.phone ? styles.inputError : ''}`}
+                                  className={`form-control ${errors.phone ? styles.inputError : ''}`}
+                                  // className={`form-control ${invalidFields.phone ? styles.inputError : ''}`}
                                   placeholder="+01 (xxx) - xxxx - xxx"
                                 />
                               )}
