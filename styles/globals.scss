@@ -2255,3 +2255,13 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
   top: 0;
   z-index: 10; /* make sure it stays above other cards */
 }
+
+
+.mailAddressLink{
+  color: #434343 !important;
+  a{color: #434343;text-decoration: underline;}
+}
+.max1000{
+  max-width: 1000px;
+    margin: 0 auto;
+}

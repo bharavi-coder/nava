@@ -3946,4 +3946,17 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   position: sticky;
   top: 0;
   z-index: 10; /* make sure it stays above other cards */
+}
+
+.mailAddressLink {
+  color: #434343 !important;
+}
+.mailAddressLink a {
+  color: #434343;
+  text-decoration: underline;
+}
+
+.max1000 {
+  max-width: 1000px;
+  margin: 0 auto;
 }/*# sourceMappingURL=globals.css.map */
