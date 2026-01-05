@@ -741,7 +741,7 @@ const Home = () => {
       <div className="product_categories-section sectionpadding" id="products">
         <div className="container">
           <div className="maxwidth770 p_fnt26">
-            <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}><span>Our Products</span>Product Categories</h2>
+            <h2 className="hd2"><span>Our Products</span>Product Categories</h2>
             <p>Explore our wide selection of high demand products, carefully curated to meet the needs of your business and customers.</p>
             <div>
               <Link className="btn_comman btn_primary2" href="/product-catalog">Explore Products</Link>
@@ -800,7 +800,7 @@ const Home = () => {
             <div className="row align-items-center">
               <div className="col-lg-6 col-sm-12">
                 <div className="p_fnt26 maxwidth580">
-                  <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}><span>Contact Us</span>Ready to upgrade <br />your supply chain?</h2>
+                  <h2 className="hd2"><span>Contact Us</span>Ready to upgrade <br />your supply chain?</h2>
                   <p>Have a question or need a quote?<br />
                     Fill out the form and a member of our team will get back to you shortly.</p>
                   <div className="address">
