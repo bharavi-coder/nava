@@ -440,7 +440,7 @@ useEffect(() => {
       width: 44,
       height: 44,
       title: 'Wide Rage Product Selection',
-      text: 'A constantly evolving catalog featuring today&apos;s highest demand items and trusted brands.'
+      text: 'A constantly evolving catalog featuring today\'s highest demand items and trusted brands.'
     }
   ];
 
@@ -482,7 +482,7 @@ useEffect(() => {
   <div className="container"> 
     <div className="about-grid"> 
       <div className="about-content p_fnt26"> 
-        <h2><span>About Us</span>What We Do</h2> 
+        <h2 className="hd2"><span>About Us</span>What We Do</h2> 
         <p> 
           Nava Distributors is a trusted, family-owned wholesale distributor providing businesses with dependable supply, modern ordering tools, and exceptional service. Our focus is helping retailers stay stocked, competitive, and profitable. 
         </p> 
@@ -517,7 +517,7 @@ useEffect(() => {
 </div>
       <div className="who_we_are-section sectionpadding">
         <div className="container">
-          <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}><span>About Us</span>Who We Serve</h2>
+          <h2 className="hd2"><span>About Us</span>Who We Serve</h2>
           <div className='p_fnt26 maxwidth990'>
             <p>Whether you operate a single storefront or a multi-location business, NAVA provides a dependable partnership built on performance and trust. With NAVA, you gain more than a distributor, you gain a long-term partner.</p>
           </div>
@@ -623,7 +623,7 @@ useEffect(() => {
       <div className="core_values-section sectionpadding bg_blue">
         <div className="container">
           <div className="maxwidth770 p_fnt26">
-            <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}>Core Values</h2>
+            <h2 className="hd2">Core Values</h2>
             <p>We pride ourselves on operational excellence, reliability, and customer-first service. When you choose Nava Wholesale, you gain more than a supplier you gain a strategic partner committed to your store&apos;s growth.</p>
           </div>
           <div className="list_values">
