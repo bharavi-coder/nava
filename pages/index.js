@@ -482,7 +482,7 @@ useEffect(() => {
   <div className="container"> 
     <div className="about-grid"> 
       <div className="about-content p_fnt26"> 
-        <h2 className={`hd2 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}><span>About Us</span>What We Do</h2> 
+        <h2><span>About Us</span>What We Do</h2> 
         <p> 
           Nava Distributors is a trusted, family-owned wholesale distributor providing businesses with dependable supply, modern ordering tools, and exceptional service. Our focus is helping retailers stay stocked, competitive, and profitable. 
         </p> 
