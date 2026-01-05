@@ -1164,7 +1164,6 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 @media screen and (min-width: 993px) {
   .aboutSection .about-cards {
     position: relative;
-    overflow: hidden;
     height: 100vh;
   }
 }
@@ -1176,15 +1175,28 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   margin-bottom: 30px;
   -webkit-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  min-height: 301px;
+  min-height: 260px;
   -webkit-transition: opacity 0.6s ease, -webkit-transform 0.6s ease;
   transition: opacity 0.6s ease, -webkit-transform 0.6s ease;
   transition: opacity 0.6s ease, transform 0.6s ease;
   transition: opacity 0.6s ease, transform 0.6s ease, -webkit-transform 0.6s ease;
   height: auto;
 }
+.aboutSection .about-cards .info-card .cardtitlebox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
 .aboutSection .about-cards .info-card .icon-circle {
   width: 71px;
+  margin-right: 20px;
   height: 71px;
   background: #cfdedd;
   border-radius: 100%;
@@ -1198,6 +1210,10 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
       -ms-flex-pack: center;
           justify-content: center;
   margin-bottom: 15px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 71px;
+          flex: 0 0 71px;
+  max-width: 71px;
 }
 .aboutSection .about-cards .info-card .icon-circle img {
   max-width: 71px;
@@ -3911,4 +3927,18 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   pointer-events: none;
   background: #729A9C;
   color: #FBFBFB;
+}
+
+.info-card {
+  position: relative; /* default */
+  -webkit-transition: opacity 0.3s ease, -webkit-transform 0.3s ease;
+  transition: opacity 0.3s ease, -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.info-card.isSticky {
+  position: sticky;
+  top: 0;
+  z-index: 10; /* make sure it stays above other cards */
 }/*# sourceMappingURL=globals.css.map */

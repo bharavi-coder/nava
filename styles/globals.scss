@@ -669,7 +669,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       //height:40vh;
 
       .cardtitlebox{
-        display:flex; flex-direction:row; align-items:center;
+        display:flex; flex-direction:row; align-items:center; 
       }
       .icon-circle {
         width: 71px; margin-right:20px;
@@ -679,7 +679,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 15px;
+        margin-bottom: 15px;flex:0 0 71px;max-width:71px;
 
         img {
           max-width: 71px; max-height: 71px;
