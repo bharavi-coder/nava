@@ -1398,6 +1398,11 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   background-size: cover;
   color: #fff;
 }
+@media screen and (min-width: 993px) {
+  .websection-section {
+    min-height: 100vh;
+  }
+}
 .websection-section p {
   color: #fff;
 }
