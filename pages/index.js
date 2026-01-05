@@ -189,127 +189,137 @@ const Home = () => {
   const cardsWrapperRef = useRef(null);
   const cardsRef = useRef([]);
 
-useEffect(() => {
-  const cards = cardsRef.current;
-  const mainSection = mainSectionRef.current;
+  useEffect(() => {
+    const cards = cardsRef.current;
+    const mainSection = mainSectionRef.current;
 
-  if (!mainSection || cards.length === 0) return;
+    if (!mainSection || cards.length === 0) return;
 
-  let rafId = null;
-  let ticking = false;
+    let rafId = null;
+    let ticking = false;
 
-  const updateCards = () => {
-    const viewportWidth = window.innerWidth;
+    const updateCards = () => {
+      const viewportWidth = window.innerWidth;
 
-    // Disable effect on mobile/tablet
-    if (viewportWidth < 993) {
-      cards.forEach((card) => {
-        if (card) {
-          card.classList.add(styles.visible);
-          card.style.transform = "none";
-          card.style.top = "0";
-          card.style.position = "relative";
+      // Disable effect on mobile/tablet
+      if (viewportWidth < 993) {
+        cards.forEach((card) => {
+          if (card) {
+            card.classList.add(styles.visible);
+            card.style.transform = "none";
+            card.style.top = "0";
+            card.style.position = "relative";
+          }
+        });
+        ticking = false;
+        return;
+      }
+
+      const sectionRect = mainSection.getBoundingClientRect();
+      const sectionTop = sectionRect.top;
+      const sectionHeight = sectionRect.height;
+      const windowHeight = window.innerHeight;
+
+      // Calculate active card based on scroll position
+      let activeCard = 0;
+      const sectionEndTrigger = -sectionHeight + windowHeight;
+      if (sectionTop <= 50 && sectionTop > sectionEndTrigger) {
+        const scrolled = Math.abs(sectionTop - 50);
+        const cardHeight = 250; // Distance to scroll before next card overlays
+        activeCard = Math.min(Math.floor(scrolled / cardHeight), cards.length - 1);
+      } else if (sectionTop <= sectionEndTrigger) {
+        // Section has scrolled past its end — keep last card overlayed
+        activeCard = cards.length - 1;
+      } else if (sectionTop > 50) {
+        activeCard = 0;
+      }
+
+      const cardSpacing = 280; // Space between cards when not overlaying
+      const overlayOffset = 100; // Offset when cards overlay
+
+      // Update each card position
+      cards.forEach((card, index) => {
+        if (!card) return;
+
+        card.classList.add(styles.visible);
+        card.style.position = "absolute";
+        card.style.left = "0";
+        card.style.right = "0";
+        card.style.transition = "all 0.7s ease-out";
+        card.style.zIndex = index + 1;
+
+        let topPosition = 0;
+
+        // Initially, all cards are stacked vertically with full spacing
+        if (activeCard === 0) {
+          topPosition = index * cardSpacing;
         }
+        // As we scroll, cards start to overlay
+        else if (index < activeCard) {
+          // Cards that should be overlaying
+          topPosition = index * overlayOffset;
+        } else if (index === activeCard) {
+          // Current active card moving to overlay position
+          topPosition = index * overlayOffset;
+        } else {
+          // Cards below active card - still in normal position
+          const overlayedCards = activeCard;
+          topPosition = (overlayedCards * overlayOffset) + ((index - overlayedCards) * cardSpacing);
+        }
+
+        card.style.top = `${topPosition}px`;
+        card.style.transform = "translateY(0)";
+        card.style.opacity = "1";
       });
+      // ensure wrapper is positioned so absolutely positioned cards don't affect layout
+      const cardsWrapper = cardsWrapperRef.current;
+      if (cardsWrapper) {
+        const firstCard = cards[0];
+        if (firstCard) {
+          const cardHeight = firstCard.offsetHeight;
+          const cardGap = 30;
+          // keep wrapper just tall enough for the visible stacked area to avoid huge section height
+          const visible = Math.max(1, Math.min(cards.length, 2));
+          cardsWrapper.style.position = 'relative';
+          cardsWrapper.style.minHeight = `${cardHeight + (visible - 1) * cardGap}px`;
+        }
+      }
+
       ticking = false;
-      return;
-    }
+    };
 
-    const sectionRect = mainSection.getBoundingClientRect();
-    const sectionTop = sectionRect.top;
-    const sectionHeight = sectionRect.height;
-    const windowHeight = window.innerHeight;
-
-    // Calculate active card based on scroll position
-    let activeCard = 0;
-    const sectionEndTrigger = -sectionHeight + windowHeight;
-    if (sectionTop <= 50 && sectionTop > sectionEndTrigger) {
-      const scrolled = Math.abs(sectionTop - 50);
-      const cardHeight = 250; // Distance to scroll before next card overlays
-      activeCard = Math.min(Math.floor(scrolled / cardHeight), cards.length - 1);
-    } else if (sectionTop <= sectionEndTrigger) {
-      // Section has scrolled past its end — keep last card overlayed
-      activeCard = cards.length - 1;
-    } else if (sectionTop > 50) {
-      activeCard = 0;
-    }
-
-    const cardSpacing = 280; // Space between cards when not overlaying
-    const overlayOffset = 100; // Offset when cards overlay
-
-    // Update each card position
-    cards.forEach((card, index) => {
-      if (!card) return;
-
-      card.classList.add(styles.visible);
-      card.style.position = "absolute";
-      card.style.left = "0";
-      card.style.right = "0";
-      card.style.transition = "all 0.7s ease-out";
-      card.style.zIndex = index + 1;
-
-      let topPosition = 0;
-
-      // Initially, all cards are stacked vertically with full spacing
-      if (activeCard === 0) {
-        topPosition = index * cardSpacing;
+    const handleScroll = () => {
+      if (!ticking) {
+        rafId = requestAnimationFrame(updateCards);
+        ticking = true;
       }
-      // As we scroll, cards start to overlay
-      else if (index < activeCard) {
-        // Cards that should be overlaying
-        topPosition = index * overlayOffset;
-      } else if (index === activeCard) {
-        // Current active card moving to overlay position
-        topPosition = index * overlayOffset;
-      } else {
-        // Cards below active card - still in normal position
-        const overlayedCards = activeCard;
-        topPosition = (overlayedCards * overlayOffset) + ((index - overlayedCards) * cardSpacing);
-      }
+    };
 
-      card.style.top = `${topPosition}px`;
-      card.style.transform = "translateY(0)";
-      card.style.opacity = "1";
-    });
-    // ensure wrapper is positioned so absolutely positioned cards don't affect layout
-    const cardsWrapper = cardsWrapperRef.current;
-    if (cardsWrapper) {
-      const firstCard = cards[0];
-      if (firstCard) {
-        const cardHeight = firstCard.offsetHeight;
-        const cardGap = 30;
-        // keep wrapper just tall enough for the visible stacked area to avoid huge section height
-        const visible = Math.max(1, Math.min(cards.length, 2));
-        cardsWrapper.style.position = 'relative';
-        cardsWrapper.style.minHeight = `${cardHeight + (visible - 1) * cardGap}px`;
-      }
-    }
+    // Initial update
+    updateCards();
 
-    ticking = false;
-  };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", updateCards, { passive: true });
 
-  const handleScroll = () => {
-    if (!ticking) {
-      rafId = requestAnimationFrame(updateCards);
-      ticking = true;
-    }
-  };
-
-  // Initial update
-  updateCards();
-
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  window.addEventListener("resize", updateCards, { passive: true });
-
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
-    window.removeEventListener("resize", updateCards);
-    if (rafId) cancelAnimationFrame(rafId);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", updateCards);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
 
 
 
+  // Typewriter heading
+    const headingRef = useRef(null);
+    const [displayedText, setDisplayedText] = useState('');
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [headingVisible, setHeadingVisible] = useState(false);
+
+    const fullText = `The Midwest's Trusted
+    Partner To
+    Empower Local
+    Businesses`;
 
 
   const contactRef = useRef(null)
@@ -343,6 +353,35 @@ useEffect(() => {
   }, [])
 
 
+  // Trigger typewriter when heading is visible
+  useEffect(() => {
+    if (!headingRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHeadingVisible(true);
+          observer.disconnect(); // run once
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(headingRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!headingVisible || currentIndex >= fullText.length) return;
+
+    const timeout = setTimeout(() => {
+      setDisplayedText((prev) => prev + fullText[currentIndex]);
+      setCurrentIndex((prev) => prev + 1);
+    }, 50);
+
+    return () => clearTimeout(timeout);
+  }, [headingVisible, currentIndex]);
 
 
   // Parallax states
@@ -439,11 +478,15 @@ useEffect(() => {
       icon: '/icon_wide_rage.svg',
       width: 44,
       height: 44,
-      title: 'Wide Rage Product Selection',
+      title: 'Wide Range Product Selection',
       text: 'A constantly evolving catalog featuring today\'s highest demand items and trusted brands.'
     }
   ];
 
+
+  
+
+  
 
   return (
     <Layout>
@@ -569,11 +612,37 @@ useEffect(() => {
         <div className="container">
           <div className="row align-items-center fnt26">
             <div className="col-lg-6">
-              <h2 className={`hd74 ${styles.fadeLeft}`} ref={(el) => { if (el && !fadeLeftRefs.current.includes(el)) fadeLeftRefs.current.push(el); }}>
-                The Midwest&apos;s Trusted <br />
-                Partner To <br />
-                Empower Local <br />
-                Businesses
+              <h2
+                ref={headingRef}
+                className="hd74"
+                style={{
+                  minHeight: '200px',
+                  position: 'relative',
+                  whiteSpace: 'pre-line'
+                }}
+              >
+                {displayedText}
+
+                {currentIndex < fullText.length && (
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: '3px',
+                      height: '1em',
+                      background: 'currentColor',
+                      marginLeft: '4px',
+                      animation: 'blink 0.7s infinite',
+                      verticalAlign: 'bottom'
+                    }}
+                  />
+                )}
+
+                <style>{`
+                  @keyframes blink {
+                    0%, 50% { opacity: 1; }
+                    51%, 100% { opacity: 0; }
+                  }
+                `}</style>
               </h2>
             </div>
             <div className="col-lg-6 p_fnt26">
