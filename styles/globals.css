@@ -258,13 +258,12 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
     top: 0;
     border: none;
     outline: none;
-    background: #14565B;
-    color: #fff;
+    color: #14565B;
     -webkit-box-shadow: none !important;
             box-shadow: none !important;
   }
   header .headermain nav.navbar .navbar-toggler .navbar-toggler-icon {
-    color: #fff;
+    color: #14565B;
     background-image: url(../public/download.svg);
   }
   header .headermain nav.navbar .navbar-collapse {
@@ -324,9 +323,6 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
     width: 100%;
     border-bottom: #E0E0E0 solid 1px;
   }
-  header .headermain nav.navbar .navigation .navbar-nav .nav-item:first-child {
-    border-top: #E0E0E0 solid 1px;
-  }
   header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link {
     display: block;
     width: 100%;
@@ -335,7 +331,14 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
     color: #14565B;
   }
   header .headermain nav.navbar .btn_customer {
-    margin: 30px 0px 0px 0px;
+    margin: 0px 0px 0px 0px !important;
+  }
+  header .headermain nav.navbar .btn_customer a.nav-link {
+    padding: 15px 20px;
+    font-size: 22px;
+    color: #14565B;
+    background: transparent;
+    border-radius: 0px;
   }
 }
 
@@ -1325,6 +1328,8 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 }
 .who_we_are-section .industrial_traing {
   overflow-x: hidden;
+  max-width: 1920px;
+  margin: auto;
 }
 @media (max-width: 1366px) {
   .who_we_are-section .industrial_traing .box_1 {
@@ -1398,19 +1403,13 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   background-size: cover;
   color: #fff;
 }
-@media screen and (min-width: 993px) {
-  .websection-section {
-    min-height: 100vh;
-  }
-}
 .websection-section p {
   color: #fff;
 }
 .websection-section .container {
   position: relative;
   z-index: 2;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  min-height: 500px;
 }
 .websection-section .info-box {
   display: -webkit-box;
