@@ -305,7 +305,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
               min-height: 810px; object-fit: cover;
         }
         @include phone400{
-            min-height: 660px;
+            min-height: 600px;
           }
         }       
     }

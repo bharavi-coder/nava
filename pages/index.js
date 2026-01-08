@@ -498,8 +498,30 @@ const Home = () => {
         }}
       />
       <div className="homebanner">
-        <figure className='bannerImage'>
+        {/* <figure className='bannerImage'>
           <Image src="/hm_banner1.jpg" width={1440} height={945} alt="NextSSS" />
+        </figure> */}
+        <figure className="bannerImage">
+          <picture>
+            {/* Small mobile */}
+           
+
+            {/* Large mobile / tablet */}
+            <source
+              media="(max-width: 767px)"
+              srcSet="/hm_banner1_mobile.jpg"
+            />
+
+            {/* Desktop fallback */}
+            <Image
+              src="/hm_banner1.jpg"
+              width={1440}
+              height={945}
+              alt="NextSSS"
+              priority
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </picture>
         </figure>
         <div className="bannerText">
           <div className="container">
