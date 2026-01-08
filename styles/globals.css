@@ -379,7 +379,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 }
 @media (max-width: 400px) {
   .homebanner .bannerImage img {
-    min-height: 500px;
+    min-height: 550px;
   }
 }
 .homebanner .bannerText {
