@@ -612,13 +612,13 @@ const Home = () => {
           <div className="container- comman_slider">
             <div ref={sliderRef} style={{ overflow: 'hidden' }}>
               <div
-                style={{
-                  display: 'flex',
-                  gap: '1.5rem',
-                  transform: `translateX(${translateX}px)`,
-                  transition: 'transform 0.3s ease-out',
-                  willChange: 'transform'
-                }}
+                // style={{
+                //   display: 'flex',
+                //   gap: '1.5rem',
+                //   transform: `translateX(${translateX}px)`,
+                //   transition: 'transform 0.3s ease-out',
+                //   willChange: 'transform'
+                // }}
               >
                 <SimpleSlider items={[{
                   src: '/gas_stations.jpg', width: 501, height: 326, alt: 'Gas Stations', caption: 'Gas Stations', href: '/courses'
