@@ -372,6 +372,7 @@ const Home = () => {
       header .headermain .logo .home_logo {
         display: none !important;
       }
+        header .headermain nav.navbar .navbar-toggler .navbar-toggler-icon{color: #14565B; background-image: url(../download1.svg);}
         @media (min-width: 992px){
             header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link {color: #ffffff;}
             header .headermain nav.navbar .navigation .navbar-nav { padding-top: 0px !important; padding-bottom: 0px !important;}
