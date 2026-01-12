@@ -382,6 +382,11 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
     min-height: 550px;
   }
 }
+@media screen and (max-width: 400px) {
+  .homebanner .bannerImage img {
+    min-height: 500px;
+  }
+}
 .homebanner .bannerText {
   position: absolute;
   top: 20%;
