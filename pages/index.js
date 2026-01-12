@@ -520,11 +520,7 @@ const Home = () => {
         </figure> */}
         <figure className="bannerImage">
           <picture>
-            {/* Small mobile */}
-            <source
-              media="(max-width: 567px)"
-              srcSet="/hm_banner1_mobile-1.jpg"
-            />
+            
 
             {/* Large mobile / tablet */}
             <source
