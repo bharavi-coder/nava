@@ -388,7 +388,7 @@ const Home = () => {
 
   // Parallax states
   const sliderRef = useRef(null)
-  const [translateX, setTranslateX] = useState(200) // initial offset
+  const [translateX, setTranslateX] = useState(0) // initial offset
 
   const visionRef = useRef(null);
   const missionRef = useRef(null);
@@ -408,7 +408,7 @@ const Home = () => {
         const end = windowHeight * 0.3
 
         const progress = Math.min(Math.max((start - rect.top) / (start - end), 0), 1)
-        setTranslateX(200 * (1 - progress))
+        setTranslateX(1 * (1 - progress))
       }
 
       const vh = window.innerHeight
@@ -612,13 +612,13 @@ const Home = () => {
           <div className="container- comman_slider">
             <div ref={sliderRef} style={{ overflow: 'hidden' }}>
               <div
-                // style={{
-                //   display: 'flex',
-                //   gap: '1.5rem',
-                //   transform: `translateX(${translateX}px)`,
-                //   transition: 'transform 0.3s ease-out',
-                //   willChange: 'transform'
-                // }}
+                style={{
+                  display: 'flex',
+                  gap: '1.5rem',
+                  transform: `translateX(${translateX}px)`,
+                  transition: 'transform 0.3s ease-out',
+                  willChange: 'transform'
+                }}
               >
                 <SimpleSlider items={[{
                   src: '/gas_stations.jpg', width: 501, height: 326, alt: 'Gas Stations', caption: 'Gas Stations', href: '/courses'
