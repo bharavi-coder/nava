@@ -361,6 +361,8 @@ const Home = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setHeadingVisible(true);
+          setVisionVisible(true);
+          setMissionVisible(true);
           observer.disconnect(); // run once
         }
       },
@@ -388,44 +390,59 @@ const Home = () => {
   const sliderRef = useRef(null)
   const [translateX, setTranslateX] = useState(200) // initial offset
 
+  const visionRef = useRef(null);
   const missionRef = useRef(null);
+  const webSectionRef = useRef(null);
+  const [visionVisible, setVisionVisible] = useState(false);
   const [missionVisible, setMissionVisible] = useState(false);
 
 
   useEffect(() => {
     const handleScroll = () => {
       // Slider parallax effect
-      if (!sliderRef.current) return
+      if (sliderRef.current) {
+        const rect = sliderRef.current.getBoundingClientRect()
+        const windowHeight = window.innerHeight
 
-      const rect = sliderRef.current.getBoundingClientRect()
-      const windowHeight = window.innerHeight
+        const start = windowHeight
+        const end = windowHeight * 0.3
 
-      /*
-      Start animation when section enters viewport
-      End animation when section center reaches viewport center
-      */
-      const start = windowHeight
-      const end = windowHeight * 0.3
+        const progress = Math.min(Math.max((start - rect.top) / (start - end), 0), 1)
+        setTranslateX(200 * (1 - progress))
+      }
 
-      const progress = Math.min(Math.max((start - rect.top) / (start - end), 0), 1)
+      const vh = window.innerHeight
 
-      // 200px → 0px
-      setTranslateX(200 * (1 - progress))
-
-      if (missionRef.current) {
-        const element = missionRef.current;
-        const rect = element.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-
-        if (rect.top < windowHeight * 0.7 && rect.bottom > 0) {
-          setMissionVisible(true);
+      // Use section position to toggle both Vision and Mission together (desktop & mobile)
+      if (webSectionRef.current) {
+        const sr = webSectionRef.current.getBoundingClientRect()
+        const shouldShow = sr.top <= vh * 0.5 && sr.bottom > 0
+        setVisionVisible(shouldShow)
+        setMissionVisible(shouldShow)
+      } else {
+        // fallback: check elements individually
+        const checkAtHalf = (el, setFn) => {
+          if (!el) return
+          const r = el.getBoundingClientRect()
+          if (r.top <= vh * 0.5 && r.bottom > 0) {
+            setFn(true)
+          } else {
+            setFn(false)
+          }
         }
+
+        checkAtHalf(visionRef.current, setVisionVisible)
+        checkAtHalf(missionRef.current, setMissionVisible)
       }
     };
 
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('resize', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
   }, []);
 
   // const addToRefs = (el, index) => {
@@ -504,7 +521,10 @@ const Home = () => {
         <figure className="bannerImage">
           <picture>
             {/* Small mobile */}
-           
+            <source
+              media="(max-width: 567px)"
+              srcSet="/hm_banner1_mobile-1.jpg"
+            />
 
             {/* Large mobile / tablet */}
             <source
@@ -630,7 +650,7 @@ const Home = () => {
 
 
 
-      <div className="websection-section sectionpadding">
+      <div className="websection-section sectionpadding" ref={webSectionRef}>
         <div className="container">
           <div className="row align-items-center fnt26">
             <div className="col-lg-6">
@@ -670,13 +690,13 @@ const Home = () => {
             <div className="col-lg-6 p_fnt26">
               {/* Vision Statement - Always Visible */}
               <div
-                ref={missionRef}
+                ref={visionRef}
                 className="info-box"
                 style={{
                   transition: 'all 1s ease-out',
-                  opacity: missionVisible ? 1 : 0.5,
-                  filter: missionVisible ? 'blur(0px)' : 'blur(8px)',
-                  transform: missionVisible ? 'translateY(0)' : 'translateY(50px)' // ← NEW LINE ADDED
+                  opacity: visionVisible ? 1 : 0.5,
+                  filter: visionVisible ? 'blur(0px)' : 'blur(8px)',
+                  transform: visionVisible ? 'translateY(0)' : 'translateY(50px)'
                 }}
               >
                 <div className="info-icon">
@@ -696,7 +716,7 @@ const Home = () => {
                   transition: 'all 1s ease-out',
                   opacity: missionVisible ? 1 : 0.5,
                   filter: missionVisible ? 'blur(0px)' : 'blur(8px)',
-                  transform: missionVisible ? 'translateY(0)' : 'translateY(50px)' // ← NEW LINE ADDED
+                  transform: missionVisible ? 'translateY(0)' : 'translateY(50px)'
                 }}
               >
                 <div className="info-icon">
