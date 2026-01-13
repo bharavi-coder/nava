@@ -561,22 +561,23 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     } 
     @include phone{
       .slick-prev,.slick-next{ width:38px; height: 38px; background-size: 18px auto;}
-      .slick-prev{ left: 43%;}
-      .slick-next{left: inherit; right: 43%;}
+      // .slick-prev{ left: 43%;}
+      //.slick-next{left: inherit; right: 43%;}
+      .slick-next{left: 85px;}
     } 
     @include phone-xs{
-      .slick-prev{ left: 41%;}
-      .slick-next{right: 41%;}
+      // .slick-prev{ left: 41%;}
+      // .slick-next{right: 41%;}
     } 
     @include phone480{
-      .slick-prev{ left: 38%;}
-      .slick-next{right: 38%;}
+      // .slick-prev{ left: 38%;}
+      // .slick-next{right: 38%;}
     }
     @include phone330{
-      .slick-prev{ left: 36%;}
-      .slick-next{ right: 36%;}
+      // .slick-prev{ left: 36%;}
+      // .slick-next{ right: 36%;}
     } 
-  }
+  } 
 }
 .bg_blue{background: linear-gradient(180deg, #0b2239 0%, #071a2d 100%);   color: #fff;
   p,div,.hd2{ color:#ffffff;}
@@ -748,10 +749,11 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
           .box_1{margin: 5px 0px 70px 0px;}
       }
       @include phone{
-        .box_1{filter: drop-shadow(0px 12px 6px rgba(0, 0, 0, 0.161));}
+        .box_1{filter: drop-shadow(0px 12px 6px rgba(0, 0, 0, 0.161));margin-bottom: 60px;}
       }
       @include phone-xs{
-          .box_1{ max-width: 100%; margin-left: auto; margin-right: auto;filter: drop-shadow(0px 12px 6px rgba(0, 0, 0, 0.161));margin: 10px 0px 80px 0px;}
+          .box_1{ max-width: 100%; margin-left: auto; margin-right: auto;
+            filter: drop-shadow(0px 12px 6px rgba(0, 0, 0, 0.161));margin: 10px 0px 60px 0px;}
       }
   }
   @include desktop{

@@ -972,39 +972,10 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
     height: 38px;
     background-size: 18px auto;
   }
-  .maincontent .comman_slider .slick-prev {
-    left: 43%;
-  }
   .maincontent .comman_slider .slick-next {
-    left: inherit;
-    right: 43%;
+    left: 85px;
   }
 }
-@media (max-width: 575px) {
-  .maincontent .comman_slider .slick-prev {
-    left: 41%;
-  }
-  .maincontent .comman_slider .slick-next {
-    right: 41%;
-  }
-}
-@media (max-width: 480px) {
-  .maincontent .comman_slider .slick-prev {
-    left: 38%;
-  }
-  .maincontent .comman_slider .slick-next {
-    right: 38%;
-  }
-}
-@media (max-width: 330px) {
-  .maincontent .comman_slider .slick-prev {
-    left: 36%;
-  }
-  .maincontent .comman_slider .slick-next {
-    right: 36%;
-  }
-}
-
 .bg_blue {
   background: -webkit-gradient(linear, left top, left bottom, from(#0b2239), to(#071a2d));
   background: linear-gradient(180deg, #0b2239 0%, #071a2d 100%);
@@ -1353,6 +1324,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   .who_we_are-section .industrial_traing .box_1 {
     -webkit-filter: drop-shadow(0px 12px 6px rgba(0, 0, 0, 0.161));
             filter: drop-shadow(0px 12px 6px rgba(0, 0, 0, 0.161));
+    margin-bottom: 60px;
   }
 }
 @media (max-width: 575px) {
@@ -1362,7 +1334,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
     margin-right: auto;
     -webkit-filter: drop-shadow(0px 12px 6px rgba(0, 0, 0, 0.161));
             filter: drop-shadow(0px 12px 6px rgba(0, 0, 0, 0.161));
-    margin: 10px 0px 80px 0px;
+    margin: 10px 0px 60px 0px;
   }
 }
 @media (max-width: 1366px) {
