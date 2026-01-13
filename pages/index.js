@@ -658,7 +658,7 @@ const Home = () => {
                 ref={headingRef}
                 className="hd74"
                 style={{
-                  minHeight: '200px',
+                  minHeight: '220px',
                   position: 'relative',
                   whiteSpace: 'pre-line'
                 }}
