@@ -1,7 +1,22 @@
 import Link from './ActiveLink'
+import { useState, useEffect } from 'react'
 
 
 const Header = () => {
+const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+useEffect(() => {
+  if (isMenuOpen) {
+    document.body.classList.add('overflow-hidden')
+  } else {
+    document.body.classList.remove('overflow-hidden')
+  }
+}, [isMenuOpen])
+
+const toggleMenu = () => {
+  setIsMenuOpen(!isMenuOpen)
+}
+
 return (
 <header>
     <div className="container">
@@ -14,11 +29,11 @@ return (
         </div>
         <nav className="navbar navbar-expand-lg">
             <div className="navigation">           
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onClick={toggleMenu}>
                     <span className="navbar-toggler-icon" />
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onClick={toggleMenu}>
                     <span className="navbar-toggler-icon" />
                 </button>
                     <ul className="navbar-nav me-auto">

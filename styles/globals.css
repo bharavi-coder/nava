@@ -8,6 +8,10 @@ html, body {
           box-sizing: border-box;
 }
 
+body.overflow-hidden {
+  overflow: hidden;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -163,7 +167,7 @@ header {
   left: 0px;
   top: 0px;
   width: 100%;
-  padding: 50px 0px;
+  padding: 30px 0px;
 }
 header .headermain {
   display: -webkit-box;
@@ -345,20 +349,77 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 .homebanner {
   position: relative;
   z-index: 1;
+  height: 90vh;
+  overflow: hidden;
+}
+@media screen and (max-width: 1000px) and (orientation: landscape) {
+  .homebanner {
+    height: auto;
+  }
+}
+@media screen and (max-width: 950px) and (orientation: portrait) {
+  .homebanner {
+    height: 91vh;
+    overflow: hidden;
+  }
+}
+@media screen and (max-width: 767px) and (orientation: portrait) {
+  .homebanner {
+    height: 92vh;
+    overflow: hidden;
+  }
+}
+@media screen and (max-width: 385px) and (orientation: portrait) {
+  .homebanner {
+    height: 91vh;
+    overflow: hidden;
+  }
+}
+@media screen and (min-width: 1600px) {
+  .homebanner {
+    height: 92vh;
+  }
+}
+@media screen and (min-width: 1850px) {
+  .homebanner {
+    height: 93vh;
+  }
+}
+@media screen and (min-width: 2200px) {
+  .homebanner {
+    height: 94vh;
+  }
+}
+@media screen and (min-width: 2500px) {
+  .homebanner {
+    height: 95vh;
+  }
 }
 .homebanner .bannerImage {
   position: relative;
   margin: 0px;
 }
 .homebanner .bannerImage img {
-  margin-top: -170px;
+  margin-top: 0px;
   width: 100%;
   height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 @media (max-width: 1199px) {
   .homebanner .bannerImage img {
     margin-top: 0px;
     height: 100%;
+  }
+}
+@media screen and (max-width: 950px) and (orientation: portrait) {
+  .homebanner .bannerImage img {
+    margin-top: -60px;
+  }
+}
+@media screen and (max-width: 850px) and (orientation: portrait) {
+  .homebanner .bannerImage img {
+    margin-top: 0px;
   }
 }
 @media (max-width: 991px) {
@@ -372,24 +433,24 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 }
 @media (max-width: 767px) {
   .homebanner .bannerImage img {
-    min-height: 580px;
+    min-height: 93vh;
     -o-object-fit: cover;
        object-fit: cover;
   }
 }
 @media (max-width: 575px) {
   .homebanner .bannerImage img {
-    min-height: 550px;
+    min-height: 93vh;
   }
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 380px) {
   .homebanner .bannerImage img {
-    min-height: 500px;
+    min-height: 100vh;
   }
 }
 .homebanner .bannerText {
   position: absolute;
-  top: 20%;
+  top: 22%;
   bottom: auto;
   left: 0;
   right: 0;
@@ -402,6 +463,11 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+}
+@media screen and (max-width: 1000px) and (orientation: landscape) {
+  .homebanner .bannerText {
+    top: 16%;
+  }
 }
 .homebanner .bannerText .bannerDesc {
   max-width: 800px;
@@ -454,10 +520,15 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   font-family: "Satoshi Regular";
   font-weight: 400;
   font-size: 26px;
-  line-height: 38px;
+  line-height: 35px;
   color: #14565B;
   display: block;
-  max-width: 600px;
+  max-width: 585px;
+}
+@media screen and (max-width: 1600px) {
+  .homebanner .bannerText .bannerDesc span {
+    max-width: 592px;
+  }
 }
 @media (min-width: 1680px) {
   .homebanner .bannerText .bannerDesc span {
@@ -469,9 +540,9 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
     max-width: 680px;
   }
   .homebanner .bannerText .bannerDesc span {
-    max-width: 502px;
-    font-size: 24px;
-    line-height: 36px;
+    max-width: 530px;
+    font-size: 23px;
+    line-height: 30px;
   }
 }
 @media (max-width: 1199px) {

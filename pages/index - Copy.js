@@ -388,7 +388,7 @@ const Home = () => {
 
   // Parallax states
   const sliderRef = useRef(null)
-  const [translateX, setTranslateX] = useState(0) // initial offset
+  const [translateX, setTranslateX] = useState(200) // initial offset
 
   const visionRef = useRef(null);
   const missionRef = useRef(null);
@@ -408,7 +408,7 @@ const Home = () => {
         const end = windowHeight * 0.3
 
         const progress = Math.min(Math.max((start - rect.top) / (start - end), 0), 1)
-        setTranslateX(1 * (1 - progress))
+        setTranslateX(200 * (1 - progress))
       }
 
       const vh = window.innerHeight
@@ -529,16 +529,12 @@ const Home = () => {
             {/* Large mobile / tablet */}
             <source
               media="(max-width: 767px)"
-              srcSet="/mobiletruck.jpg"
-            />
-             <source
-              media="(max-width:900px)"
-              srcSet="/ipadtruck.jpg"
+              srcSet="/hm_banner1_mobile.jpg"
             />
 
             {/* Desktop fallback */}
             <Image
-              src="/deskbanner.jpg"
+              src="/hm_banner1.jpg"
               width={1440}
               height={945}
               alt="NextSSS"
@@ -616,13 +612,13 @@ const Home = () => {
           <div className="container- comman_slider">
             <div ref={sliderRef} style={{ overflow: 'hidden' }}>
               <div
-                style={{
-                  display: 'flex',
-                  gap: '1.5rem',
-                  transform: `translateX(${translateX}px)`,
-                  transition: 'transform 0.3s ease-out',
-                  willChange: 'transform'
-                }}
+                // style={{
+                //   display: 'flex',
+                //   gap: '1.5rem',
+                //   transform: `translateX(${translateX}px)`,
+                //   transition: 'transform 0.3s ease-out',
+                //   willChange: 'transform'
+                // }}
               >
                 <SimpleSlider items={[{
                   src: '/gas_stations.jpg', width: 501, height: 326, alt: 'Gas Stations', caption: 'Gas Stations', href: '/courses'
@@ -662,7 +658,7 @@ const Home = () => {
                 ref={headingRef}
                 className="hd74"
                 style={{
-                  minHeight: '220px',
+                  minHeight: '200px',
                   position: 'relative',
                   whiteSpace: 'pre-line'
                 }}

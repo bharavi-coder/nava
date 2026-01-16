@@ -62,6 +62,11 @@
   padding: 0;
   box-sizing: border-box;
 }
+body{
+  &.overflow-hidden{
+    overflow: hidden;
+  }
+}
 html {
   scroll-behavior: smooth;
 }
@@ -202,7 +207,7 @@ h1 {
       a{font-size: 18px; padding: 12px 16px;}
     }          
   }
-header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding: 50px 0px;
+header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding: 30px 0px;
   .headermain{@include dispflex(flex,space-between,center);
     .logo{ max-width: 153px; width: 100%;
       .inner_logo{display: none;}
@@ -288,33 +293,79 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
 }
 .homebanner{
   position: relative; z-index: 1;
+  height: 90vh;
+    overflow: hidden;
+   @media screen and (max-width:1000px ) and (orientation: landscape){
+  
+    height: auto;
+   }
+   
+
+    @media screen and (max-width:950px ) and (orientation: portrait){
+      height: 91vh; overflow: hidden;
+    }
+     @media screen and (max-width:767px ) and (orientation: portrait){
+      height: 92vh; overflow: hidden;
+    }
+     @media screen and (max-width:385px ) and (orientation: portrait){
+      height: 91vh; overflow: hidden;
+    }
+    @media screen and (min-width:1600px){
+      height: 92vh;
+    }
+     @media screen and (min-width:1850px){
+      height: 93vh;
+    }
+     @media screen and (min-width:2200px){
+      height: 94vh;
+    }
+     @media screen and (min-width:2500px){
+      height: 95vh;
+    }
+
     .bannerImage{
        position: relative; margin: 0px;
-       img{  margin-top: -170px;
-        width: 100%; height: auto;      
+       img{  margin-top:0px;
+        width: 100%; height: auto;     
+       // height: 92vh !important;
+    object-fit: cover;
+       
         @include mini-desktop{
             margin-top: 0px;
             height: 100%;
         }
+          @media screen and (max-width:950px ) and (orientation: portrait){
+          margin-top:-60px;
+         } 
+          @media screen and (max-width:850px ) and (orientation: portrait){
+          margin-top:0px;
+         } 
         @include tab{
           min-height: 770px;
           object-fit: cover;
           object-position: bottom right;
         }
         @include phone{
-              min-height: 580px; object-fit: cover; 
+            //  min-height: 580px; 
+              min-height: 93vh;
+              object-fit: cover; 
         } 
         @include phone-xs{
-            min-height: 550px;
+           // min-height: 550px;
+           min-height: 93vh;
           }
-          @media screen and (max-width:400px){ 
-            min-height: 500px;
+          @media screen and (max-width:380px){ 
+           // min-height: 500px;
+           min-height: 100vh;
           }
         }     
     }
   .bannerText {
-        position: absolute; top: 20%; bottom: auto; left: 0; right: 0; display: flex; align-items: flex-start; 
+        position: absolute; top: 22%; bottom: auto; left: 0; right: 0; display: flex; align-items: flex-start; 
         justify-content: flex-start;
+          @media screen and (max-width:1000px ) and (orientation: landscape){
+             top: 16%;
+          }
         .bannerDesc {
             max-width: 800px;
            .title{
@@ -339,9 +390,14 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
               }
             }
             span {
-                font-family: 'Satoshi Regular'; font-weight: 400;font-size: 26px;line-height: 38px;color: #14565B;display: block; max-width: 600px;
+                font-family: 'Satoshi Regular'; font-weight: 400;font-size: 26px;line-height: 35px;color: #14565B;display: block; max-width: 585px;
             } 
         }
+        @media screen and (max-width:1600px ){
+             .bannerDesc {
+              span{max-width: 592px;}
+            }
+          }
         @include mindesktop1680{
             .bannerDesc {
               span{max-width: 590px;}
@@ -349,7 +405,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
         }
         @include desktop{
             .bannerDesc {max-width: 680px;
-              span{max-width: 502px; font-size: 24px; line-height: 36px;}
+              span{max-width: 530px; font-size: 23px; line-height: 30px;}
             }
         }
         @include mini-desktop{
