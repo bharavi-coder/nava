@@ -295,7 +295,8 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
 }
 .homebanner{
   position: relative; z-index: 1;
-  height: 90vh;
+  &.homepage{
+    height: 90vh;
     overflow: hidden;
    @media screen and (max-width:1000px ) and (orientation: landscape){
   
@@ -324,6 +325,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
      @media screen and (min-width:2500px){
       height: 95vh;
     }
+  }
 
     .bannerImage{
        position: relative; margin: 0px;

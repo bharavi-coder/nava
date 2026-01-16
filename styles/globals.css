@@ -349,49 +349,51 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 .homebanner {
   position: relative;
   z-index: 1;
+}
+.homebanner.homepage {
   height: 90vh;
   overflow: hidden;
 }
 @media screen and (max-width: 1000px) and (orientation: landscape) {
-  .homebanner {
+  .homebanner.homepage {
     height: auto;
   }
 }
 @media screen and (max-width: 950px) and (orientation: portrait) {
-  .homebanner {
+  .homebanner.homepage {
     height: 91vh;
     overflow: hidden;
   }
 }
 @media screen and (max-width: 767px) and (orientation: portrait) {
-  .homebanner {
+  .homebanner.homepage {
     height: 84vh;
     overflow: hidden;
   }
 }
 @media screen and (max-width: 385px) and (orientation: portrait) {
-  .homebanner {
+  .homebanner.homepage {
     height: 83vh;
     overflow: hidden;
   }
 }
 @media screen and (min-width: 1600px) {
-  .homebanner {
+  .homebanner.homepage {
     height: 92vh;
   }
 }
 @media screen and (min-width: 1850px) {
-  .homebanner {
+  .homebanner.homepage {
     height: 93vh;
   }
 }
 @media screen and (min-width: 2200px) {
-  .homebanner {
+  .homebanner.homepage {
     height: 94vh;
   }
 }
 @media screen and (min-width: 2500px) {
-  .homebanner {
+  .homebanner.homepage {
     height: 95vh;
   }
 }

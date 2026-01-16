@@ -528,7 +528,7 @@ const Home = () => {
           type: 'website',
         }}
       />
-      <div className="homebanner">
+      <div className="homebanner homepage">
         {/* <figure className='bannerImage'>
           <Image src="/hm_banner1.jpg" width={1440} height={945} alt="NextSSS" />
         </figure> */}
