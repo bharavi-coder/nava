@@ -365,13 +365,13 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 }
 @media screen and (max-width: 767px) and (orientation: portrait) {
   .homebanner {
-    height: 92vh;
+    height: 84vh;
     overflow: hidden;
   }
 }
 @media screen and (max-width: 385px) and (orientation: portrait) {
   .homebanner {
-    height: 91vh;
+    height: 83vh;
     overflow: hidden;
   }
 }
@@ -2834,7 +2834,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 .sticky-get-touch {
   position: fixed;
   right: 24px;
-  bottom: 24px;
+  bottom: 80px;
   z-index: 999;
   -webkit-transition: opacity 0.4s ease, -webkit-transform 0.4s ease;
   transition: opacity 0.4s ease, -webkit-transform 0.4s ease;
@@ -2853,7 +2853,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 @media (max-width: 768px) {
   .sticky-get-touch {
     right: 16px;
-    bottom: 16px;
+    bottom: 90px;
   }
 }
 .breadcrumb_section {
@@ -4006,4 +4006,8 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 .max1000 {
   max-width: 1000px;
   margin: 0 auto;
+}
+
+body.fullscreen-mode .homebanner .bannerImage img {
+  height: 93vh !important;
 }/*# sourceMappingURL=globals.css.map */

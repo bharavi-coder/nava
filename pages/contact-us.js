@@ -379,7 +379,7 @@ const Home = () => {
         }
       
       
-      header .headermain nav.navbar .navigation .btn_customer {
+      header .headermain nav.navbar .navigation .btn_customer, header .customerbtn {
         display: none !important;
       }        
     `,

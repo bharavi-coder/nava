@@ -70,6 +70,8 @@ body{
 html {
   scroll-behavior: smooth;
 }
+
+ 
 @media screen and (min-width: 1300px) {
   .container {
     max-width: 1200px;
@@ -305,10 +307,10 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
       height: 91vh; overflow: hidden;
     }
      @media screen and (max-width:767px ) and (orientation: portrait){
-      height: 92vh; overflow: hidden;
+      height: 84vh; overflow: hidden;
     }
      @media screen and (max-width:385px ) and (orientation: portrait){
-      height: 91vh; overflow: hidden;
+      height: 83vh; overflow: hidden;
     }
     @media screen and (min-width:1600px){
       height: 92vh;
@@ -659,7 +661,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
 .btn_secondary { background: #fff; color: #16697a; border: 1px solid #16697a;
    &:hover{background: #222; color: #fff; border-color: #222;}
 }
-.btn_prevs{}
+// .btn_prevs{}
 
 .maxwidth990{max-width: 990px;}
 .maxwidth770{max-width:770px;}
@@ -946,7 +948,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
     }
   }
 }
-.product_categories-section{}
+// .product_categories-section{}
 .categories {
   width: 100%;
   overflow: hidden;
@@ -1568,7 +1570,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
 .sticky-get-touch {
   position: fixed;
   right: 24px;
-  bottom: 24px;
+  bottom: 80px;
   z-index: 999;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
@@ -1583,7 +1585,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
 @media (max-width: 768px) {
   .sticky-get-touch {
     right: 16px;
-    bottom: 16px;
+    bottom: 90px;
   }
 }
 
@@ -2193,7 +2195,7 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
           color: #6c757d;
           line-height: 1.6;
           .click_text { color: #b87333; font-weight: 600;}
-          .file_types {}
+          // .file_types {}
         }
       }
     }
@@ -2334,4 +2336,11 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
 .max1000{
   max-width: 1000px;
     margin: 0 auto;
+}
+
+body.fullscreen-mode {
+ 
+   .homebanner .bannerImage img{
+    height:93vh!important;
+   }
 }

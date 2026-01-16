@@ -49,12 +49,17 @@ return (
                             </Link>
                         </li>
                         ))}
+                        <li className="nav-item customerbtn">
+                          <Link href="/customer-application" className="nav-link">
+                        Customer Application Form
+                      </Link>
+                      </li>
                     </ul> 
-                    <div className='btn_customer'>
+                    {/* <div className='btn_customer'>
                       <Link href="/customer-application" className="nav-link">
                         Customer Application Form
                       </Link>
-                    </div>                  
+                    </div>                   */}
                 </div>
             </div>
         </nav>

@@ -26,7 +26,10 @@ const Home = () => {
   const [errors, setErrors] = useState({});
   const [invalidFields, setInvalidFields] = useState({});
   const [loading, setLoading] = useState(false);
+  //const [isFullscreen, setIsFullscreen] = useState(false);
 
+
+ 
   const validateEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -301,13 +304,24 @@ const Home = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", updateCards, { passive: true });
 
+  //     const handleFullscreenChange = () => {
+  //   if (!document.fullscreenElement) {
+  //     document.body.classList.remove('fullscreen-mode');
+  //   }
+  // };
+
+ // document.addEventListener('fullscreenchange', handleFullscreenChange);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", updateCards);
+    //  document.removeEventListener('fullscreenchange', handleFullscreenChange);
       if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
+
+   
 
 
   // Typewriter heading
