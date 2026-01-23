@@ -1,4 +1,3 @@
-import Link from '../components/ActiveLink'
 import { NextSeo } from 'next-seo'
 import { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
