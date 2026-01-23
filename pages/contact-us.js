@@ -1,7 +1,6 @@
 ﻿import { NextSeo } from 'next-seo'
 import Link from '../components/ActiveLink'
 import Layout from '../components/Layout'
-import Image from '../components/Image'
 
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
