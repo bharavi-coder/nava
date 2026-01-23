@@ -45,21 +45,7 @@ const Landing = () => {
         <video className="video-bg mobile-video" autoPlay muted playsInline>
             <source src="/nava_mobile.mp4" type="video/mp4" />
         </video>
-        <div className="overlay">
-            <Link 
-                href="/home" 
-                className="btn_comman btn_primary"
-                style={{
-                  display: 'inline-block',
-                  padding: '1rem 2.5rem',
-                  fontSize: '1.1rem',
-                  textDecoration: 'none',
-                  borderRadius: '4px'
-                }}
-              >
-                Go to Nava
-              </Link>
-        </div>
+        
       </div>
 
  

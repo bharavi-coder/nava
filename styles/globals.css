@@ -392,7 +392,6 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 }
 @media (max-width: 991px) {
   .homebanner .bannerImage img {
-    min-height: 650px;
     -o-object-fit: cover;
        object-fit: cover;
     -o-object-position: bottom right;
@@ -401,7 +400,6 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 }
 @media (max-width: 767px) {
   .homebanner .bannerImage img {
-    min-height: 550px;
     -o-object-fit: cover;
        object-fit: cover;
   }
@@ -1286,7 +1284,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   background: #ffffff;
   color: #0b2239;
   padding: 35px 25px;
-  border-radius: 20px 20px 0 0;
+  border-radius: 20px 20px;
   margin-bottom: 30px;
   -webkit-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.1019607843);
           box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.1019607843);
