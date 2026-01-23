@@ -2072,12 +2072,16 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   letter-spacing: 0.5px;
 }
 .hm_contact-section.inner_contact-section {
-  background: #ffffff;
+  background: #f7f7f7;
+  margin-top: 100px;
 }
 .hm_contact-section.inner_contact-section::before {
   display: none;
 }
-.hm_contact-section.inner_contact-section p, .hm_contact-section.inner_contact-section div, .hm_contact-section.inner_contact-section .hd2, .hm_contact-section.inner_contact-section .formarea label {
+.hm_contact-section.inner_contact-section p, .hm_contact-section.inner_contact-section div, .hm_contact-section.inner_contact-section .formarea label {
+  color: #4A5565;
+}
+.hm_contact-section.inner_contact-section .hd2 {
   color: #0C1E33;
 }
 .hm_contact-section.inner_contact-section .address ul.contactDetail li {
@@ -2086,6 +2090,7 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
 .hm_contact-section.inner_contact-section .address ul.contactDetail li i {
   width: 35px;
   height: 36px;
+  opacity: 0.9;
 }
 .hm_contact-section.inner_contact-section .address ul.contactDetail li i.fa-map-marker {
   background: url(../public/icon_map1.svg) no-repeat left top;
@@ -2100,21 +2105,31 @@ header .headermain nav.navbar .navigation .btn_customer a:hover {
   background-size: 27px 22px;
 }
 .hm_contact-section.inner_contact-section .address ul.contactDetail li a {
-  color: #0C1E33;
+  color: #4A5565;
 }
 .hm_contact-section.inner_contact-section .address ul.contactDetail li a:hover {
   color: #14565B;
 }
 .hm_contact-section.inner_contact-section .formContect {
-  background: #e4e4e4;
+  background: #fff;
+  padding: 42px 32px;
+  border-radius: 20px;
 }
 .hm_contact-section.inner_contact-section .formarea label {
   color: #0C1E33;
 }
 .hm_contact-section.inner_contact-section .formarea .form-control, .hm_contact-section.inner_contact-section .formarea .uploadresume input[readonly] {
-  background: #F7F7F7;
+  background: #fff;
   border: #D1D1D1 solid 1px;
   border-radius: 30px;
+}
+@media (max-width: 767px) {
+  .hm_contact-section.inner_contact-section {
+    margin-top: 75px;
+  }
+  .hm_contact-section.inner_contact-section .formContect {
+    padding: 32px 24px;
+  }
 }
 @media (max-width: 1366px) {
   .hm_contact-section .address ul.contactDetail li {

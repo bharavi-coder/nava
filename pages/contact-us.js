@@ -145,7 +145,7 @@ const Home = () => {
                     type: 'website',
                 }}
             />
-            <div className="homebanner inner_banner">
+            {/* <div className="homebanner inner_banner">
                 <figure className='bannerImage'>
                     <Image src="/banner_contact_us.jpg" width={1440} height={604} alt="NextSSS" />
                 </figure>
@@ -158,16 +158,15 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             <div className="hm_contact-section inner_contact-section sectionpadding">
                 <div className="container">
                     <div>
-                        <div className="row align-items-center">
+                        <div className="row">
                             <div className="col-lg-6 col-sm-12">
                                 <div className="p_fnt26 maxwidth580">
-                                    <h2 className='hd2'><span>Contact Us</span>Ready to upgrade <br />your supply chain?</h2>
-                                    <p>Have a question or need a quote?<br />
-                                        Fill out the form and a member of our team will get back to you shortly.</p>
+                                    <h2 className='hd2'>Contact Us</h2>
+                                    <p>We invite you to reach out and connect with us. Whether you have inquiries, need assistance, or want to explore partnership opportunities.</p>
                                     <div className="address">
                                         <ul className="contactDetail">
                                             <li>
@@ -366,21 +365,21 @@ const Home = () => {
             <style
                 dangerouslySetInnerHTML={{
                     __html: `
-      header .headermain .logo .inner_logo {
-        display: block !important;
-      }
-      header .headermain .logo .home_logo {
-        display: none !important;
-      }
-        header .headermain nav.navbar .navbar-toggler .navbar-toggler-icon{color: #14565B; background-image: url(../download1.svg);}
-        @media (min-width: 992px){
-           header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link:hover, header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link.active {
-                  color: #fff !important;
-              }
-              header .headermain nav.navbar .navigation .navbar-nav .nav-item,
-              header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link{color:#fff !important;}
-            header .headermain nav.navbar .navigation .navbar-nav { padding-top: 0px !important; padding-bottom: 0px !important;}
-        }
+    //   header .headermain .logo .inner_logo {
+    //     display: block !important;
+    //   }
+    //   header .headermain .logo .home_logo {
+    //     display: none !important;
+    //   }
+        //header .headermain nav.navbar .navbar-toggler .navbar-toggler-icon{color: #14565B; background-image: url(../download1.svg);}
+        // @media (min-width: 992px){
+        //    header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link:hover, header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link.active {
+        //           color: #fff !important;
+        //       }
+        //       header .headermain nav.navbar .navigation .navbar-nav .nav-item,
+        //       header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link{color:#fff !important;}
+        //     header .headermain nav.navbar .navigation .navbar-nav { padding-top: 0px !important; padding-bottom: 0px !important;}
+        // }
       
       
       header .headermain nav.navbar .navigation .btn_customer, header .customerbtn {

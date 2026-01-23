@@ -1256,29 +1256,35 @@ header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding
   .formarea{
     label{color: #FFFFFF;letter-spacing: 0.5px;}
   }
-  &.inner_contact-section{ background: #ffffff;
+  &.inner_contact-section{ background: #f7f7f7;    margin-top: 100px;
     &::before{display: none;}
-    p,div,.hd2,.formarea label{ color: #0C1E33;}    
+    p,div,.formarea label{ color: #4A5565;}  
+    .hd2{color: #0C1E33;}  
     .address{
       ul.contactDetail{
         li{ padding-left: 50px;
-            i {width: 35px; height: 36px;
+            i {width: 35px; height: 36px;opacity: 0.9;
             &.fa-map-marker{background: url(../public/icon_map1.svg) no-repeat left top; background-size: 22px 26px;}
             &.fa-phone{background: url(../public/icon_phone1.svg) no-repeat left top; background-size: 29px 29px;}
             &.fa-envelope{background: url(../public/icon_mail1.svg) no-repeat left center; background-size: 27px 22px;}
           }
-          a{color: #0C1E33;
+          a{color: #4A5565;
             &:hover{color: #14565B;}
           }
         }
       }
     }
-    .formContect{background: rgba(#e4e4e4, 1);}
+    .formContect{background: #fff;padding: 42px 32px;border-radius: 20px;}
     .formarea{
         label{color: #0C1E33;}
         .form-control,.uploadresume input[readonly] { 
-          background: #F7F7F7; border: #D1D1D1 solid 1px; border-radius: 30px;
+          background: #fff; border: #D1D1D1 solid 1px; border-radius: 30px;
         }
+    }
+
+    @include phone{
+      margin-top: 75px;
+      .formContect{padding: 32px 24px;}
     }
   }
   @include desktop{
