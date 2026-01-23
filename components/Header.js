@@ -51,7 +51,7 @@ return (
                         ))}
                         <li className="nav-item customerbtn">
                           <Link href="/customer-application" className="nav-link">
-                        Customer Application Form
+                        Partner Portal Login
                       </Link>
                       </li>
                     </ul> 

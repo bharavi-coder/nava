@@ -29,6 +29,14 @@ const Home = () => {
   //const [isFullscreen, setIsFullscreen] = useState(false);
 
 
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [yearsCount, setYearsCount] = useState(0);
+  const [brandsCount, setBrandsCount] = useState(0);
+  const [storesCount, setStoresCount] = useState(0);
+  const counterSectionRef = useRef(null);
+
+
+
  
   const validateEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -151,38 +159,7 @@ const Home = () => {
   };
 
 
-  const categories = [
-    {
-      id: 1,
-      title: 'Candy & Sweet',
-      image: '/candy_and_sweet.jpg',
-      direction: 'left'
-    },
-    {
-      id: 2,
-      title: 'Beverages',
-      image: '/beverages.jpg',
-      direction: 'left'
-    },
-    {
-      id: 3,
-      title: 'Chips & Snacks',
-      image: '/chips_and_snacks.jpg',
-      direction: 'chips_and_snacks'
-    },
-    {
-      id: 4,
-      title: 'Convenience Items',
-      image: '/convenience_items.jpg',
-      direction: 'right'
-    },
-    {
-      id: 5,
-      title: 'Gum & Mint',
-      image: '/gum_and_mint.jpg',
-      direction: 'right'
-    }
-  ];
+
 
   // const row1 = categories.filter(cat => cat.direction === 'left');
   // const row2 = categories.filter(cat => cat.direction === 'right');
@@ -397,7 +374,7 @@ const Home = () => {
     }, 50);
 
     return () => clearTimeout(timeout);
-  }, [headingVisible, currentIndex]);
+  }, [headingVisible, currentIndex, fullText]);
 
 
   // Parallax states
@@ -459,6 +436,43 @@ const Home = () => {
     }
   }, []);
 
+  // Counter Animation Effect
+  useEffect(() => {
+    if (!counterSectionRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Animate counters
+          const animateCounter = (start, end, setter, duration = 2000) => {
+            const startTime = Date.now();
+            const animate = () => {
+              const elapsed = Date.now() - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const value = Math.floor(start + (end - start) * progress);
+              setter(value);
+              if (progress < 1) {
+                requestAnimationFrame(animate);
+              }
+            };
+            animate();
+          };
+
+          animateCounter(0, 4, setYearsCount);
+          animateCounter(0, 30, setBrandsCount);
+          animateCounter(0, 80, setStoresCount);
+
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(counterSectionRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
   // const addToRefs = (el, index) => {
   //   if (el && !cardsRef.current.includes(el)) {
   //     cardsRef.current[index] = el;
@@ -515,9 +529,15 @@ const Home = () => {
   ];
 
 
-  
-
-  
+const slides = [
+  { src: '/gas_stations.jpg', caption: 'Gas Stations', href: '' },
+  { src: '/convenience_stores.jpg', caption: 'Convenience Stores', href: '' },
+  { src: '/liquor_stores.jpg', caption: 'Liquor Stores', href: '' },
+  { src: '/retail_shops.jpg', caption: 'Retail Shops', href: '' },
+  { src: '/grocery_markets.jpg', caption: 'Grocery Markets', href: '' },
+  { src: '/small_businesses.jpg', caption: 'Small Businesses', href: '' },
+  { src: '/retail_shops.jpg', caption: 'Independent Retailers', href: '' },
+];
 
   return (
     <Layout>
@@ -532,27 +552,23 @@ const Home = () => {
         {/* <figure className='bannerImage'>
           <Image src="/hm_banner1.jpg" width={1440} height={945} alt="NextSSS" />
         </figure> */}
-        <figure className="bannerImage">
+       <figure className="bannerImage">
           <picture>
-            {/* Small mobile */}
-            {/* <source
+           
+             <source
               media="(max-width: 567px)"
-              srcSet="/hm_banner1_mobile-1.jpg"
-            /> */}
-
-            {/* Large mobile / tablet */}
-            <source
-              media="(max-width: 767px)"
-              srcSet="/mobiletruck.jpg"
+              srcSet="/homebannernew_mob.jpg"
             />
+
+            {/*
              <source
               media="(max-width:900px)"
               srcSet="/ipadtruck.jpg"
-            />
+            /> */}
 
-            {/* Desktop fallback */}
+          
             <Image
-              src="/deskbanner.jpg"
+              src="/homebannernew.jpg"
               width={1440}
               height={945}
               alt="NextSSS"
@@ -564,64 +580,91 @@ const Home = () => {
         <div className="bannerText">
           <div className="container">
             <div className="bannerDesc">
-              <p className="title">Redefining wholesale for a new era.</p>
-              <span>We provide top-selling products, competitive prices, and fast, reliable fulfillment to businesses across the Chicagoland area and beyond.</span>
+              <span className="tagLineBtn">Trusted by Retailers Across the US</span>
+              <p className="title"> Redefining wholesale for a new era. </p>
+              <span> We provide top-selling products, competitive prices, and fast, reliable fulfillment to businesses across the Chicagoland area and beyond. </span>
+              <Link href='/customer-application' className="btn_comman btn_primary"> Start Your Journey
+                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.3623 8.06836H12.7758" stroke="white" strokeWidth="1.34478" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M8.06836 3.36328L12.7751 8.07L8.06836 12.7767" stroke="white" strokeWidth="1.34478" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+              </Link>
             </div>
           </div>
         </div>
       </div>
+
       {/*<div className="scroll_img marquee">
         <Image src="/marquee_img.png" width={1440} height={72} alt="" />
       </div>*/}
-      <div className="marquee">
-        <div className="marquee__track">
-          <Image src="/marquee_img.png" width={1440} height={72} alt="" />
-          <Image src="/marquee_img.png" width={1440} height={72} alt="" />
-          <Image src="/marquee_img.png" width={1440} height={72} alt="" />
-          <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+      
+      <div className="aboutSection sectionpadding" id="about" ref={mainSectionRef}>
+        <div className="container"> 
+          <div className="about-grid"> 
+            <div className="about-content p_fnt26"> 
+              <h2 className="hd2">What We Do</h2> 
+              <p> 
+                Nava Distributors is a trusted, family-owned wholesale distributor providing businesses with dependable supply, modern ordering tools, and exceptional service. Our focus is helping retailers stay stocked, competitive, and profitable. 
+              </p> 
+              <p> 
+                For over four years, Nava Wholesale has proudly served the Chicagoland area as a leading wholesale distributor. Our mission is to provide retailers with top-selling products, competitive pricing, and dependable service that keeps them ahead in today&apos;s fast-paced marketplace. 
+              </p> 
+              <Link href="/customer-application" className='btn_comman'>Partner With Nava</Link>
+            </div> 
+            <div className="about-cards"> 
+              <div className='Home_cardsWrapper' ref={cardsWrapperRef}> 
+                {cardsData.map((card, index) => (
+                  <div 
+                    key={card.id} 
+                    className="info-card" 
+                    ref={(el) => addToRefs(el, index)} 
+                    data-index={index}
+                  > 
+                  <div className="cardtitlebox">
+                    <div className="icon-circle"> 
+                      <span className="counter">{String(index + 1).padStart(2, '0')}</span>
+                    </div> 
+                    <h4 className='hd24'>{card?.title}</h4> 
+                    </div>
+                    <p> 
+                      {card?.text} 
+                    </p> 
+                  </div>
+                ))} 
+              </div> 
+            </div> 
+          </div> 
+        </div> 
+      </div>
+      <div className="counter-section sectionpadding" ref={counterSectionRef}>
+        <div className="container">
+          <div className="counter-grid">
+            <div className="counter-item">
+              <h3 className="counter-number">{yearsCount}+</h3>
+              <p className="counter-label">Years in Business</p>
+            </div>
+            <div className="counter-item">
+              <h3 className="counter-number">{brandsCount}+</h3>
+              <p className="counter-label">Partnered Brands</p>
+            </div>
+            <div className="counter-item">
+              <h3 className="counter-number">{storesCount}+</h3>
+              <p className="counter-label">Stores</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="aboutSection sectionpadding bg_blue" id="about" ref={mainSectionRef}>
-  <div className="container"> 
-    <div className="about-grid"> 
-      <div className="about-content p_fnt26"> 
-        <h2 className="hd2"><span>About Us</span>What We Do</h2> 
-        <p> 
-          Nava Distributors is a trusted, family-owned wholesale distributor providing businesses with dependable supply, modern ordering tools, and exceptional service. Our focus is helping retailers stay stocked, competitive, and profitable. 
-        </p> 
-        <p> 
-          For over four years, Nava Wholesale has proudly served the Chicagoland area as a leading wholesale distributor. Our mission is to provide retailers with top-selling products, competitive pricing, and dependable service that keeps them ahead in today&apos;s fast-paced marketplace. 
-        </p> 
-      </div> 
-      <div className="about-cards"> 
-        <div className='Home_cardsWrapper' ref={cardsWrapperRef}> 
-          {cardsData.map((card, index) => (
-            <div 
-              key={card.id} 
-              className="info-card" 
-              ref={(el) => addToRefs(el, index)} 
-              data-index={index}
-            > 
-            <div className="cardtitlebox">
-              <div className="icon-circle"> 
-                <Image src={card.icon} width={card.width} height={card.height} alt={card.title} /> 
-              </div> 
-              <h4 className='hd24'>{card?.title}</h4> 
-              </div>
-              <p> 
-                {card?.text} 
-              </p> 
-            </div>
-          ))} 
-        </div> 
-      </div> 
-    </div> 
-  </div> 
-</div>
-      <div className="who_we_are-section sectionpadding">
+      <div
+        className="who_we_are-section sectionpadding"
+        style={{
+          backgroundImage: `url(${slides[activeSlide].src})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}>
         <div className="container">
-          <h2 className="hd2"><span>About Us</span>Who We Serve</h2>
-          <div className='p_fnt26 maxwidth990'>
+          <h2 className="hd2 text-center">Who We Serve</h2>
+          <div className='p_fnt26 maxwidth990 text-center'>
             <p>Whether you operate a single storefront or a multi-location business, NAVA provides a dependable partnership built on performance and trust. With NAVA, you gain more than a distributor, you gain a long-term partner.</p>
           </div>
         </div>
@@ -638,16 +681,10 @@ const Home = () => {
                   willChange: 'transform'
                 }}
               >
-                <SimpleSlider items={[{
-                  src: '/gas_stations.jpg', width: 501, height: 326, alt: 'Gas Stations', caption: 'Gas Stations', href: '/courses'
-                },
-                { src: '/convenience_stores.jpg', width: 501, height: 326, alt: 'Convenience Stores', caption: 'Convenience Stores', href: '/courses' },
-                { src: '/liquor_stores.jpg', width: 501, height: 326, alt: 'Liquor Stores', caption: 'Liquor Stores', href: '/courses' },
-                { src: '/retail_shops.jpg', width: 501, height: 326, alt: 'Retail Shops', caption: 'Retail Shops', href: '/courses' },
-                { src: '/grocery_markets.jpg', width: 501, height: 326, alt: 'Grocery Markets', caption: 'Grocery Markets', href: '/courses' },
-                { src: '/small_businesses.jpg', width: 501, height: 326, alt: 'Small Businesses', caption: 'Small Businesses', href: '/courses' },
-                { src: '/retail_shops.jpg', width: 501, height: 326, alt: 'Independent Retailers', caption: 'Independent Retailers', href: '/courses' },
-                ]} />
+                <SimpleSlider
+                  items={slides}
+                  onAfterChange={setActiveSlide}
+                />
               </div></div>
           </div>
         </div>
@@ -670,15 +707,14 @@ const Home = () => {
 
       <div className="websection-section sectionpadding" ref={webSectionRef}>
         <div className="container">
-          <div className="row align-items-center fnt26">
-            <div className="col-lg-6">
+          <div className="row align-items-center- fnt26">
+            <div className="col-lg-7">
               <h2
                 ref={headingRef}
                 className="hd74"
                 style={{
                   minHeight: '220px',
                   position: 'relative',
-                  whiteSpace: 'pre-line'
                 }}
               >
                 {displayedText}
@@ -704,27 +740,13 @@ const Home = () => {
                   }
                 `}</style>
               </h2>
+             {currentIndex === fullText.length && (
+                <a href="#core_values" className="whiteBorderBtn fadeInBtn">
+                  Learn More
+                </a>
+              )}
             </div>
-            <div className="col-lg-6 p_fnt26">
-              {/* Vision Statement - Always Visible */}
-              <div
-                ref={visionRef}
-                className="info-box"
-                style={{
-                  transition: 'all 1s ease-out',
-                  opacity: visionVisible ? 1 : 0.5,
-                  filter: visionVisible ? 'blur(0px)' : 'blur(8px)',
-                  transform: visionVisible ? 'translateY(0)' : 'translateY(50px)'
-                }}
-              >
-                <div className="info-icon">
-                  <img src="/icon_vision.svg" width={41} height={41} alt="" />
-                </div>
-                <div className="info-content">
-                  <h3 className='hd34 colorwite'>Vision Statement</h3>
-                  <p>To become the most trusted, technology-driven wholesale distributor in the region, known for reliability, transparency, and exceptional service.</p>
-                </div>
-              </div>
+            <div className="col-lg-5 p_fnt26">
 
               {/* Mission Statement - Blurred Initially */}
               <div
@@ -738,22 +760,47 @@ const Home = () => {
                 }}
               >
                 <div className="info-icon">
-                  <img src="/icon_mission.svg" width={39} height={48} alt="" />
+                  <Image src="/icon_mission.svg" width={39} height={48} alt="" />
                 </div>
                 <div className="info-content">
                   <h3 className='hd34 colorwite'>Mission Statement</h3>
                   <p>To provide fast, reliable, and affordable wholesale supply powered by family values, modern technology, and a commitment to long-term partnerships.</p>
                 </div>
               </div>
+
+              {/* Vision Statement - Always Visible */}
+              <div
+                ref={visionRef}
+                className="info-box"
+                style={{
+                  transition: 'all 1s ease-out',
+                  opacity: visionVisible ? 1 : 0.5,
+                  filter: visionVisible ? 'blur(0px)' : 'blur(8px)',
+                  transform: visionVisible ? 'translateY(0)' : 'translateY(50px)'
+                }}
+              >
+                <div className="info-icon">
+                  <Image src="/icon_vision.svg" width={41} height={41} alt="" />
+                </div>
+                <div className="info-content">
+                  <h3 className='hd34 colorwite'>Vision Statement</h3>
+                  <p>To become the most trusted, technology-driven wholesale distributor in the region, known for reliability, transparency, and exceptional service.</p>
+                </div>
+              </div>
+
+         
             </div>
           </div>
         </div>
       </div>
-      <div className="core_values-section sectionpadding bg_blue">
+
+
+      <div className="core_values-section sectionpadding" id="core_values">
         <div className="container">
           <div className="maxwidth770 p_fnt26">
             <h2 className="hd2">Core Values</h2>
-            <p>We pride ourselves on operational excellence, reliability, and customer-first service. When you choose Nava Wholesale, you gain more than a supplier you gain a strategic partner committed to your store&apos;s growth.</p>
+            <p>Nava Distributors is a trusted, family-owned wholesale distributor providing businesses with dependable supply, modern ordering tools, and exceptional service. </p>
+              <p>Our focus is helping retailers stay stocked, competitive, and profitable. For over four years, Nava Wholesale has proudly served the Chicagoland area as a leading wholesale distributor.</p>
           </div>
           <div className="list_values">
             <div className="row">
@@ -762,8 +809,10 @@ const Home = () => {
                   <div className="icon-box">
                     <span className='icon_inno'></span>
                   </div>
-                  <h3 className="hd26">Innovation</h3>
-                  <p>We embrace technology that makes the wholesale experience smarter.</p>
+                  <div>
+                    <h3 className="hd26">Innovation</h3>
+                    <p>We embrace technology that makes the wholesale experience smarter.</p>
+                  </div>
                 </div>
               </div>
               <div className="col-lg-3 col-md-6 col-sm-12">
@@ -771,8 +820,10 @@ const Home = () => {
                   <div className="icon-box">
                     <span className='icon_integrity'></span>
                   </div>
-                  <h3 className="hd26">Integrity</h3>
-                  <p>We operate with honesty, accountability, and respect in every interaction.</p>
+                  <div>
+                    <h3 className="hd26">Integrity</h3>
+                    <p>We operate with honesty, accountability, and respect in every interaction.</p>
+                  </div>
                 </div>
               </div>
               <div className="col-lg-3 col-md-6 col-sm-12">
@@ -780,8 +831,10 @@ const Home = () => {
                   <div className="icon-box">
                     <span className='icon_reliability'></span>
                   </div>
-                  <h3 className="hd26">Reliability</h3>
-                  <p>Precision, consistency, and dependable delivery define how we serve.</p>
+                  <div>
+                    <h3 className="hd26">Reliability</h3>
+                    <p>Precision, consistency, and dependable delivery define how we serve.</p>
+                  </div>
                 </div>
               </div>
               <div className="col-lg-3 col-md-6 col-sm-12">
@@ -789,8 +842,10 @@ const Home = () => {
                   <div className="icon-box">
                     <span className='icon_growth'></span>
                   </div>
-                  <h3 className="hd26">Growth</h3>
-                  <p>We succeed when our customers succeed and your progress fuels ours.</p>
+                  <div>
+                    <h3 className="hd26">Growth</h3>
+                    <p>We succeed when our customers succeed and your progress fuels ours.</p>
+                  </div>
                 </div>
               </div>
 
@@ -800,18 +855,25 @@ const Home = () => {
       </div>
       <div className="product_categories-section sectionpadding" id="products">
         <div className="container">
-          <div className="maxwidth770 p_fnt26">
-            <h2 className="hd2"><span>Our Products</span>Product Categories</h2>
-            <p>Explore our wide selection of high demand products, carefully curated to meet the needs of your business and customers.</p>
+          <div className="maxwidth990 p_fnt26 text-center">
+            <h2 className="hd2">Our Products</h2>
+            <p>Whether you operate a single storefront or a multi-location business, Nava provides a dependable partnership built on performance and trust. With Nava, you gain more than a distributor, you gain a long-term partner.</p>
             <div>
               <Link className="btn_comman btn_primary2" href="/product-catalog">Explore Products</Link>
             </div>
           </div>
         </div>
+        <div className="marquee">
+          <div className="marquee__track">
+            <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+            <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+            <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+            <Image src="/marquee_img.png" width={1440} height={72} alt="" />
+          </div>
+        </div>
       </div>
-      <div className="categories sectionpadding paddtop0">
+      {/* <div className="categories sectionpadding paddtop0">
 
-        {/* First Row - Left to Right */}
         <div className="slider-wrapper">
           <div className="slider-track scroll-left">
             {[...categories, ...categories].map((category, index) => (
@@ -830,7 +892,6 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Second Row - Right to Left */}
         <div className="slider-wrapper">
           <div className="slider-track scroll-right">
             {[...categories, ...categories].map((category, index) => (
@@ -849,7 +910,8 @@ const Home = () => {
           </div>
         </div>
 
-      </div>
+      </div> */}
+      
       <div
         className="hm_contact-section sectionpadding"
         id="contact"
@@ -860,7 +922,7 @@ const Home = () => {
             <div className="row align-items-center">
               <div className="col-lg-6 col-sm-12">
                 <div className="p_fnt26 maxwidth580">
-                  <h2 className="hd2"><span>Contact Us</span>Ready to upgrade <br />your supply chain?</h2>
+                  <h2 className="hd2">Ready to upgrade <br />your supply chain?</h2>
                   <p>Have a question or need a quote?<br />
                     Fill out the form and a member of our team will get back to you shortly.</p>
                   <div className="address">
@@ -1048,6 +1110,32 @@ const Home = () => {
         pauseOnHover
         theme="colored"
       />
+
+
+      <style
+          dangerouslySetInnerHTML={{
+                    __html: `
+      header .headermain .logo .inner_logo {
+        display: block !important;
+      }
+      header .headermain .logo .home_logo {
+        display: none !important;
+      }
+       
+          header .headermain nav.navbar .navbar-toggler .navbar-toggler-icon{color: #14565B; background-image: url(../download1.svg);}
+          
+
+           @media (min-width: 993px) {
+              header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link:hover, header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link.active {
+                  color: #fff !important;
+              }
+              header .headermain nav.navbar .navigation .navbar-nav .nav-item,
+              header .headermain nav.navbar .navigation .navbar-nav .nav-item .nav-link{color:#fff !important;}
+           }
+    `,
+                }}
+            />
+
     </Layout>
   )
 }

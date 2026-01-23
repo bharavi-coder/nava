@@ -122,3 +122,20 @@
 .fadeLeftDelay {
   transition-delay: 1s;
 }
+
+
+
+header .headermain nav.navbar .navigation{
+  .navbar-nav{ padding-top:12px; padding-bottom:12px;
+    .nav-item{ font-family: 'SF Pro Display'; 
+      font-size: 20px; color: #fff; font-weight: 400; padding: 0px; margin-right: 40px;
+      letter-spacing: 0.5px;
+      &:last-child{ margin-right: 0px; }
+      .nav-link{color: #fff; 
+      &:hover, &.active{
+          color: #fff!important;
+      }
+      }
+    }
+  }
+}

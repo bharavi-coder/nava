@@ -3,17 +3,23 @@ import Link from '../components/ActiveLink'
 import Image from './Image'
 import styles from '../styles/Home.module.scss'
 
-const SimpleSlider = ({ items = [] }) => {
+const SimpleSlider = ({ items = [], onAfterChange }) => {
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
     arrows: true,
+    centerMode: true,
     autoplay: false,
     autoplaySpeed: 3000,
     adaptiveHeight: true,
+
+    afterChange: (current) => {
+      if (onAfterChange) onAfterChange(current);
+    },
+
     responsive: [
       {
         breakpoint: 992,
@@ -24,7 +30,7 @@ const SimpleSlider = ({ items = [] }) => {
         settings: { slidesToShow: 1 }
       }
     ]
-  }
+  };
 
   return (
     <div className={styles.simpleSlider || ''}>
