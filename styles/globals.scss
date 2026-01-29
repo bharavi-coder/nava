@@ -191,6 +191,10 @@ h1 {
     .mobile-video {display: block;}
 }
 
+/* Hide header while loader overlay is active on the homepage */
+body.loader-active header { display: none !important; }
+
+
 header{ position: absolute; z-index: 2; left: 0px; top:0px; width: 100%; padding: 30px 0px;
   .headermain{@include dispflex(flex,space-between,center);
     .logo{ max-width: 190px; width: 100%;

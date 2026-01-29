@@ -35,7 +35,7 @@ const Footer = () => {
                                   </li>
                                   <li>
                                       <i className="fa fa-phone" aria-hidden="true"></i>
-                                      <Link href="tel:+18476604308">+1 (847) 660-4308</Link>
+                                      <Link href="tel:+18475382112">+1 (847) 538-2112</Link>
                                   </li>
                                   <li>
                                       <i className="fa fa-envelope" aria-hidden="true"></i>

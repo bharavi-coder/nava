@@ -8,6 +8,19 @@ import styles from '../styles/Home.module.scss';
 import PhoneInput from '../components/PhoneInput';
 import { submitApplicationForm } from '../services/applicationForm.services';
 
+const usaStates = [
+  "Alabama", "Alaska", "Arizona", "Arkansas", "California",
+  "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
+  "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas",
+  "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts",
+  "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana",
+  "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico",
+  "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
+  "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+  "South Dakota", "Tennessee", "Texas", "Utah", "Vermont",
+  "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+];
+
 const ApplicationForm = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1)
@@ -102,7 +115,7 @@ const ApplicationForm = () => {
 
   const withCountryCode = (phone) => {
     if (!phone) return '';
-    return `01${phone}`; // prepend country code
+    return `1${phone}`; // prepend country code
   };
 
   // const handleInputChange = (e) => {
@@ -627,13 +640,19 @@ const handleSubmit = async () => {
                     </div>
                     <div className="form_field">
                       <label>State <span className="required">*</span></label>
-                      <input
-                        type="text"
+                      <select
                         name="state"
                         value={formData.state}
                         onChange={handleInputChange}
                         className={`form-control ${invalidFields.state ? styles.inputError : ''}`}
-                      />
+                      >
+                        <option value="">Select State</option>
+                        {usaStates.map((state) => (
+                          <option key={state} value={state}>
+                            {state}
+                          </option>
+                        ))}
+                      </select>
 
                       {errors.state && (<small className="text-danger">{errors.state}</small>)}
                     </div>

@@ -12,6 +12,9 @@ import InputMask from 'react-input-mask';
 
 const Home = () => {
   const fadeLeftRefs = useRef([]);
+ 
+ 
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -26,7 +29,22 @@ const Home = () => {
   const [errors, setErrors] = useState({});
   const [invalidFields, setInvalidFields] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
   //const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Hide header while loader is visible
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (showLoader) {
+        document.body.classList.add('loader-active');
+      } else {
+        document.body.classList.remove('loader-active');
+      }
+    }
+    return () => {
+      if (typeof document !== 'undefined') document.body.classList.remove('loader-active');
+    };
+  }, [showLoader]);
 
 
   const [activeSlide, setActiveSlide] = useState(0);
@@ -34,6 +52,9 @@ const Home = () => {
   const [brandsCount, setBrandsCount] = useState(0);
   const [storesCount, setStoresCount] = useState(0);
   const counterSectionRef = useRef(null);
+
+
+
 
 
 
@@ -541,6 +562,32 @@ const slides = [
 
   return (
     <Layout>
+      {showLoader && (
+        <div className="landing-section" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}>
+          {/* Desktop video */}
+          <video
+            className="video-bg desktop-video"
+            autoPlay
+            muted
+            playsInline
+            onEnded={() => setShowLoader(false)}
+          >
+            <source src="/nava_video_desktop.mp4" type="video/mp4" />
+          </video>
+
+          {/* Mobile video */}
+          <video
+            className="video-bg mobile-video"
+            autoPlay
+            muted
+            playsInline
+            onEnded={() => setShowLoader(false)}
+          >
+            <source src="/nava_mobile.mp4" type="video/mp4" />
+          </video>
+        </div>
+      )}
+
       <NextSeo
         title="Nava"
         description=""
@@ -548,51 +595,55 @@ const slides = [
           type: 'website',
         }}
       />
-      <div className="homebanner homepage">
-        {/* <figure className='bannerImage'>
-          <Image src="/hm_banner1.jpg" width={1440} height={945} alt="NextSSS" />
-        </figure> */}
-       <figure className="bannerImage">
-          <picture>
-           
-             <source
-              media="(max-width: 567px)"
-              srcSet="/homebannernew_mob.jpg"
-            />
 
-            {/*
-             <source
-              media="(max-width:900px)"
-              srcSet="/ipadtruck.jpg"
-            /> */}
+      
 
-          
-            <Image
-              src="/homebannernew.jpg"
-              width={1440}
-              height={945}
-              alt="NextSSS"
-              priority
-              style={{ width: '100%', height: 'auto' }}
-            />
-          </picture>
-        </figure>
-        <div className="bannerText">
-          <div className="container">
-            <div className="bannerDesc">
-              <span className="tagLineBtn">Trusted by Retailers Across the US</span>
-              <p className="title"> Redefining wholesale for a new era. </p>
-              <span> We provide top-selling products, competitive prices, and fast, reliable fulfillment to businesses across the Chicagoland area and beyond. </span>
-              <Link href='/customer-application' className="btn_comman btn_primary"> Start Your Journey
-                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3.3623 8.06836H12.7758" stroke="white" strokeWidth="1.34478" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M8.06836 3.36328L12.7751 8.07L8.06836 12.7767" stroke="white" strokeWidth="1.34478" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-              </Link>
+      <div >
+        <div className="homebanner homepage">
+          {/* <figure className='bannerImage'>
+            <Image src="/hm_banner1.jpg" width={1440} height={945} alt="NextSSS" />
+          </figure> */}
+        <figure className="bannerImage">
+            <picture>
+            
+              <source
+                media="(max-width: 567px)"
+                srcSet="/homebannernew.jpg"
+              />
+
+              {/*
+              <source
+                media="(max-width:900px)"
+                srcSet="/ipadtruck.jpg"
+              /> */}
+
+            
+              <Image
+                src="/homebannernew.jpg"
+                width={1440}
+                height={945}
+                alt="NextSSS"
+                priority
+                style={{ width: '100%', height: 'auto' }}
+              />
+            </picture>
+          </figure>
+          <div className="bannerText">
+            <div className="container">
+              <div className="bannerDesc">
+                <span className="tagLineBtn">Trusted by Retailers Across the US</span>
+                <p className="title"> Redefining wholesale for a new era. </p>
+                <span> We provide top-selling products, competitive prices, and fast, reliable fulfillment to businesses across the Chicagoland area and beyond. </span>
+                <Link href='/customer-application' className="btn_comman btn_primary"> Start Your Journey
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.3623 8.06836H12.7758" stroke="white" strokeWidth="1.34478" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M8.06836 3.36328L12.7751 8.07L8.06836 12.7767" stroke="white" strokeWidth="1.34478" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
       {/*<div className="scroll_img marquee">
         <Image src="/marquee_img.png" width={1440} height={72} alt="" />
@@ -933,7 +984,7 @@ const slides = [
                       </li>
                       <li>
                         <i className="fa fa-phone" aria-hidden="true"></i>
-                        <Link href="tel:+18476604308">+1 (847) 660-4308</Link>
+                        <Link href="tel:+18475382112">+1 (847) 538-2112</Link>
                       </li>
                       <li>
                         <i className="fa fa-envelope" aria-hidden="true"></i>
@@ -1010,7 +1061,7 @@ const slides = [
                             /> */}
 
                             <InputMask
-                              mask="+01 (999) - 9999 - 999"
+                              mask="+1 (999) - 9999 - 999"
                               value={formData.phoneFull}
                               onChange={(e) => {
                                 const digitsOnly = e.target.value.replace(/\D/g, '');
@@ -1037,7 +1088,7 @@ const slides = [
                                   type="text"
                                   className={`form-control ${errors.phone ? styles.inputError : ''}`}
                                   // className={`form-control ${invalidFields.phone ? styles.inputError : ''}`}
-                                  placeholder="+01 (xxx) - xxxx - xxx"
+                                  placeholder="+1 (xxx) - xxxx - xxx"
                                 />
                               )}
                             </InputMask>
@@ -1100,6 +1151,7 @@ const slides = [
             </div>
           </div>
         </div>
+      </div>
       </div>
       <ToastContainer
         position="top-right"

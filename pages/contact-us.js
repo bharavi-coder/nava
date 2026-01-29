@@ -174,7 +174,7 @@ const Home = () => {
                                             </li>
                                             <li>
                                                 <i className="fa fa-phone" aria-hidden="true"></i>
-                                                <Link href="tel:+18476604308">+1 (847) 660-4308</Link>
+                                                <Link href="tel:+18475382112">+1 (847) 538-2112</Link>
                                             </li>
                                             <li>
                                                 <i className="fa fa-envelope" aria-hidden="true"></i>
@@ -247,7 +247,7 @@ const Home = () => {
                                                         /> */}
 
                                                         <InputMask
-                                                            mask="+01 (999) - 9999 - 999"
+                                                            mask="+1 (999) - 9999 - 999"
                                                             value={formData.phoneFull}
                                                             onChange={(e) => {
                                                                 const digitsOnly = e.target.value.replace(/\D/g, '');
@@ -273,7 +273,7 @@ const Home = () => {
                                                                     {...inputProps}
                                                                     type="text"
                                                                     className={`form-control ${errors.phone ? styles.inputError : ''}`}
-                                                                    placeholder="+01 (xxx) - xxxx - xxx"
+                                                                    placeholder="+1 (xxx) - xxxx - xxx"
                                                                 />
                                                             )}
                                                         </InputMask>

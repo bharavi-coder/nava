@@ -8,12 +8,12 @@ const PhoneInput = ({
   onBlur,
   error,
   invalid,
-  placeholder = '+01 (xxx) - xxxx - xxx',
+  placeholder = '+1 (xxx) - xxxx - xxx',
 }) => {
   return (
     <>
       <InputMask
-        mask="+01 (999) - 9999 - 999"
+        mask="+1 (999) - 9999 - 999"
         value={value}
         onBlur={onBlur}  
         onChange={(e) => {
