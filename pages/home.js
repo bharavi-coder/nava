@@ -47,7 +47,7 @@ const Home = () => {
   }, [showLoader]);
 
 
-  const [activeSlide, setActiveSlide] = useState(0);
+  // const [activeSlide, setActiveSlide] = useState(0);
   const [yearsCount, setYearsCount] = useState(0);
   const [brandsCount, setBrandsCount] = useState(0);
   const [storesCount, setStoresCount] = useState(0);
@@ -707,12 +707,13 @@ const slides = [
       </div>
       <div
         className="who_we_are-section sectionpadding"
-        style={{
-          backgroundImage: `url(${slides[activeSlide].src})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}>
+        // style={{
+        //   backgroundImage: `url(${slides[activeSlide].src})`,
+        //   backgroundRepeat: 'no-repeat',
+        //   backgroundSize: 'cover',
+        //   backgroundPosition: 'center'
+        // }}
+        >
         <div className="container">
           <h2 className="hd2 text-center">Who We Serve</h2>
           <div className='p_fnt26 maxwidth990 text-center'>
@@ -734,7 +735,7 @@ const slides = [
               >
                 <SimpleSlider
                   items={slides}
-                  onAfterChange={setActiveSlide}
+                  //onAfterChange={setActiveSlide}
                 />
               </div></div>
           </div>
